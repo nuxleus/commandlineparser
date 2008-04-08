@@ -1,0 +1,155 @@
+2008-04-01	Giacomo Stelluti Scala	<giacomo.stelluti@gmail.com>
+
+	* Documentation Comments added to following Sources:
+		- Parser.cs
+		- Attributes/BaseOptionAttribute.cs
+		- Attributes/HelpOptionAttribute.cs
+		- Attributes/OptionAttribute.cs
+		- Attributes/ValueListAttribute.cs
+		- Data/CopyrightInfo.cs
+		- Data/HelpText.cs
+		- Exceptions/IncompatibleTypesException.cs
+		
+	* Source code formatting follows my internal coding standards;
+	  very similar to MONO's one (see log record of 2007-07-10).
+	  
+	* ValueListAttribute.cs
+		Updated. Two public members 'Type ValueListAttribute.ConcreteType { get; }' and
+		'IList<string> ValueListAttribute.GetReference(object)'are now marked internal.
+		
+2007-10-04	Giacomo Stelluti Scala	<giacomo.stelluti@gmail.com>
+	
+	* HelpOptionAttributeFixture.cs
+		Updated. Tests added.
+	* ParserFixture.cs
+		Updated. Tests added.
+	* HelpText.cs
+		Updated. Now display help for HelpOptionAttribute too.
+	* OptionAttribute.cs
+		Updated. HelpText moved to BaseOptionAttribute.
+	* BaseOptionAttribute.cs
+		Updated. BaseOptionAttribute now includes HelpText property.
+	* HelpOptionAttribute.cs
+		Updated. Changed HelpOptionAttribute.Required { get; } to return false
+		and don't raise exception.
+	* ReflectionUtil.cs
+		Updated. Added ReflectionUtil.RetrieveMethodAttributeOnly<>() method.
+
+2007-08-13	Giacomo Stelluti Scala	<giacomo.stelluti@gmail.com>
+
+	* Copyright notice included in #region/#endregion markers.
+	* Files grouped in directories.
+	* ReflectionUtilFixture.cs
+		Added.
+	* PairT.cs
+		Added.
+	* ReflectionUtil.cs
+		Added.
+	* OptionInfo.cs
+		Updated. Used ReflectionUtil in OptionInfo.CreateMap(Type).
+	* BaseOptionAttribute.cs
+		Added. New base class for attribute types that models options.
+	* OptionAttribute.cs
+		Updated. Removed OptionAttribute.FromField(FieldInfo), it's no longer needed.
+	* ValueListAttribute.cs
+		Updated. Used ReflectionUtil in ValueListAttribute.GetField(object, out Type).
+	* IncompatibleTypesException.cs
+		Updated. Changed constructors from public to internal.
+	* CopyrightInfoFixture.cs
+		Added.
+	* CopyrightInfo.cs
+		Added. New public helper class for format copyright notice.
+	* HelpText.cs
+		Added. New public helper class for format help text.
+	* HelpOptionAttributeFixture.cs
+		Added. Tests for new help management feature.
+	* HelpOptionAttribute.cs
+		Added. New attribute for manage user help request from command line.
+	* Validator.cs
+		Added. Validates methods arguments and throws exceptions.
+	* Parser.cs
+		Updated. Added overload of ParseArguments for manage user help request
+		Paser.ParseArguments(string[], object, TextWriter).
+	* ArgumentParser.cs
+		Updated. Added helper methods CompareShort/CompareLong(string, string).
+	* CharEnumeratorEx.cs
+		Updated.
+	* StringEnumeratorEx.cs
+		Updated.
+	* SampleApp/Program.cs
+		Updated.
+
+2007-07-20	Giacomo Stelluti Scala	<giacomo.stelluti@gmail.com>
+
+	* ValueListAttributeFixture.cs
+		Added.
+	* ValueListAttribute.cs
+		Added.
+	* IncompatibleTypesException.cs
+		Added.
+	* OptionInfo.cs
+		Update. Removed duplicate method call in OptionInfo.CreateMap(Type).
+		Added thread safety when modifying options instance with OptionInfo.SetValue(string/bool, options).
+	* ValueContainer.cs
+		Dropped. ValueContainer abstract class replaced by ValueList[Attribute].
+	* Parser.cs
+		Updated. Used ValueListAttribute, removed ValueContainer.
+		Added thread safety when modifying values of options instance with IList<string>.Add(string).
+	* Tests/ParserFixture.cs
+		Updated.
+	* IPartialParser.cs
+		Dropped.
+	* ArgumentParser.cs.
+		Added. Replaces IPartialParser and Parser.CreateParser(string).
+	
+2007-07-10	Giacomo Stelluti Scala	<giacomo.stelluti@gmail.com>
+
+	* Source files formatted following the Mono Coding Guidelines
+	  (http://www.mono-project.com/Coding_Guidelines).
+	* Parser.cs
+		Parser.IParser renamed to Parser.IPartialParser.
+		Parser.ParseResult renamed to Parser.ParserState.
+		Parser.IsInputValue() moved to ParserUtil (new class).
+		Parser.Parser(Type) constructor made private (ref. #BUG0001).
+		Parser class nested types moved to root namespace and marked internal.
+	* IPartialParser.cs
+	  LongOptionParser.cs
+	  OptionGroupParser.cs
+	  OptionInfo.cs
+	  OptionMap.cs
+	  ParserState.cs
+	  ParserUtil.cs
+	    Created.
+	* Tests/MockObjects.cs
+		Dropped. Mock types made private and nested in ParserFixture class.
+	* Tests/ParserFixture.cs
+		Updated. Introduced test for #BUG0001.
+	* Tests/OptionMapFixture.cs
+		Added.
+	* OptionMap.cs (old nested type Parser.OptionMap)
+		Refactored using generics.
+	* IPartialParser.cs (old nested type Parser.IParser)
+		Updated. Changed method signature.
+		
+2007-06-30  Giacomo Stelluti Scala  <giacomo.stelluti@gmail.com>
+
+	* Project moved from www.gotdotnet.com to www.codeplex.com.
+	* Compiled for MS .NET Version 2.0 and Mono Profile 2.0.
+	* Enumerator types refactored.
+	* Test code refactored and extended.
+
+2006-03-30  Giacomo Stelluti Scala  <stelluti.scala@libero.it>
+
+	* Interface IValueContainer changed to abstract class.
+	* Minor bug fix (ref. #BUG0000):
+	  illegal short option assignment using tokens is now detected,
+	  ILLEGAL FORM: "-x=10" or "-x:10"
+	  LEGAL FORM: "-x10" or "-x 10".
+
+2005-05-31  Giacomo Stelluti Scala  <stelluti.scala@libero.it>
+
+	* New design.
+	  
+2005-05-05  Giacomo Stelluti Scala  <stelluti.scala@libero.it>
+
+	* Initial Release.
