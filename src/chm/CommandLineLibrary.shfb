@@ -1,0 +1,47 @@
+﻿<project schemaVersion="1.6.0.2">
+    <assemblies>
+        <assembly assemblyPath="..\libcmdline\bin\Release\CommandLine.dll" xmlCommentsPath="..\libcmdline\bin\Release\CommandLine.XML" commentsOnly="False" />
+    </assemblies>
+    <namespaceSummaries>
+        <namespaceSummaryItem name="" isDocumented="False" />
+        <namespaceSummaryItem name="CommandLine" isDocumented="True">The CommandLine namespace contains basic type for complete the main job of the library. The most importants are Parser and attribute types.</namespaceSummaryItem>
+        <namespaceSummaryItem name="CommandLine.Text" isDocumented="True">The CommandLine.Text namespace contains helper types for format output in an typical console application.</namespaceSummaryItem>
+    </namespaceSummaries>
+    <ProjectSummary />
+    <MissingTags>Summary, Parameter, Returns, AutoDocumentCtors, Namespace</MissingTags>
+    <VisibleItems>InheritedMembers, InheritedFrameworkMembers, Protected, SealedProtected</VisibleItems>
+    <HtmlHelp1xCompilerPath path="" />
+    <HtmlHelp2xCompilerPath path="" />
+    <OutputPath>C:\Projects\CommandLine\doc\api-reference\chm\</OutputPath>
+    <SandcastlePath path="" />
+    <WorkingPath path="" />
+    <CleanIntermediates>True</CleanIntermediates>
+    <KeepLogFile>True</KeepLogFile>
+    <HelpFileFormat>HtmlHelp1x</HelpFileFormat>
+    <PurgeDuplicateTopics>True</PurgeDuplicateTopics>
+    <CppCommentsFixup>False</CppCommentsFixup>
+    <FrameworkVersion>2.0.50727</FrameworkVersion>
+    <BinaryTOC>True</BinaryTOC>
+    <IncludeFavorites>False</IncludeFavorites>
+    <Preliminary>False</Preliminary>
+    <RootNamespaceContainer>False</RootNamespaceContainer>
+    <RootNamespaceTitle />
+    <HelpTitle>Command Line Parser Library 1.5.9.9 Beta</HelpTitle>
+    <HtmlHelpName>CommandLine</HtmlHelpName>
+    <Language>en-US</Language>
+    <CopyrightHref />
+    <CopyrightText>Copyright (c) 2005 - 2009 Giacomo Stelluti Scala</CopyrightText>
+    <FeedbackEMailAddress>gsscoder@ymail.com</FeedbackEMailAddress>
+    <HeaderText />
+    <FooterText>This software is open source, published under MIT license and hosted at CodePlex (http://www.codeplex.com/commandline).</FooterText>
+    <ProjectLinkType>Local</ProjectLinkType>
+    <SdkLinkType>Msdn</SdkLinkType>
+    <SdkLinkTarget>Blank</SdkLinkTarget>
+    <PresentationStyle>Prototype</PresentationStyle>
+    <NamingMethod>Guid</NamingMethod>
+    <SyntaxFilters>Standard</SyntaxFilters>
+    <ShowFeedbackControl>False</ShowFeedbackControl>
+    <ContentPlacement>AboveNamespaces</ContentPlacement>
+    <ContentSiteMap path="" />
+    <TopicFileTransform path="" />
+</project>

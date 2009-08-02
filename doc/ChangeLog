@@ -1,0 +1,317 @@
+2009-08-01	Giacomo Stelluti Scala	<gsscoder@ymail.com>
+
+	* CommandLineParserFixture.cs (CommandLineParserFixture)
+		Modified. Added test code to implement 'case sensitive on/off switch' following
+		user request (#REQ0000) posted in project hosting web site
+		(http://commandline.codeplex.com/Thread/View.aspx?ThreadId=44806).
+	
+	* ParserSettings.cs (ParserSettings)
+		Added. This object configures aspects of parser's behavior. (#REQ0000)
+		
+	* ICommandLineParser.cs (ICommandLineParser)
+		Modified. Added a ParseArguments(...) overload that accepts an instance of
+		ParserSettings. (#REQ0000)
+		
+	* CommandLineParser.cs (CommandLineParser)
+		Modified. Now implements the new method defined in ICommandLineParser. (#REQ0000)
+		
+	* ArgumentParser.cs
+		Modified. (#REQ0000)
+		
+	* OptionMap.cs
+		Modified. (#REQ0000)
+		
+	* OptionMapFixture.cs
+		Modified. Internal type OptionMap has a new public construcotr (OptionMap.cs).
+
+2009-01-21	Giacomo Stelluti Scala	<gsscoder@ymail.com>
+
+	* CommandLineParserFixture.cs (CommandLineParserFixture)
+		Modified. Added test code to put highlight a bug noticed working for a blog tutorial
+		(http://gsscoder.blogspot.com/2009/01/hands-on-code-modify-copy-directory.html).
+		I wrote the tutorial for other people and finally helped me too.
+		I'm sure that this kind of bug was not here even with earlier version of CommandLine.dll.
+		So why appeared in a 1.5-stable? It's appeared because the code coverage were not enough
+		deep and a so simple case were not take in to account (LEARN FROM THIS ERROR!!!).
+	* OptionMap.cs (OptionMap)
+		Modified. Last changes to this class hasn't modified Unit-Tests results. Anyway the
+		problem was here and now was corrected (ref. #BUG0002). The problem was that an undefined
+		input results in raising an unhandled excpetion, instead of returning false (this is
+		valid for all overloads of 'bool CommandLineParser::ParseArguments(...)').
+	* OptionMapFixture.cs (OptionMapFixture, OptionMapFixture+OptionMapBuilder)
+		Modified. Minor internal refactoring (mostly for future use).
+		Added tests for consolidate contract of OptionMap (:IOptionMap) type (OptionMap.cs):
+		this also is in relation of bug #BUG0002.
+	* ValueListAttributeFixture.cs
+		Modified. Removed commented code.
+	* IncompatibleTypesException.cs
+		Modified. Heading comment.
+
+2009-01-08	Giacomo Stelluti Scala	<gsscoder@ymail.com>
+
+	* {all}.cs
+		Modified. Updated header.
+	* ThisAssembly.cs
+		Modified. Updated version.
+	* CommandLineParserFixture.cs
+		Modified for Unit-Test refactoring.
+	* CommandLineParserFixture.Mocks.cs
+		Extracted from CommandLineParserFixture.cs.
+	* MockUtil.cs
+		Added. Used in Unit-Test.
+	* MockOptions.cs
+		Added. Base class from mock options types (Unit-Test).
+	* OptionInfo.cs
+		Modified. Added support for enum types. See 'bool OptionInfo::SetValueScalar(string, object)'.
+	* CopyrightInfo.cs
+		Modified.
+	* HelpText.cs
+		Modified.
+	* HelpTextFixture.cs
+		Added.
+	* PairT.cs
+		Modified. Marked sealed.
+	* IncompatibleTypesException.cs
+		Modified. Marked obsolete (instead catch ParserException type).
+	* ParserException.cs
+		Added. The ParserException type will be used through (more specialized exception types will
+		be created only if really needed).
+	* ValueListAttribute.cs
+		Modfied
+	* SampleApp/Program.cs
+		Modified.
+	
+2008-12-20	Giacomo Stelluti Scala	<gsscoder@ymail.com>
+
+	* Applied my latestì coding standard' about tabs to all sources (*.cs):
+		size 4 (spaces).
+	* Removed 'internal' keyword from type declaration (because in C# is implicit).
+	* ICommandLineParser.cs
+		Added. Interface for command line parsing (derived from Parser.cs).
+		This interface was introduced for simplify the use of the parser with
+		'inversion of control/dependency injection' containers.
+		(Read: http://gsscoder.blogspot.com/2008/10/decouple-software-in-services.html)
+	* CommandLineParser.cs
+		Added. Default implementation for ICommandLineParser.
+	* Parser.cs
+		Modified. Now its a client of ICommandLineParser/CommandLineParser.
+		It' use is deprecated use instead CommandLineParser.
+	* Source tree reorganized moving most files to a new 'Core/' directory.
+	* Test files moved to relative '../Tests/' subdirectory.
+	* ParserFixture.cs
+		Modified. Renamed to CommandLineParserFixture.cs.
+	* IOptionMap.cs
+		Added. Used in refactoring of OptionMap type (see OptionMap.cs).
+	* OptionMap.cs
+		Modified. Partially rewritten.
+	* ArgumentParser.cs
+		Modified. References IOptionMap instead of OptionMap.
+	* LongOptionParser.cs
+	  OptionGroupParser.cs
+	  OptionInfo.cs
+		Modified. As ArgumentParser derived types now references IOptionMap.
+	* EnumeratorsFixture.cs
+		Modified.
+	* CharEnumerator.cs
+		Modified.
+		
+2008-07-22	Giacomo Stelluti Scala	<giacomo.stelluti@gmail.com>
+
+	* OptionListAttribute.cs
+		Added. Allows to set an option with a composite value (values separated by a character).
+	* ParserFixture.cs
+		Modified.
+	* OptionInfo.cs
+		Modified.
+	* ValueListAttribute.cs
+		Added. Modified a comment.
+
+2008-05-05	Giacomo Stelluti Scala	<giacomo.stelluti@gmail.com>
+
+	* Enumerations/ParserState.cs
+		Moved to Interfaces.
+	* CharEnumeratorEx.cs, StringEnumeratorEx.cs
+		Moved to Collections.
+	* NAnt Script (../nant/default.build)
+		Modified.
+	* Text/Tests/HeadingInfoFixture.cs
+		Added. Unit tests for Text/HeadingInfo.cs
+	* Attributes/ValueListAttribute.cs
+		Modified. Added check for maximum elements.
+	* Parser.cs
+		Modified. Added support for modified ValueListAttribute type.
+	* Tests/ParserFixture.cs
+		Modified. Added tests for new features of ValueListAttribute type.
+	* Util/Validator.cs
+		Modified. Method CheckZeroLength<T> now throws the correct exception.
+	* Text/Tests/CopyrightInfoFixture.cs
+		Modified.
+
+2008-04-27	Giacomo Stelluti Scala	<giacomo.stelluti@gmail.com>
+
+	* OptionInfo.cs, PairT.cs
+		Moved from Data to Collections directory.
+	* Data directory
+		Renamed as Text. All types inside included in CommandLine.Text namespace.
+	* Text/CopyrightInfo.cs
+		Nested enumaration Symbol replaced with a boolean.
+	* Tests/CopyrightInfoFixture.cs
+		Moved to Text/Tests/CopyrightInfoFixture.cs
+	* Text/HeadingInfo.cs
+		Added. Decouples data previously handled by HelpText type.
+	* Text/HelpText.cs
+		Modified. Data previously handled by this type is now managed by HeadingInfo (HeadingInfo.cs).
+		
+2008-04-01	Giacomo Stelluti Scala	<giacomo.stelluti@gmail.com>
+
+	* Documentation Comments added to following Sources:
+		- Parser.cs
+		- Attributes/BaseOptionAttribute.cs
+		- Attributes/HelpOptionAttribute.cs
+		- Attributes/OptionAttribute.cs
+		- Attributes/ValueListAttribute.cs
+		- Data/CopyrightInfo.cs
+		- Data/HelpText.cs
+		- Exceptions/IncompatibleTypesException.cs
+	* Source code formatting follows my internal coding standards;
+	  very similar to Mono's one (see log record of 2007-07-10).
+	* ValueListAttribute.cs
+		Updated. Two public members 'Type ValueListAttribute.ConcreteType { get; }' and
+		'IList<string> ValueListAttribute.GetReference(object)'are now marked internal.
+		
+2007-10-04	Giacomo Stelluti Scala	<giacomo.stelluti@gmail.com>
+	
+	* HelpOptionAttributeFixture.cs
+		Updated. Tests added.
+	* ParserFixture.cs
+		Updated. Tests added.
+	* HelpText.cs
+		Updated. Now display help for HelpOptionAttribute too.
+	* OptionAttribute.cs
+		Updated. HelpText moved to BaseOptionAttribute.
+	* BaseOptionAttribute.cs
+		Updated. BaseOptionAttribute now includes HelpText property.
+	* HelpOptionAttribute.cs
+		Updated. Changed HelpOptionAttribute.Required { get; } to return false
+		and don't raise exception.
+	* ReflectionUtil.cs
+		Updated. Added ReflectionUtil.RetrieveMethodAttributeOnly<>() method.
+
+2007-08-13	Giacomo Stelluti Scala	<giacomo.stelluti@gmail.com>
+
+	* Copyright notice included in #region/#endregion markers.
+	* Files grouped in directories.
+	* ReflectionUtilFixture.cs
+		Added.
+	* PairT.cs
+		Added.
+	* ReflectionUtil.cs
+		Added.
+	* OptionInfo.cs
+		Updated. Used ReflectionUtil in OptionInfo.CreateMap(Type).
+	* BaseOptionAttribute.cs
+		Added. New base class for attribute types that models options.
+	* OptionAttribute.cs
+		Updated. Removed OptionAttribute.FromField(FieldInfo), it's no longer needed.
+	* ValueListAttribute.cs
+		Updated. Used ReflectionUtil in ValueListAttribute.GetField(object, out Type).
+	* IncompatibleTypesException.cs
+		Updated. Changed constructors from public to internal.
+	* CopyrightInfoFixture.cs
+		Added.
+	* CopyrightInfo.cs
+		Added. New public helper class for format copyright notice.
+	* HelpText.cs
+		Added. New public helper class for format help text.
+	* HelpOptionAttributeFixture.cs
+		Added. Tests for new help management feature.
+	* HelpOptionAttribute.cs
+		Added. New attribute for manage user help request from command line.
+	* Validator.cs
+		Added. Validates methods arguments and throws exceptions.
+	* Parser.cs
+		Updated. Added overload of ParseArguments for manage user help request
+		Paser.ParseArguments(string[], object, TextWriter).
+	* ArgumentParser.cs
+		Updated. Added helper methods CompareShort/CompareLong(string, string).
+	* CharEnumeratorEx.cs
+		Updated.
+	* StringEnumeratorEx.cs
+		Updated.
+	* SampleApp/Program.cs
+		Updated.
+
+2007-07-20	Giacomo Stelluti Scala	<giacomo.stelluti@gmail.com>
+
+	* ValueListAttributeFixture.cs
+		Added.
+	* ValueListAttribute.cs
+		Added.
+	* IncompatibleTypesException.cs
+		Added.
+	* OptionInfo.cs
+		Update. Removed duplicate method call in OptionInfo.CreateMap(Type).
+		Added thread safety when modifying options instance with OptionInfo.SetValue(string/bool, options).
+	* ValueContainer.cs
+		Dropped. ValueContainer abstract class replaced by ValueList[Attribute].
+	* Parser.cs
+		Updated. Used ValueListAttribute, removed ValueContainer.
+		Added thread safety when modifying values of options instance with IList<string>.Add(string).
+	* Tests/ParserFixture.cs
+		Updated.
+	* IPartialParser.cs
+		Dropped.
+	* ArgumentParser.cs.
+		Added. Replaces IPartialParser and Parser.CreateParser(string).
+	
+2007-07-10	Giacomo Stelluti Scala	<giacomo.stelluti@gmail.com>
+
+	* Source files formatted following the Mono Coding Guidelines
+	  (http://www.mono-project.com/Coding_Guidelines).
+	* Parser.cs
+		Parser.IParser renamed to Parser.IPartialParser.
+		Parser.ParseResult renamed to Parser.ParserState.
+		Parser.IsInputValue() moved to ParserUtil (new class).
+		Parser.Parser(Type) constructor made private (ref. #BUG0001).
+		Parser class nested types moved to root namespace and marked internal.
+	* IPartialParser.cs
+	  LongOptionParser.cs
+	  OptionGroupParser.cs
+	  OptionInfo.cs
+	  OptionMap.cs
+	  ParserState.cs
+	  ParserUtil.cs
+	    Created.
+	* Tests/MockObjects.cs
+		Dropped. Mock types made private and nested in ParserFixture class.
+	* Tests/ParserFixture.cs
+		Updated. Introduced test for #BUG0001.
+	* Tests/OptionMapFixture.cs
+		Added.
+	* OptionMap.cs (old nested type Parser.OptionMap)
+		Refactored using generics.
+	* IPartialParser.cs (old nested type Parser.IParser)
+		Updated. Changed method signature.
+		
+2007-06-30  Giacomo Stelluti Scala  <giacomo.stelluti@gmail.com>
+
+	* Project moved from www.gotdotnet.com to www.codeplex.com.
+	* Compiled for MS .NET Version 2.0 and Mono Profile 2.0.
+	* Enumerator types refactored.
+	* Test code refactored and extended.
+
+2006-03-30  Giacomo Stelluti Scala  <stelluti.scala@libero.it>
+
+	* Interface IValueContainer changed to abstract class.
+	* Minor bug fix (ref. #BUG0000):
+	  illegal short option assignment using tokens is now detected,
+	  ILLEGAL FORM: "-x=10" or "-x:10"
+	  LEGAL FORM: "-x10" or "-x 10".
+
+2005-05-31  Giacomo Stelluti Scala  <stelluti.scala@libero.it>
+
+	* New design.
+	  
+2005-05-05  Giacomo Stelluti Scala  <stelluti.scala@libero.it>
+
+	* Initial Release.
