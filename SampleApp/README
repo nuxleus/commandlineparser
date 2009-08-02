@@ -1,8 +1,0 @@
-Command Line Library / Example Application
-
-Supported Syntax Examples:
-sampleapp -rfile -i --calculate
-sampleapp -ir other-file --jump=9
-sampleapp --jump 100 --read=this-one -wout -v0
-sampleapp -wout -ij 200 -v 2 -r file.xzy
-sampleapp inp1 --read="long file name.ext" -j 99.9 inp2
