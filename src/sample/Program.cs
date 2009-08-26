@@ -36,7 +36,7 @@ namespace SampleApp
 
     internal sealed class Program
     {
-        private static readonly HeadingInfo headingInfo = new HeadingInfo("sampleapp", "1.2.5");
+        private static readonly HeadingInfo headingInfo = new HeadingInfo("sampleapp", "1.2.9");
 
         private enum OptimizeFor
         {
@@ -91,7 +91,7 @@ namespace SampleApp
             public string GetUsage()
             {
                 HelpText help = new HelpText(Program.headingInfo);
-                help.Copyright = new CopyrightInfo("Giacomo Stelluti Scala", 2005, 2007);
+                help.Copyright = new CopyrightInfo("Giacomo Stelluti Scala", 2005, 2009);
                 help.AddPreOptionsLine("This is free software. You may redistribute copies of it under the terms of");
                 help.AddPreOptionsLine("the MIT License <http://www.opensource.org/licenses/mit-license.php>.");
                 help.AddPreOptionsLine("Usage: SampleApp -rMyData.in -wMyData.out --calculate");

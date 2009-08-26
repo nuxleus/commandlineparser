@@ -116,6 +116,7 @@ namespace CommandLine.Tests
             Console.WriteLine(options);
         }
 
+        #region ValueListAttribute Tests
         [Test]
         public void ValueListAttributeIsolatesNonOptionValues()
         {
@@ -175,6 +176,7 @@ namespace CommandLine.Tests
             MockOptionsWithValueListMaxElemEqZero options = new MockOptionsWithValueListMaxElemEqZero();
             Assert.IsFalse(parser.ParseArguments(new string[] { "some", "value" }, options));
         }
+        #endregion //end ValueListAttribute Tests
 
         [Test]
         public void ParseOptionList()
@@ -269,15 +271,38 @@ namespace CommandLine.Tests
         [Test]
         public void DisablingCaseSensitive()
         {
-            ICommandLineParser local = new CommandLineParser();
+            ICommandLineParser local = new CommandLineParser(new CommandLineParserSettings(false)); //Ref.: #DGN0001
             MockOptionsCaseSensitive options = new MockOptionsCaseSensitive();
-            bool success = local.ParseArguments(new string[] { "-A", "alfa", "--Beta-Option", "beta" }, options, 
-                new ParserSettings(false));
+            bool success = local.ParseArguments(new string[] { "-A", "alfa", "--Beta-Option", "beta" }, options);
             Assert.IsTrue(success);
             Assert.AreEqual("alfa", options.AlfaOption);
             Assert.AreEqual("beta", options.BetaOption);
         }
         #endregion
+
+
+        /// <summary>
+        /// Ref.: #BUG0003
+        /// </summary>
+        [Test]
+        public void ParsingShouldFailIfNoValueIsPassedToALongOption()
+        {
+            MockOptions options = new MockOptions();
+            bool success = parser.ParseArguments(new string[] { "--string" }, options);
+            Assert.IsFalse(success);
+        }
+
+        /// <summary>
+        /// Ref.: #REQ0001
+        /// </summary>
+        [Test]
+        public void AllowSingleDashAsOptionInputValue()
+        {
+            MockOptions options = new MockOptions();
+            bool success = parser.ParseArguments(new string[] { "--string", "-" }, options);
+            Assert.IsTrue(success);
+            Assert.AreEqual("-", options.StringOption);
+        }
     }
 }
 #endif

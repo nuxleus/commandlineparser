@@ -117,12 +117,12 @@ namespace CommandLine.Tests
             [Option("b", "beta-OPTION")]
             public string BetaOption = string.Empty;
 
-            [HelpOption(
-                    HelpText = "Dispaly this help screen.")]
-            public string GetUsage()
-            {
-                return "Needed when using ParserSettings object.";
-            }
+            //[HelpOption(
+            //        HelpText = "Dispaly this help screen.")]
+            //public string GetUsage()
+            //{
+            //    return "Needed when using ParserSettings object.";
+            //}
         }
 	}
 }

@@ -37,6 +37,15 @@ namespace CommandLine.Text.Tests
     [TestFixture]
     public sealed class HelpTextFixture
     {
+        class MockOptions
+        {
+            [Option("v", "verbose")]
+            public bool Verbose = false;
+
+            [Option(null, "input-file")]
+            public string FileName = string.Empty;
+        }
+
         private static HelpText helpText = new HelpText(
             new HeadingInfo(ThisAssembly.Title, ThisAssembly.Version));
 
@@ -44,6 +53,27 @@ namespace CommandLine.Text.Tests
         public void AddAnEmptyPreOptionsLineIsAllowed()
         {
             helpText.AddPreOptionsLine(string.Empty); // == ""
+        }
+
+        /// <summary>
+        /// Ref.: #REQ0002
+        /// </summary>
+        [Test]
+        public void PostOptionsLinesFeatureAdded()
+        {
+            HelpText local = new HelpText("Heading Info.");
+            local.AddPreOptionsLine("This is a first pre-options line.");
+            local.AddPreOptionsLine("This is a second pre-options line.");
+            local.AddOptions(new MockOptions());
+            local.AddPostOptionsLine("This is a first post-options line.");
+            local.AddPostOptionsLine("This is a second post-options line.");
+
+            string help = local.ToString();
+            Console.Write(help);
+
+            string[] lines = help.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+            Assert.AreEqual(lines[lines.Length - 2], "This is a first post-options line.");
+            Assert.AreEqual(lines[lines.Length - 1], "This is a second post-options line.");
         }
     }
 }

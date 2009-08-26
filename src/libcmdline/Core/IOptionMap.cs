@@ -28,6 +28,8 @@
 
 namespace CommandLine
 {
+    using System.Collections.Generic;
+
     interface IOptionMap
     {
         OptionInfo this[string key] { get; set; }

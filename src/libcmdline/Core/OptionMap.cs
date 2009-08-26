@@ -33,13 +33,16 @@ namespace CommandLine
 
     sealed class OptionMap : IOptionMap
     {
+        private CommandLineParserSettings settings;
         private Dictionary<string, string> names;
         private Dictionary<string, OptionInfo> map;
+        private Dictionary<string, int> mutuallyExclusiveSetMap;
 
-        public OptionMap(int capacity, bool caseSensitive) //public OptionMap(int capacity)
+        public OptionMap(int capacity, CommandLineParserSettings settings) //public OptionMap(int capacity, bool caseSensitive)
         {
+            this.settings = settings;
             IEqualityComparer<string> comparer;
-            if (caseSensitive)
+            if (this.settings.CaseSensitive)
             {
                 comparer = StringComparer.Ordinal;
             }
@@ -49,6 +52,10 @@ namespace CommandLine
             }
             this.names = new Dictionary<string, string>(capacity, comparer);
             this.map = new Dictionary<string, OptionInfo>(capacity * 2, comparer);
+            if (this.settings.MutuallyExclusive)
+            {
+                this.mutuallyExclusiveSetMap = new Dictionary<string, int>(capacity, StringComparer.OrdinalIgnoreCase);
+            }
         }
 
         public OptionInfo this[string key]
@@ -83,6 +90,19 @@ namespace CommandLine
 
         public bool EnforceRules()
         {
+            //foreach (OptionInfo option in this.map.Values)
+            //{
+            //    if (option.Required && !option.IsDefined)
+            //    {
+            //        return false;
+            //    }
+            //}
+            //return true;
+            return EnforceMutuallyExclusiveMap() && EnforceRequiredRule();
+        }
+
+        private bool EnforceRequiredRule()
+        {
             foreach (OptionInfo option in this.map.Values)
             {
                 if (option.Required && !option.IsDefined)
@@ -91,6 +111,39 @@ namespace CommandLine
                 }
             }
             return true;
+        }
+
+        private bool EnforceMutuallyExclusiveMap()
+        {
+            if (!this.settings.MutuallyExclusive)
+            {
+                return true;
+            }
+            foreach (OptionInfo option in this.map.Values)
+            {
+                if (option.IsDefined && option.MutuallyExclusiveSet != null)
+                {
+                    BuildMutuallyExclusiveMap(option);
+                }
+            }
+            foreach (int occurrence in this.mutuallyExclusiveSetMap.Values)
+            {
+                if (occurrence > 1)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        private void BuildMutuallyExclusiveMap(OptionInfo option)
+        {
+            string setName = option.MutuallyExclusiveSet;
+            if (!this.mutuallyExclusiveSetMap.ContainsKey(setName))
+            {
+                this.mutuallyExclusiveSetMap.Add(setName, 0);
+            }
+            this.mutuallyExclusiveSetMap[setName]++;
         }
     }
 }

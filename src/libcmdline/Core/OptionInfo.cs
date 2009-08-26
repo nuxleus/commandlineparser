@@ -42,7 +42,8 @@ namespace CommandLine
         private bool isDefined;
         private string shortName;
         private string longName;
-        
+        private string mutuallyExclusiveSet;
+
         private object setValueLock = new object();
 
         public OptionInfo(OptionAttribute attribute, FieldInfo field)
@@ -51,6 +52,7 @@ namespace CommandLine
             this.helpText = attribute.HelpText;
             this.shortName = attribute.ShortName;
             this.longName = attribute.LongName;
+            this.mutuallyExclusiveSet = attribute.MutuallyExclusiveSet;
             this.field = field;
             this.attribute = attribute;
         }
@@ -62,10 +64,10 @@ namespace CommandLine
             this.longName = longName;
         }
 #endif
-        public static IOptionMap CreateMap(object target, bool caseSensitive)
+        public static IOptionMap CreateMap(object target, CommandLineParserSettings settings) //public static IOptionMap CreateMap(object target, bool caseSensitive)
         {
             IList<Pair<FieldInfo, OptionAttribute>> list = ReflectionUtil.RetrieveFieldList<OptionAttribute>(target);
-            IOptionMap map = new OptionMap(list.Count, caseSensitive);
+            IOptionMap map = new OptionMap(list.Count, settings); //IOptionMap map = new OptionMap(list.Count, caseSensitive);
             foreach (Pair<FieldInfo, OptionAttribute> pair in list)
             {
                 map[pair.Right.UniqueName] = new OptionInfo(pair.Right, pair.Left);
@@ -151,6 +153,11 @@ namespace CommandLine
         public string LongName
         {
             get { return this.longName; }
+        }
+
+        public string MutuallyExclusiveSet
+        {
+            get { return this.mutuallyExclusiveSet; }
         }
 
         public bool Required

@@ -28,6 +28,8 @@
 
 namespace CommandLine
 {
+    using System;
+
     internal abstract class ArgumentParser
     {
         public abstract ParserState Parse(IStringEnumerator argumentEnumerator, IOptionMap map, object options);
@@ -47,7 +49,13 @@ namespace CommandLine
 
         public static bool IsInputValue(string argument)
         {
-            return argument[0] != '-';
+            if (argument.Length > 0)
+            {
+                //return argument[0] != '-';
+                return argument.Equals("-", StringComparison.InvariantCulture) ||
+                    argument[0] != '-';
+            }
+            return true;
         }
 
         public static bool CompareShort(string argument, string option, bool caseSensitive)

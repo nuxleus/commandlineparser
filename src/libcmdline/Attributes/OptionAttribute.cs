@@ -39,6 +39,8 @@ namespace CommandLine
     public class OptionAttribute : BaseOptionAttribute
     {
         private string uniqueName;
+        private string mutuallyExclusiveSet;
+        internal const string DefaultMutuallyExclusiveSet = "Default";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CommandLine.OptionAttribute"/> class.
@@ -75,6 +77,25 @@ namespace CommandLine
         internal string UniqueName
         {
             get { return this.uniqueName; }
+        }
+
+        /// <summary>
+        /// Gets or sets the option's mutually exclusive set.
+        /// </summary>
+        public string MutuallyExclusiveSet
+        {
+            get { return this.mutuallyExclusiveSet; }
+            set
+            {
+                if (string.IsNullOrEmpty(value))
+                {
+                    this.mutuallyExclusiveSet = OptionAttribute.DefaultMutuallyExclusiveSet;
+                }
+                else
+                {
+                    this.mutuallyExclusiveSet = value;
+                }
+            }
         }
     }
 }

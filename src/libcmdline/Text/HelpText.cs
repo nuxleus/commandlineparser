@@ -46,12 +46,14 @@ namespace CommandLine.Text
         private string copyright;
         private StringBuilder preOptionsHelp;
         private StringBuilder optionsHelp;
+        private StringBuilder postOptionsHelp;
         private static readonly string defaultRequiredWord = "Required.";
         #endregion
 
         private HelpText()
         {
             this.preOptionsHelp = new StringBuilder(builderCapacity);
+            this.postOptionsHelp = new StringBuilder(builderCapacity);
         }
 
         /// <summary>
@@ -90,6 +92,16 @@ namespace CommandLine.Text
         public void AddPreOptionsLine(string value)
         {
             AddLine(this.preOptionsHelp, value);
+        }
+
+        /// <summary>
+        /// Adds a text line at the bottom, after options usage informations.
+        /// </summary>
+        /// <param name="value">A <see cref="System.String"/> instance.</param>
+        /// <exception cref="System.ArgumentNullException">Thrown when parameter <paramref name="value"/> is null or empty string.</exception>
+        public void AddPostOptionsLine(string value)
+        {
+            AddLine(this.postOptionsHelp, value);
         }
 
         /// <summary>
@@ -194,6 +206,11 @@ namespace CommandLine.Text
                 builder.Append(Environment.NewLine);
                 builder.Append(Environment.NewLine);
                 builder.Append(this.optionsHelp.ToString());
+            }
+            if (this.postOptionsHelp.Length > 0)
+            {
+                builder.Append(Environment.NewLine);
+                builder.Append(this.postOptionsHelp.ToString());
             }
 
             return builder.ToString();

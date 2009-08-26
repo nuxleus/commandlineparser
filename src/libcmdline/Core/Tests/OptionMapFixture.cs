@@ -45,7 +45,7 @@ namespace CommandLine.Tests
 
             public OptionMapBuilder(int capacity)
             {
-                this.optionMap = new OptionMap(capacity, true);
+                this.optionMap = new OptionMap(capacity, new CommandLineParserSettings(true));
                 this.options = new List<OptionInfo>(capacity);
                 this.names = new List<string>(capacity);
             }
@@ -121,7 +121,7 @@ namespace CommandLine.Tests
         {
             if (map == null)
             {
-                map = new OptionMap(3, true);
+                map = new OptionMap(3, new CommandLineParserSettings(true));
             }
 
             OptionAttribute attribute1 = new OptionAttribute("p", "pretend");

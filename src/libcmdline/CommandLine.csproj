@@ -68,8 +68,6 @@
       <HintPath>..\..\lib\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attributes\BaseOptionAttribute.cs" />
@@ -148,7 +146,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Exceptions\IncompatibleTypesException.cs" />
-    <Compile Include="ParserSettings.cs" />
+    <Compile Include="CommandLineParserSettings.cs" />
+    <Compile Include="Tests\MutuallyExclusiveParsingFixture.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

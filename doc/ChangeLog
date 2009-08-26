@@ -1,8 +1,84 @@
+2009-08-22	Giacomo Stelluti Scala	<gsscoder@ymail.com>
+
+	* CommandLineParserFixture.cs (CommandLineParserFixture)
+		Modified. User Rasqualtwilight (see
+		[1] https://www.blogger.com/comment.g?blogID=1092962441290089148&postID=3958784299747727243)
+		correctly suggest that the parser should fail if nothing (or null string in case of
+		string option) is passed to a long option (#BUG0002).
+		Modified for #DGN0001 (see [3]).
+		The refactoring of ParserSettings type name (to CommandLineParserSettings)
+		has impacted some test(s).
+		
+	* LongOptionParser.cs (LongOptionParser)
+		Modified. (#BUG0002)
+		
+	* ArgumentParser.cs (ArgumentParser)
+		Modified. Added a guard clause like suggested by Rasqualtwilight in [1]; see IsInputValue(string) method.
+		The method IsInputValue(...) was also modified in order to accept '-' (single dash) as option
+		input parameter value; also this is stated in [1] and referenced as #REQ0001 (see
+		[2] http://stackoverflow.com/questions/367309/which-command-line-commands-style-do-you-prefer).
+		The dash '-' is used by some program to indicate STDIN (again, see [1] and [2]).
+
+	* ICommandLineParser.cs (ICommandLineParser)
+		Modified. Removed previously added overload ParseArguments(...) that accepts ParserSettings.
+		I think that this is a better design choiche (#DGN0001, see
+		[3] http://commandline.codeplex.com/Thread/View.aspx?ThreadId=64678).
+		This is done to decouple ParserSettings type from this interface and couple it with the
+		main parser implementation (CommandLineParser).
+		
+	* CommandLineParser.cs (CommandLineParser)
+		Modified. (#DGN0001)
+
+	* HelpText.cs (HelpText)
+		Modified. In order to fullfill the user pruiz request (#REQ0002; see
+		[3] http://commandline.codeplex.com/WorkItem/View.aspx?WorkItemId=8015).
+
+	* HelpTextFixture.cs (HelpTextFixture)
+		Modified. (#REQ0002)
+		
+	* CommandLineParserFixture.Mocks.cs (MockOptionsCaseSensitive)
+		Modified. In order to fullfill design choice #DGN0001:
+		moving the ParserSettings type from method to class constructor removes the
+		obligation to have an HelpOption attribute (HelpOptionAttribute.cs) defined.
+		
+	* ParserSettings.cs (ParserSettings)
+		Renamed to CommandLineParserSettings.cs: ParserSettings type renamed to
+		CommandLineParserSettings.
+		 |
+		\|/
+	* CommandLineParserSettings.cs (CommandLineParserSettings)	
+		Added standard copyright header.
+		Added MutuallyExclusive boolean property to switch on/off parsing rule for options with
+		MutuallyExclusiveSet defined. 
+		Added more constructors.
+		Modified for #REQ0003 (see [4]).
+		
+	* OptionAttribute.cs (OptionAttribute)
+		Modified. The OptionAttribute is modified in order to add a "mutually exclusive" feature requested
+		by ErikEJ (#REQ0003; see [4] http://commandline.codeplex.com/WorkItem/View.aspx?WorkItemId=7134).
+		Added public string property MutuallyExclusiveSet (string).
+
+	* MutuallyExclusiveParsingFixture.cs
+		Added. Unit tests for "mutually exclusive" feature (#REQ0003).
+
+	* OptionInfo.cs (OptionInfo)
+		Modified. (#REQ0003)
+		Added string property MutuallyExclusiveSet to handle the same property on OptionAttribute (see
+		OptionAttribute.cs).
+		
+	* OptionMap.cs (OptionMap)
+		Modified. Altered constructor.
+		Changes made to OptionMap::EnforceRules(...) to handle #REQ0003 (see [4]); this doesn't affect
+		public API, because OptionMap type is internal for library private use.
+		
+	* OptionMapFixture.cs (OptionMapFixture)
+		Modified. Some changes made for #REQ0003 (see [4]).
+
 2009-08-01	Giacomo Stelluti Scala	<gsscoder@ymail.com>
 
 	* CommandLineParserFixture.cs (CommandLineParserFixture)
 		Modified. Added test code to implement 'case sensitive on/off switch' following
-		user request (#REQ0000) posted in project hosting web site
+		user unruledboy request (#REQ0000) posted in project hosting web site
 		(http://commandline.codeplex.com/Thread/View.aspx?ThreadId=44806).
 	
 	* ParserSettings.cs (ParserSettings)
@@ -15,15 +91,15 @@
 	* CommandLineParser.cs (CommandLineParser)
 		Modified. Now implements the new method defined in ICommandLineParser. (#REQ0000)
 		
-	* ArgumentParser.cs
+	* ArgumentParser.cs (ArgumentParser)
+		Modified. (#REQ0000)
+	
+	* OptionMap.cs (OptionMap)
 		Modified. (#REQ0000)
 		
-	* OptionMap.cs
-		Modified. (#REQ0000)
+	* OptionMapFixture.cs (OptionMapFixture)
+		Modified. Internal type OptionMap has a new public constructor (see OptionMap.cs).	
 		
-	* OptionMapFixture.cs
-		Modified. Internal type OptionMap has a new public construcotr (OptionMap.cs).
-
 2009-01-21	Giacomo Stelluti Scala	<gsscoder@ymail.com>
 
 	* CommandLineParserFixture.cs (CommandLineParserFixture)

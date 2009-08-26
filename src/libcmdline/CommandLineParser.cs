@@ -40,7 +40,28 @@ namespace CommandLine
     public class CommandLineParser : ICommandLineParser
     {
         private object valueListLock = new object();
-        private ParserSettings settings = new ParserSettings();
+        private CommandLineParserSettings settings;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CommandLine.CommandLineParser"/> class.
+        /// </summary>
+        public CommandLineParser()
+        {
+            this.settings = new CommandLineParserSettings();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CommandLine.CommandLineParser"/> class,
+        /// configurable with a <see cref="CommandLine.CommandLineParserSettings"/> object.
+        /// </summary>
+        /// <param name="settings">The <see cref="CommandLine.CommandLineParserSettings"/> object is used to configure
+        /// aspects and behaviors of the parser.</param>
+        public CommandLineParser(CommandLineParserSettings settings)
+        {
+            Validator.CheckIsNull(settings, "settings");
+
+            this.settings = settings;
+        }
 
         /// <summary>
         /// Parses a <see cref="System.String"/> array of command line arguments,
@@ -96,35 +117,11 @@ namespace CommandLine
             }
             return true;
         }
-
-        /// <summary>
-        /// Parses a <see cref="System.String"/> array of command line arguments,
-        /// setting values read in <paramref name="options"/> parameter instance.
-        /// This overloads allows you to specify a <see cref="System.IO.TextWriter"/>
-        /// derived instance for write text messages.         
-        /// </summary>
-        /// <param name="args">A <see cref="System.String"/> array of command line arguments.</param>
-        /// <param name="options">An instance to receive values.
-        /// Parsing rules are defined using <see cref="CommandLine.BaseOptionAttribute"/> derived types.</param>
-        /// <param name="settings">The <see cref="CommandLine.ParserSettings"/> object is used to configure
-        /// aspects and behaviors of the parser.</param>
-        /// <returns>True if parsing process succeed.</returns>
-        /// <exception cref="System.ArgumentNullException">Thrown if <paramref name="args"/> is null.</exception>
-        /// <exception cref="System.ArgumentNullException">Thrown if <paramref name="options"/> is null.</exception>
-        /// <exception cref="System.ArgumentNullException">Thrown if <paramref name="settings"/> is null.</exception>
-        public virtual bool ParseArguments(string[] args, object options, ParserSettings settings)
-        {
-            Validator.CheckIsNull(settings, "settings");
-           
-            this.settings = settings;
-
-            return ParseArguments(args, options, settings.HelpWriter);
-        }
     
         private bool ParseArgumentList(string[] args, object options)
         {
             bool hadError = false;
-            IOptionMap optionMap = OptionInfo.CreateMap(options, settings.CaseSensitive);
+            IOptionMap optionMap = OptionInfo.CreateMap(options, settings); //IOptionMap optionMap = OptionInfo.CreateMap(options, settings.CaseSensitive);
             IList<string> valueList = ValueListAttribute.GetReference(options);
             ValueListAttribute vlAttr = ValueListAttribute.GetAttribute(options);
 

@@ -55,7 +55,7 @@
         <include name="Util/Tests/*.cs" if="${property::get-value('unit.tests')=='on'}"/>
         <include name="ICommandLineParser.cs"/>
         <include name="CommandLineParser.cs"/>
-        <include name="ParserSettings.cs"/>
+        <include name="CommandLineParserSettings.cs"/>
         <include name="Tests/*.cs" if="${property::get-value('unit.tests')=='on'}"/>
         <include name="Parser.cs"/>
       </sources>
