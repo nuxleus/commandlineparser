@@ -10,14 +10,14 @@
   <property name="lib.src" value="${path::combine(src.root, 'libcmdline')}"/>
   
   <target name="help">
-    <echo message="Command Line Library 1.5 NAnt Build File"/>
+    <echo message="Command Line Library 1.6 NAnt Build File"/>
     <echo message="-----------------------------------------"/>
     <echo message="allowed targets"/>
     <echo message=" help - displays this help"/>
     <echo message=" clean - cleans build output files"/>
     <echo message=" build - builds the library"/>
     <echo message=" tests - builds the library including unit tests classes"/>
-    <echo message="         namespaces: *.Tests(.*)"/>
+    <echo message="         (and related helper types) ns: *.Tests[.*]"/>
     <echo message=""/>
     <echo message="in case of problems please email to:"/>
     <echo message="gsscoder@ymail.com"/>
@@ -36,28 +36,25 @@
   
   <target name="build" depends="clean">
     <mkdir dir="${out.root}"/>
-    <csc target="library" output="${out.root}/${dll.name}.dll" doc="${out.root}/${dll.name}.XML" 
+    <csc target="library" output="${path::combine(out.root, dll.name)}.dll" doc="${path::combine(out.root, dll.name)}.XML"
          debug="${debug}" define="${define}" verbose="true">
       <references>
         <include name="System.dll"/>
         <include name="${path::combine(ref.root,'nunit.framework.dll')}" if="${property::get-value('unit.tests')=='on'}"/>
       </references>
       <sources basedir="${lib.src}">
-        <include name="Properties/*.cs"/>
-        <include name="Attributes/*.cs"/>
-        <include name="Attributes/Tests/*.cs" if="${property::get-value('unit.tests')=='on'}"/>
-        <include name="Core/*.cs"/>
-        <include name="Core/Tests/*.cs" if="${property::get-value('unit.tests')=='on'}"/>
-        <include name="Exceptions/*.cs"/>
-        <include name="Text/*.cs"/>
-        <include name="Text/Tests/*.cs" if="${property::get-value('unit.tests')=='on'}"/>
-        <include name="Util/*.cs"/>
-        <include name="Util/Tests/*.cs" if="${property::get-value('unit.tests')=='on'}"/>
-        <include name="ICommandLineParser.cs"/>
-        <include name="CommandLineParser.cs"/>
-        <include name="CommandLineParserSettings.cs"/>
-        <include name="Tests/*.cs" if="${property::get-value('unit.tests')=='on'}"/>
-        <include name="Parser.cs"/>
+        <include name="${path::combine('Properties', '*.cs')}"/>
+        <include name="${path::combine('Attributes', '*.cs')}"/>
+        <include name="${path::combine('Attributes', path::combine('Tests', '*.cs'))}'" if="${property::get-value('unit.tests')=='on'}"/>
+        <include name="${path::combine('Core', '*.cs')}"/>
+        <include name="${path::combine('Core', path::combine('Tests', '*.cs'))}" if="${property::get-value('unit.tests')=='on'}"/>
+        <include name="${path::combine('Exceptions', '*.cs')}"/>
+        <include name="${path::combine('Text', '*.cs')}"/>
+        <include name="${path::combine('Text', path::combine('Tests', '*.cs'))}" if="${property::get-value('unit.tests')=='on'}"/>
+        <include name="${path::combine('Utility', '*.cs')}"/>
+        <include name="${path::combine('Utility', path::combine('Tests', '*.cs'))}" if="${property::get-value('unit.tests')=='on'}"/>
+        <include name="${path::combine('Parser', '*.cs')}"/>
+        <include name="${path::combine('Parser', path::combine('Tests', '*.cs'))}" if="${property::get-value('unit.tests')=='on'}"/>
       </sources>
     </csc>
     <copy file="${path::combine(ref.root,'nunit.framework.dll')}" todir="${out.root}" overwrite="true"

@@ -1,6 +1,6 @@
-#region Copyright (C) 2005 - 2009 Giacomo Stelluti Scala
+﻿#region Copyright (C) 2005 - 2009 Giacomo Stelluti Scala
 //
-// Command Line Library: Parser.cs
+// Command Line Library: ICommandLineParser.cs
 //
 // Author:
 //   Giacomo Stelluti Scala (gsscoder@ymail.com)
@@ -28,52 +28,38 @@
 
 namespace CommandLine
 {
-    using System;
     using System.IO;
 
     /// <summary>
-    /// Provides static methods to parse command line arguments. This type has only backward
-    /// compatibility purpose, instead use <see cref="CommandLine.CommandLineParser"/>.
-    /// This class cannot be inherited.
+    /// Defines a basic interface to parse command line arguments.
     /// </summary>
-    [Obsolete("Parser is obsolete, instead use CommandLineParser.")]
-    public static class Parser
+    public interface ICommandLineParser
     {
-        private static ICommandLineParser parser = new CommandLineParser();
-
         /// <summary>
-        /// Parses a <see cref="System.String"/> array of command line arguments,
-        /// setting values read in <paramref name="options"/> parameter instance.
+        /// Parses a <see cref="System.String"/> array of command line arguments, setting values in <paramref name="options"/>
+        /// parameter instance's public fields decorated with appropriate attributes.
         /// </summary>
         /// <param name="args">A <see cref="System.String"/> array of command line arguments.</param>
-        /// <param name="options">An instance to receive values.
+        /// <param name="options">An object's instance used to receive values.
         /// Parsing rules are defined using <see cref="CommandLine.BaseOptionAttribute"/> derived types.</param>
         /// <returns>True if parsing process succeed.</returns>
         /// <exception cref="System.ArgumentNullException">Thrown if <paramref name="args"/> is null.</exception>
         /// <exception cref="System.ArgumentNullException">Thrown if <paramref name="options"/> is null.</exception>
-        public static bool ParseArguments(string[] args, object options)
-        {
-            return parser.ParseArguments(args, options);
-        }
+        bool ParseArguments(string[] args, object options);
 
         /// <summary>
-        /// Parses a <see cref="System.String"/> array of command line arguments,
-        /// setting values read in <paramref name="options"/> parameter instance.
-        /// This overloads allows you to specify a <see cref="System.IO.TextWriter"/>
-        /// derived instance for write text messages.         
+        /// Parses a <see cref="System.String"/> array of command line arguments, setting values in <paramref name="options"/>
+        /// parameter instance's public fields decorated with appropriate attributes.
+        /// This overload allows you to specify a <see cref="System.IO.TextWriter"/> derived instance for write text messages.         
         /// </summary>
         /// <param name="args">A <see cref="System.String"/> array of command line arguments.</param>
-        /// <param name="options">An instance to receive values.
+        /// <param name="options">An object's instance used to receive values.
         /// Parsing rules are defined using <see cref="CommandLine.BaseOptionAttribute"/> derived types.</param>
         /// <param name="helpWriter">Any instance derived from <see cref="System.IO.TextWriter"/>,
-        /// usually <see cref="System.Console.Out"/>.</param>
+        /// usually <see cref="System.Console.Error"/>. Setting this argument to null, will disable help screen.</param>
         /// <returns>True if parsing process succeed.</returns>
         /// <exception cref="System.ArgumentNullException">Thrown if <paramref name="args"/> is null.</exception>
         /// <exception cref="System.ArgumentNullException">Thrown if <paramref name="options"/> is null.</exception>
-        /// <exception cref="System.ArgumentNullException">Thrown if <paramref name="helpWriter"/> is null.</exception>
-        public static bool ParseArguments(string[] args, object options, TextWriter helpWriter)
-        {
-            return parser.ParseArguments(args, options, helpWriter);
-        } 
-   }
+        bool ParseArguments(string[] args, object options, TextWriter helpWriter);
+    }
 }

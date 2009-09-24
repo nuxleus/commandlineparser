@@ -48,5 +48,25 @@ namespace CommandLine
         {
             get { return this.right; }
         }
+
+        public override int GetHashCode()
+        {
+            int leftHash = (this.left == null ? 0 : this.left.GetHashCode());
+            int rightHash = (this.right == null ? 0 : this.right.GetHashCode());
+
+            return leftHash ^ rightHash;
+        }
+
+        public override bool Equals(object obj)
+        {
+            Pair<TLeft, TRight> other = obj as Pair<TLeft, TRight>;
+
+            if (other == null)
+            {
+                return false;
+            }
+
+            return Equals(left, other.left) && Equals(right, other.right);
+        }
     }
 }

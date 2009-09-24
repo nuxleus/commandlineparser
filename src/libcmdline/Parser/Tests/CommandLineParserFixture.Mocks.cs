@@ -46,6 +46,27 @@ namespace CommandLine.Tests
             public bool BoolOption = false;
         }
 
+        class MockNumericOptions : MockOptionsBase
+        {
+            [Option("b", "byte")]
+            public byte ByteOption = 0;
+
+            [Option("s", "short")]
+            public short ShortOption = 0;
+
+            [Option("i", "int")]
+            public int IntOption = 0;
+
+            [Option("l", "long")]
+            public long LongOption = 0;
+
+            [Option("f", "float")]
+            public float FloatOption = 0;
+
+            [Option("d", "double")]
+            public double DoubleOption = 0;
+        }
+
         class MockBoolPrevalentOptions : MockOptionsBase
         {
             [Option("a", "option-a")]
@@ -116,13 +137,6 @@ namespace CommandLine.Tests
 
             [Option("b", "beta-OPTION")]
             public string BetaOption = string.Empty;
-
-            //[HelpOption(
-            //        HelpText = "Dispaly this help screen.")]
-            //public string GetUsage()
-            //{
-            //    return "Needed when using ParserSettings object.";
-            //}
         }
 	}
 }

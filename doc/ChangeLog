@@ -1,3 +1,71 @@
+2009-09-16	Giacomo Stelluti Scala	<gsscoder@ymail.com>
+
+	* Parser.cs (Parser)
+		Removed. This type has been marked obsolete many release ago.
+	
+	* CommandLineParser.cs (CommandLineParser)
+		Modified. Private method ParseArgumentList renamed to DoParseArguments.
+		XML comments revised.
+		Now the behavior of both ParseArguments(...) methods is aligned with the introduction of
+		CommandLineParserSettings::HelpWriter. Setting this property to null (or passing null to
+		the overload of ParseArgurguments(...) that accepts helpWriter as argument) means that
+		in case of fail (or help request) you don't want to display any help screen.
+		
+	* Parser folder.
+		Added. Contains ICommandLineParser.cs, CommandLineParser.cs, CommandLineParserSettings.cs
+		
+	* Tests folder
+		Moved. {project-root}/Tests was moved inside of {project-root}/Parser.
+				
+	* ICommandLineParser.cs (ICommandLineParser)
+		Modified. XML comments revised.
+		
+	* NAnt Script (../nant/default.build)
+		Modified. Changed to reflect MS Visual C# 2008 EE project layout.
+		The function 'path::combine(...)' is now used in a more extensive way.
+		
+	* Properties/ThisAssembly.cs
+		Version defined '1.6 stable'.
+		
+	* PairT.cs
+		Changed. This type has ben replaced (and adapted) with the version shipped with
+		Common Utility Library (see [1] http://commonapi.codeplex.com/).
+		
+	* Util folder.
+		Renamed. Extended to 'Utility'.
+		
+	* CommandLineParserFixture.cs (CommandLineParserFixture)
+		Modified. Added more tests for #BUG0003 (fixed in a previous release).
+		Added more tests for #REQ0001 (implemented in a previous release).
+		
+	* CommandLineParserFixture.Mocks
+		Modified. Added type MockNumericOptions.
+		
+	* ArgumentParser.cs (ArgumentParser)
+		Modified. Now single dash '-' is allowed also as non-option value (you can capture it with ValueList[Attribute]).
+		
+	* LongOptionParser.cs (LongOptionParser)
+		Modified. Removed commented code.
+		
+	* OptionMap.cs (OptionMap)
+		Modified. Removed commented code.
+		
+	* SampleApp/ThisAssembly.cs (ThisAssembly)
+		Added. Contains assembly's constants.
+		
+	* SampleApp/Program.cs
+		Modified. It has been updated to be more readable.
+		
+	* CommandLineParserSettings.cs
+		Modified. Removed default setting of HelpWriter property (internal get accessor).
+		
+	* CommandLineParserSettingsFixture.cs
+		Added. Contains CommandLineParserSettings specific's tests.
+		
+	*  doc folder (../doc)
+		Modified. Added NUNIT-LICENCE, copied and renamed from {install-dir}/NUnit 2.4.8/license.txt.
+		(I forgot to do this form earliest version!)
+
 2009-08-22	Giacomo Stelluti Scala	<gsscoder@ymail.com>
 
 	* CommandLineParserFixture.cs (CommandLineParserFixture)

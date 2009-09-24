@@ -36,6 +36,10 @@ namespace CommandLine
 
         public static ArgumentParser Create(string argument)
         {
+            if (argument.Equals("-", StringComparison.InvariantCulture))
+            {
+                return null;
+            }
             if (argument[0] == '-' && argument[1] == '-')
             {
                 return new LongOptionParser();
@@ -51,22 +55,18 @@ namespace CommandLine
         {
             if (argument.Length > 0)
             {
-                //return argument[0] != '-';
-                return argument.Equals("-", StringComparison.InvariantCulture) ||
-                    argument[0] != '-';
+                return argument.Equals("-", StringComparison.InvariantCulture) || argument[0] != '-';
             }
             return true;
         }
 
         public static bool CompareShort(string argument, string option, bool caseSensitive)
         {
-            //return string.CompareOrdinal(argument, "-" + option) == 0;
             return string.Compare(argument, "-" + option, !caseSensitive) == 0;
         }
 
         public static bool CompareLong(string argument, string option, bool caseSensitive)
         {
-            //return string.CompareOrdinal(argument, "--" + option) == 0;
             return string.Compare(argument, "--" + option, !caseSensitive) == 0;
         }
     }

@@ -34,9 +34,9 @@ namespace SampleApp
     using CommandLine;
     using CommandLine.Text;
 
-    internal sealed class Program
+    sealed class Program
     {
-        private static readonly HeadingInfo headingInfo = new HeadingInfo("sampleapp", "1.2.9");
+        private static readonly HeadingInfo headingInfo = new HeadingInfo("sampleapp", "1.6");
 
         private enum OptimizeFor
         {
@@ -106,47 +106,44 @@ namespace SampleApp
         private static void Main(string[] args)
         {
             Options options = new Options();
-            ICommandLineParser parser = new CommandLineParser();
-            if (parser.ParseArguments(args, options, Console.Error))
-            {
-                Console.WriteLine("Verbose Level: {0}", (options.VerboseLevel < 0 || options.VerboseLevel > 2) ? "#invalid value#" : options.VerboseLevel.ToString());
-                Console.WriteLine();
-                Console.WriteLine("Reading input file: {0} ...", options.InputFile);
-                foreach (string defFile in options.DefinitionFiles)
-                {
-                    Console.WriteLine("  using definition file: {0}", defFile);
-                }
-                Console.WriteLine("  start offset: {0}", options.StartOffset);
-                Console.WriteLine("  tabular data computation: {0}", options.Calculate.ToString().ToLowerInvariant());
-                Console.WriteLine("  on errors: {0}", options.IgnoreErrors ? "continue" : "stop processing");
-                Console.WriteLine("  optimize for: {0}", options.Optimization);
-                if (options.AllowedOperators != null)
-                {
-                    StringBuilder builder = new StringBuilder();
-                    builder.Append("  allowed operators: ");
-                    foreach (string op in options.AllowedOperators)
-                    {
-                        builder.Append(op);
-                        builder.Append(", ");
-                    }
-                    Console.WriteLine(builder.Remove(builder.Length - 2, 2).ToString());
-                }
-                Console.WriteLine();
-                if (options.OutputFile.Length > 0)
-                {
-                    headingInfo.WriteMessage(string.Format("Writing elaborated data: {0} ...", options.OutputFile));
-                }
-                else
-                {
-                    headingInfo.WriteMessage("Elaborated data:");
-                    Console.WriteLine("[...]");
-                }
-                Environment.Exit(0);
-            }
-            else
+            ICommandLineParser parser = new CommandLineParser(new CommandLineParserSettings(Console.Error));
+            if (!parser.ParseArguments(args, options))
             {
                 Environment.Exit(1);
             }
+            Console.WriteLine("Verbose Level: {0}", (options.VerboseLevel < 0 || options.VerboseLevel > 2) ? "#invalid value#" : options.VerboseLevel.ToString());
+            Console.WriteLine();
+            Console.WriteLine("Reading input file: {0} ...", options.InputFile);
+            foreach (string defFile in options.DefinitionFiles)
+            {
+                Console.WriteLine("  using definition file: {0}", defFile);
+            }
+            Console.WriteLine("  start offset: {0}", options.StartOffset);
+            Console.WriteLine("  tabular data computation: {0}", options.Calculate.ToString().ToLowerInvariant());
+            Console.WriteLine("  on errors: {0}", options.IgnoreErrors ? "continue" : "stop processing");
+            Console.WriteLine("  optimize for: {0}", options.Optimization);
+            if (options.AllowedOperators != null)
+            {
+                StringBuilder builder = new StringBuilder();
+                builder.Append("  allowed operators: ");
+                foreach (string op in options.AllowedOperators)
+                {
+                    builder.Append(op);
+                    builder.Append(", ");
+                }
+                Console.WriteLine(builder.Remove(builder.Length - 2, 2).ToString());
+            }
+            Console.WriteLine();
+            if (options.OutputFile.Length > 0)
+            {
+                headingInfo.WriteMessage(string.Format("Writing elaborated data: {0} ...", options.OutputFile));
+            }
+            else
+            {
+                headingInfo.WriteMessage("Elaborated data:");
+                Console.WriteLine("[...]");
+            }
+            Environment.Exit(0);
         }
     }
 }

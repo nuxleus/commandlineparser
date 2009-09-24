@@ -28,7 +28,6 @@
 
 namespace CommandLine
 {
-    using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Reflection;
@@ -64,64 +63,59 @@ namespace CommandLine
         }
 
         /// <summary>
-        /// Parses a <see cref="System.String"/> array of command line arguments,
-        /// setting values read in <paramref name="options"/> parameter instance.
+        /// Parses a <see cref="System.String"/> array of command line arguments, setting values in <paramref name="options"/>
+        /// parameter instance's public fields decorated with appropriate attributes.
         /// </summary>
         /// <param name="args">A <see cref="System.String"/> array of command line arguments.</param>
-        /// <param name="options">An instance to receive values.
+        /// <param name="options">An object's instance used to receive values.
         /// Parsing rules are defined using <see cref="CommandLine.BaseOptionAttribute"/> derived types.</param>
         /// <returns>True if parsing process succeed.</returns>
         /// <exception cref="System.ArgumentNullException">Thrown if <paramref name="args"/> is null.</exception>
         /// <exception cref="System.ArgumentNullException">Thrown if <paramref name="options"/> is null.</exception>
         public virtual bool ParseArguments(string[] args, object options)
         {
-            Validator.CheckIsNull(args, "args");
-            Validator.CheckIsNull(options, "options");
-
-            return ParseArgumentList(args, options);
+            return ParseArguments(args, options, settings.HelpWriter);
         }
 
         /// <summary>
-        /// Parses a <see cref="System.String"/> array of command line arguments,
-        /// setting values read in <paramref name="options"/> parameter instance.
-        /// This overloads allows you to specify a <see cref="System.IO.TextWriter"/>
-        /// derived instance for write text messages.         
+        /// Parses a <see cref="System.String"/> array of command line arguments, setting values in <paramref name="options"/>
+        /// parameter instance's public fields decorated with appropriate attributes.
+        /// This overload allows you to specify a <see cref="System.IO.TextWriter"/> derived instance for write text messages.         
         /// </summary>
         /// <param name="args">A <see cref="System.String"/> array of command line arguments.</param>
-        /// <param name="options">An instance to receive values.
+        /// <param name="options">An object's instance used to receive values.
         /// Parsing rules are defined using <see cref="CommandLine.BaseOptionAttribute"/> derived types.</param>
         /// <param name="helpWriter">Any instance derived from <see cref="System.IO.TextWriter"/>,
-        /// usually <see cref="System.Console.Out"/>.</param>
+        /// usually <see cref="System.Console.Error"/>. Setting this argument to null, will disable help screen.</param>
         /// <returns>True if parsing process succeed.</returns>
         /// <exception cref="System.ArgumentNullException">Thrown if <paramref name="args"/> is null.</exception>
         /// <exception cref="System.ArgumentNullException">Thrown if <paramref name="options"/> is null.</exception>
-        /// <exception cref="System.ArgumentNullException">Thrown if <paramref name="helpWriter"/> is null.</exception>
         public virtual bool ParseArguments(string[] args, object options, TextWriter helpWriter)
         {
             Validator.CheckIsNull(args, "args");
             Validator.CheckIsNull(options, "options");
-            Validator.CheckIsNull(helpWriter, "helpWriter");
 
             Pair<MethodInfo, HelpOptionAttribute> pair =
                                 ReflectionUtil.RetrieveMethod<HelpOptionAttribute>(options);
-            if (pair == null)
+            if (pair != null && helpWriter != null)
             {
-                throw new InvalidOperationException();
+                if (ParseHelp(args, pair.Right) || !DoParseArguments(args, options))
+                {
+                    string helpText;
+                    HelpOptionAttribute.InvokeMethod(options, pair, out helpText);
+                    helpWriter.Write(helpText);
+                    return false;
+                }
+                return true;
             }
-            if (ParseHelp(args, pair.Right) || !ParseArgumentList(args, options))
-            {
-                string helpText;
-                HelpOptionAttribute.InvokeMethod(options, pair, out helpText);
-                helpWriter.Write(helpText);
-                return false;
-            }
-            return true;
+
+            return DoParseArguments(args, options);
         }
-    
-        private bool ParseArgumentList(string[] args, object options)
+
+        private bool DoParseArguments(string[] args, object options)
         {
             bool hadError = false;
-            IOptionMap optionMap = OptionInfo.CreateMap(options, settings); //IOptionMap optionMap = OptionInfo.CreateMap(options, settings.CaseSensitive);
+            IOptionMap optionMap = OptionInfo.CreateMap(options, settings);
             IList<string> valueList = ValueListAttribute.GetReference(options);
             ValueListAttribute vlAttr = ValueListAttribute.GetAttribute(options);
 

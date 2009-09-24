@@ -52,13 +52,13 @@ namespace CommandLine.Tests
             parser.ParseArguments(new string[] { }, null);
         }
 
-        [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void WillThrowExceptionIfTextWriterIsNull()
-        {
-            TextWriter helpWriter = null; // needed for let the compiler choose the correct overload
-            parser.ParseArguments(new string[] { }, new MockOptions(), helpWriter);
-        }
+        //[Test]
+        //[ExpectedException(typeof(ArgumentNullException))]
+        //public void WillThrowExceptionIfTextWriterIsNull()
+        //{
+        //    TextWriter helpWriter = null; // needed for let the compiler choose the correct overload
+        //    parser.ParseArguments(new string[] { }, new MockOptions(), helpWriter);
+        //}
 
         [Test]
         public void ParseStringOption()
@@ -206,16 +206,6 @@ namespace CommandLine.Tests
             Console.WriteLine(options);
         }
 
-        ///// <summary>
-        ///// Ref.: #BUG0001
-        ///// </summary>
-        //[Test]
-        //[ExpectedException(typeof(MissingMethodException))]
-        //public void CanNotCreateParserInstance()
-        //{
-        //    Activator.CreateInstance(typeof(Parser));
-        //}
-
         [Test]
         public void ParseEnumOptions()
         {
@@ -280,21 +270,66 @@ namespace CommandLine.Tests
         }
         #endregion
 
-
-        /// <summary>
-        /// Ref.: #BUG0003
-        /// </summary>
+ 
+        #region #BUG0003
         [Test]
-        public void ParsingShouldFailIfNoValueIsPassedToALongOption()
+        public void PassingNoValueToAStringTypeLongOptionFails()
         {
             MockOptions options = new MockOptions();
             bool success = parser.ParseArguments(new string[] { "--string" }, options);
             Assert.IsFalse(success);
         }
 
-        /// <summary>
-        /// Ref.: #REQ0001
-        /// </summary>
+        [Test]
+        public void PassingNoValueToAByteTypeLongOptionFails()
+        {
+            MockNumericOptions options = new MockNumericOptions();
+            bool success = parser.ParseArguments(new string[] { "--byte" }, options);
+            Assert.IsFalse(success);
+        }
+
+        [Test]
+        public void PassingNoValueToAShortTypeLongOptionFails()
+        {
+            MockNumericOptions options = new MockNumericOptions();
+            bool success = parser.ParseArguments(new string[] { "--short" }, options);
+            Assert.IsFalse(success);
+        }
+
+        [Test]
+        public void PassingNoValueToAIntegerTypeLongOptionFails()
+        {
+            MockNumericOptions options = new MockNumericOptions();
+            bool success = parser.ParseArguments(new string[] { "--int" }, options);
+            Assert.IsFalse(success);
+        }
+
+        [Test]
+        public void PassingNoValueToALongTypeLongOptionFails()
+        {
+            MockNumericOptions options = new MockNumericOptions();
+            bool success = parser.ParseArguments(new string[] { "--long" }, options);
+            Assert.IsFalse(success);
+        }
+
+        [Test]
+        public void PassingNoValueToAFloatTypeLongOptionFails()
+        {
+            MockNumericOptions options = new MockNumericOptions();
+            bool success = parser.ParseArguments(new string[] { "--float" }, options);
+            Assert.IsFalse(success);
+        }
+
+        [Test]
+        public void PassingNoValueToADoubleTypeLongOptionFails()
+        {
+            MockNumericOptions options = new MockNumericOptions();
+            bool success = parser.ParseArguments(new string[] { "--double" }, options);
+            Assert.IsFalse(success);
+        }
+        #endregion
+
+        #region #REQ0001
         [Test]
         public void AllowSingleDashAsOptionInputValue()
         {
@@ -303,6 +338,19 @@ namespace CommandLine.Tests
             Assert.IsTrue(success);
             Assert.AreEqual("-", options.StringOption);
         }
+
+        [Test]
+        public void AllowSingleDashAsNonOptionValue()
+        {
+            MockOptionsWithValueList options = new MockOptionsWithValueList();
+            bool success = parser.ParseArguments(new string[] { "-oparser.xml", "-", "-w" }, options);
+            Assert.IsTrue(success);
+            Assert.AreEqual("parser.xml", options.OutputFile);
+            Assert.AreEqual(true, options.Overwrite);
+            Assert.AreEqual(1, options.InputFilenames.Count);
+            Assert.AreEqual("-", options.InputFilenames[0]);
+        }
+        #endregion
     }
 }
 #endif

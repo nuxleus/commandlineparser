@@ -68,6 +68,8 @@
       <HintPath>..\..\lib\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attributes\BaseOptionAttribute.cs" />
@@ -77,13 +79,13 @@
     <Compile Include="Attributes\OptionListAttribute.cs" />
     <Compile Include="Attributes\Tests\HelpOptionAttributeFixture.cs" />
     <Compile Include="Attributes\Tests\ValueListAttributeFixture.cs" />
-    <Compile Include="CommandLineParser.cs" />
+    <Compile Include="Parser\CommandLineParser.cs" />
     <Compile Include="Core\IOptionMap.cs" />
     <Compile Include="Core\Tests\EnumeratorsFixture.cs" />
     <Compile Include="Core\Tests\OptionMapFixture.cs" />
-    <Compile Include="ICommandLineParser.cs" />
+    <Compile Include="Parser\ICommandLineParser.cs" />
     <Compile Include="Properties\ThisAssembly.cs" />
-    <Compile Include="Tests\CommandLineParserFixture.cs" />
+    <Compile Include="Parser\Tests\CommandLineParserFixture.cs" />
     <Compile Include="Text\CopyrightInfo.cs" />
     <Compile Include="Core\OptionMap.cs" />
     <Compile Include="Core\ArgumentParser.cs">
@@ -94,17 +96,14 @@
     <Compile Include="Core\OptionGroupParser.cs" />
     <Compile Include="Core\OptionInfo.cs" />
     <Compile Include="Core\PairT.cs" />
-    <Compile Include="Parser.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Core\ParserState.cs" />
     <Compile Include="Text\HeadingInfo.cs" />
     <Compile Include="Text\Tests\CopyrightInfoFixture.cs" />
     <Compile Include="Text\HelpText.cs" />
     <Compile Include="Text\Tests\HeadingInfoFixture.cs" />
-    <Compile Include="Util\Tests\ReflectionUtilFixture.cs" />
-    <Compile Include="Util\Validator.cs" />
-    <Compile Include="Util\ReflectionUtil.cs" />
+    <Compile Include="Utility\Tests\ReflectionUtilFixture.cs" />
+    <Compile Include="Utility\Validator.cs" />
+    <Compile Include="Utility\ReflectionUtil.cs" />
     <Compile Include="Core\StringEnumeratorEx.cs" />
     <Compile Include="Attributes\OptionAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -139,15 +138,16 @@
     <Compile Include="Exceptions\ParserException.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Tests\CommandLineParserFixture.Mocks.cs" />
-    <Compile Include="Tests\MockOptionsBase.cs" />
-    <Compile Include="Tests\MockUtil.cs" />
+    <Compile Include="Parser\Tests\CommandLineParserFixture.Mocks.cs" />
+    <Compile Include="Parser\Tests\MockOptionsBase.cs" />
+    <Compile Include="Parser\Tests\MockUtil.cs" />
     <Compile Include="Text\Tests\HelpTextFixture.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Exceptions\IncompatibleTypesException.cs" />
-    <Compile Include="CommandLineParserSettings.cs" />
-    <Compile Include="Tests\MutuallyExclusiveParsingFixture.cs" />
+    <Compile Include="Parser\CommandLineParserSettings.cs" />
+    <Compile Include="Parser\Tests\CommandLineParserSettingsFixture.cs" />
+    <Compile Include="Parser\Tests\MutuallyExclusiveParsingFixture.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

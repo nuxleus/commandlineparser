@@ -26,7 +26,7 @@ mon for executing your .NET app; in this is true replace 'mono SampleApp.exe' wi
 './SampleApp.exe'; remember that *nix systems are case-sensitive)
 
 Note(s):
-1.: In *nix systems and in MS PowerShell (win32) ';' and math operators ('+', '-', ...)
+1.: In Linux/*nix systems and in MS PowerShell (win32) ';' and math operators ('+', '-', ...)
 can have special meanings. I known I made a problematic choice for demonstrate
 the use of OptionList attribute... But in this way you can be aware of command line
 pitfalls! As you can see the problem is resolved embracing both 'option name' and 'option

@@ -28,14 +28,13 @@
 
 using System;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyTitle("SampleApp.exe")]
-[assembly: AssemblyProduct("Command Line Library")]
+[assembly: AssemblyTitle(ThisAssembly.Title)]
+[assembly: AssemblyProduct("Command Line Parsing Library")]
 [assembly: AssemblyDescription("Sample Application for Command Line Library")]
-[assembly: AssemblyCopyright("Copyright (C) 2005 - 2009 Giacomo Stelluti Scala")]
-[assembly: AssemblyVersion("1.5.0.0")]
+[assembly: AssemblyCopyright(ThisAssembly.Version)]
+[assembly: AssemblyVersion(ThisAssembly.Version)]
 [assembly: AssemblyCulture("")]
 #if DEBUG
 [assembly: AssemblyConfiguration("Debug")]

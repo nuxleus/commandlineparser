@@ -1,11 +1,5 @@
 Command Line Parser Library
-Version 1.5.96.199 (Beta 2)
-
->>Notes for this release:
->>This release was re-marked beta for some internal refactoring. This changes
->>will allow an open internal/external design for extending parser behaviors.
->>It is also not guaranteed that next version will keep changes introduced
->>here with the same design.
+Version 1.6 (Stable)
 
 General Info:
 This library allows command line arguments parsing.

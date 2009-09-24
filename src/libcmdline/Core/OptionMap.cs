@@ -38,7 +38,7 @@ namespace CommandLine
         private Dictionary<string, OptionInfo> map;
         private Dictionary<string, int> mutuallyExclusiveSetMap;
 
-        public OptionMap(int capacity, CommandLineParserSettings settings) //public OptionMap(int capacity, bool caseSensitive)
+        public OptionMap(int capacity, CommandLineParserSettings settings)
         {
             this.settings = settings;
             IEqualityComparer<string> comparer;
@@ -90,14 +90,6 @@ namespace CommandLine
 
         public bool EnforceRules()
         {
-            //foreach (OptionInfo option in this.map.Values)
-            //{
-            //    if (option.Required && !option.IsDefined)
-            //    {
-            //        return false;
-            //    }
-            //}
-            //return true;
             return EnforceMutuallyExclusiveMap() && EnforceRequiredRule();
         }
 

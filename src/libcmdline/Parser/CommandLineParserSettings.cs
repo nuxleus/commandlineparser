@@ -28,7 +28,6 @@
 
 namespace CommandLine
 {
-    using System;
     using System.IO;
 
     /// <summary>
@@ -62,7 +61,7 @@ namespace CommandLine
         /// setting the <see cref="System.IO.TextWriter"/> used for help method output.
         /// </summary>
         /// <param name="helpWriter">Any instance derived from <see cref="System.IO.TextWriter"/>,
-        /// default <see cref="System.Console.Error"/>.</param>
+        /// default <see cref="System.Console.Error"/>. Setting this argument to null, will disable help screen.</param>
         public CommandLineParserSettings(TextWriter helpWriter)
         {
             this.helpWriter = helpWriter;
@@ -74,7 +73,7 @@ namespace CommandLine
         /// </summary>
         /// <param name="caseSensitive">If set to true, parsing will be case sensitive.</param>
         /// <param name="helpWriter">Any instance derived from <see cref="System.IO.TextWriter"/>,
-        /// default <see cref="System.Console.Error"/>.</param>
+        /// default <see cref="System.Console.Error"/>. Setting this argument to null, will disable help screen.</param>
         public CommandLineParserSettings(bool caseSensitive, TextWriter helpWriter)
         {
             this.caseSensitive = caseSensitive;
@@ -100,7 +99,7 @@ namespace CommandLine
         /// <param name="caseSensitive">If set to true, parsing will be case sensitive.</param>
         /// <param name="mutuallyExclusive">If set to true, enable mutually exclusive behavior.</param>
         /// <param name="helpWriter">Any instance derived from <see cref="System.IO.TextWriter"/>,
-        /// default <see cref="System.Console.Error"/>.</param>
+        /// default <see cref="System.Console.Error"/>. Setting this argument to null, will disable help screen.</param>
         public CommandLineParserSettings(bool caseSensitive, bool mutuallyExclusive, TextWriter helpWriter)
         {
             this.caseSensitive = caseSensitive;
@@ -130,17 +129,11 @@ namespace CommandLine
 
         /// <summary>
         /// Gets or sets the <see cref="System.IO.TextWriter"/> used for help method output.
+        /// Setting this property to null, will disable help screen.
         /// </summary>
         public TextWriter HelpWriter
         {
-            internal get
-            {
-                if (this.helpWriter == null)
-                {
-                    this.helpWriter = Console.Error;
-                }
-                return this.helpWriter;
-            }
+            internal get { return this.helpWriter; }
             set { this.helpWriter = value; }
         }
     }
