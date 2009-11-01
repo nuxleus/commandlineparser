@@ -1,4 +1,4 @@
-#region Copyright (C) 2005 - 2009 Giacomo Stelluti Scala
+#region License
 //
 // Command Line Library: ReflectionUtilFixture.cs
 //
@@ -24,16 +24,18 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+//
+#endregion
+#region Using Directives
+using System;
+using System.Collections.Generic;
+using System.Reflection;
+using NUnit.Framework;
 #endregion
 
 #if UNIT_TESTS
 namespace CommandLine.Tests
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Reflection;
-    using NUnit.Framework;
-
     [TestFixture]
     public class ReflectionUtilFixture
     {
@@ -81,25 +83,24 @@ namespace CommandLine.Tests
         }
         #endregion
 
-        private static object target;
+        private static object _target;
 
         [SetUp]
         public void CreateInstance()
         {
-            target = new MockObject();
+            _target = new MockObject();
         }
 
         [TearDown]
         public void ShutdownInstance()
         {
-            target = null;
+            _target = null;
         }
 
         [Test]
         public void GetFieldsByAttribute()
         {
-            IList<Pair<FieldInfo, MockAttribute>> list =
-                                ReflectionUtil.RetrieveFieldList<MockAttribute>(target);
+            var list = ReflectionUtil.RetrieveFieldList<MockAttribute>(_target);
 
             Assert.AreEqual(2, list.Count);
             Assert.AreEqual("StringField", list[0].Left.Name);
@@ -107,8 +108,7 @@ namespace CommandLine.Tests
 
             PrintFieldList<MockAttribute>(list);
 
-            IList<Pair<FieldInfo, AnotherMockAttribute>> anotherList =
-                                ReflectionUtil.RetrieveFieldList<AnotherMockAttribute>(target);
+            var anotherList = ReflectionUtil.RetrieveFieldList<AnotherMockAttribute>(_target);
 
             Assert.AreEqual(1, anotherList.Count);
             Assert.AreEqual("IntField", anotherList[0].Left.Name);
@@ -119,7 +119,7 @@ namespace CommandLine.Tests
         [Test]
         public void GetMethodByAttribute()
         {
-            Pair<MethodInfo, MockAttribute> pair = ReflectionUtil.RetrieveMethod<MockAttribute>(target);
+            var pair = ReflectionUtil.RetrieveMethod<MockAttribute>(_target);
 
             Assert.IsNotNull(pair);
             Assert.AreEqual("DoNothing", pair.Left.Name);
@@ -128,8 +128,7 @@ namespace CommandLine.Tests
         [Test]
         public void GetFieldsAttributeList()
         {
-            IList<MockWithValueAttribute> list =
-                                ReflectionUtil.RetrieveFieldAttributeList<MockWithValueAttribute>(new AnotherMockObject());
+            var list = ReflectionUtil.RetrieveFieldAttributeList<MockWithValueAttribute>(new AnotherMockObject());
 
             Assert.IsNotNull(list);
             Assert.AreEqual(3, list.Count);

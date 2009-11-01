@@ -1,4 +1,4 @@
-﻿#region Copyright (C) 2005 - 2009 Giacomo Stelluti Scala
+﻿#region License
 //
 // Command Line Library: CommandLineParserSettingsFixture.cs
 //
@@ -24,14 +24,16 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+//
+#endregion
+#region Using Directives
+using System.IO;
+using NUnit.Framework;
 #endregion
 
 #if UNIT_TESTS
 namespace CommandLine.Tests
 {
-    using System.IO;
-    using NUnit.Framework;
-
     [TestFixture]
     public sealed class CommandLineParserSettingsFixture
     {
@@ -55,10 +57,12 @@ namespace CommandLine.Tests
         [Test]
         public void SettingHelpWriterUsingConstructor()
         {
-            StringWriter writer = new StringWriter();
+            var writer = new StringWriter();
             ICommandLineParser parser = new CommandLineParser(new CommandLineParserSettings(writer));
-            MockOptions options = new MockOptions();
+            var options = new MockOptions();
+            
             bool success = parser.ParseArguments(new string[] {"--help"}, options);
+
             Assert.AreEqual(false, success);
             Assert.AreEqual("MockOptions::GetUsage()", writer.ToString()); 
         }
@@ -66,12 +70,14 @@ namespace CommandLine.Tests
         [Test]
         public void SettingHelpWriterUsingProperty()
         {
-            StringWriter writer = new StringWriter();
-            CommandLineParserSettings settings = new CommandLineParserSettings();
+            var writer = new StringWriter();
+            var settings = new CommandLineParserSettings();
             settings.HelpWriter = writer;
             ICommandLineParser parser = new CommandLineParser(settings);
-            MockOptions options = new MockOptions();
+            var options = new MockOptions();
+
             bool success = parser.ParseArguments(new string[] { "--help" }, options);
+
             Assert.AreEqual(false, success);
             Assert.AreEqual("MockOptions::GetUsage()", writer.ToString());
         }
@@ -79,10 +85,12 @@ namespace CommandLine.Tests
         [Test]
         public void SettingHelpWriterUsingArgument()
         {
-            StringWriter writer = new StringWriter();
+            var writer = new StringWriter();
             ICommandLineParser parser = new CommandLineParser(new CommandLineParserSettings());
-            MockOptions options = new MockOptions();
+            var options = new MockOptions();
+
             bool success = parser.ParseArguments(new string[] { "--help" }, options, writer);
+
             Assert.AreEqual(false, success);
             Assert.AreEqual("MockOptions::GetUsage()", writer.ToString());
         }

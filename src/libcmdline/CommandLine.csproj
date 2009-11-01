@@ -135,19 +135,20 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Exceptions\ParserException.cs">
+    <Compile Include="Parser\ParserException.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Parser\Tests\CommandLineParserFixture.Mocks.cs" />
-    <Compile Include="Parser\Tests\MockOptionsBase.cs" />
-    <Compile Include="Parser\Tests\MockUtil.cs" />
+    <Compile Include="Tests\MockOptionsBase.cs" />
+    <Compile Include="Tests\MockUtil.cs" />
     <Compile Include="Text\Tests\HelpTextFixture.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Exceptions\IncompatibleTypesException.cs" />
     <Compile Include="Parser\CommandLineParserSettings.cs" />
     <Compile Include="Parser\Tests\CommandLineParserSettingsFixture.cs" />
+    <Compile Include="Parser\Tests\ValueListAttributeParsingFixture.cs" />
     <Compile Include="Parser\Tests\MutuallyExclusiveParsingFixture.cs" />
+    <Compile Include="Tests\CommandLineParserBaseFixture.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,6 +1,6 @@
-#region Copyright (C) 2005 - 2009 Giacomo Stelluti Scala
+#region License
 //
-// Command Line Library: IncompatibleTypesException.cs
+// Command Line Library: CommandLineParserBaseFixture.cs
 //
 // Author:
 //   Giacomo Stelluti Scala (gsscoder@ymail.com)
@@ -24,37 +24,36 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+//
+#endregion
+#region Using Directives
+using System;
+using System.IO;
+using NUnit.Framework;
 #endregion
 
-namespace CommandLine
+#if UNIT_TESTS
+namespace CommandLine.Tests
 {
-    using System;
-    using System.Runtime.Serialization;
-
-    /// <summary>
-    /// This exception is thrown when a generic parsing error occurs.
-    /// </summary>
-    [Serializable]
-    public sealed class ParserException : Exception, ISerializable
+    public abstract class CommandLineParserBaseFixture
     {
-        internal ParserException()
-            : base()
+        private ICommandLineParser _parser = null;
+
+        protected virtual ICommandLineParser CreateCommandLineParser()
         {
+            return new CommandLineParser();
         }
 
-        internal ParserException(string message)
-            : base(message)
+        protected ICommandLineParser Parser
         {
-        }
+            get
+            {
+                if (_parser == null)
+                    _parser = CreateCommandLineParser();
 
-        internal ParserException(string message, Exception innerException)
-            : base(message, innerException)
-        {
-        }
-
-        internal ParserException(SerializationInfo info, StreamingContext context)
-            : base(info, context)
-        {
+                return _parser;
+            }
         }
     }
 }
+#endif

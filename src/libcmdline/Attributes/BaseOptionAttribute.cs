@@ -1,4 +1,4 @@
-#region Copyright (C) 2005 - 2009 Giacomo Stelluti Scala
+#region License
 //
 // Command Line Library: BaseOptionAttribute.cs
 //
@@ -24,29 +24,31 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+//
+#endregion
+#region Using Directives
+using System;
 #endregion
 
 namespace CommandLine
 {
-    using System;
-
     /// <summary>
     /// Provides base properties for creating an attribute, used to define rules for command line parsing.
     /// </summary>
     public abstract class BaseOptionAttribute : Attribute
     {
-        private string shortName;
-        private string longName;
-        private bool required;
-        private string helpText;
+        private string _shortName;
+        private string _longName;
+        private bool _required;
+        private string _helpText;
 
         /// <summary>
         /// Short name of this command line option. This name is usually a single character.
         /// </summary>
         public string ShortName
         {
-            get { return this.shortName; }
-            internal set { this.shortName = value; }
+            get { return _shortName; }
+            internal set { _shortName = value; }
         }
 
         /// <summary>
@@ -54,8 +56,8 @@ namespace CommandLine
         /// </summary>
         public string LongName
         {
-            get { return this.longName; }
-            internal set { this.longName = value; }
+            get { return _longName; }
+            internal set { _longName = value; }
         }
 
         /// <summary>
@@ -63,18 +65,18 @@ namespace CommandLine
         /// </summary>
         public virtual bool Required
         {
-            get { return this.required; }
-            set { this.required = value; }
+            get { return _required; }
+            set { _required = value; }
         }
 
         internal bool HasShortName
         {
-            get { return !string.IsNullOrEmpty(this.shortName); }
+            get { return !string.IsNullOrEmpty(_shortName); }
         }
 
         internal bool HasLongName
         {
-            get { return !string.IsNullOrEmpty(this.longName); }
+            get { return !string.IsNullOrEmpty(_longName); }
         }
 
         /// <summary>
@@ -82,8 +84,8 @@ namespace CommandLine
         /// </summary>
         public string HelpText
         {
-            get { return this.helpText; }
-            set { this.helpText = value; }
+            get { return _helpText; }
+            set { _helpText = value; }
         }
     }
 }

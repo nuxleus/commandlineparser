@@ -1,4 +1,4 @@
-#region Copyright (C) 2005 - 2009 Giacomo Stelluti Scala
+#region License
 //
 // Command Line Library: ArgumentParser.cs
 //
@@ -24,12 +24,14 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+//
+#endregion
+#region Using Directives
+using System;
 #endregion
 
 namespace CommandLine
 {
-    using System;
-
     internal abstract class ArgumentParser
     {
         public abstract ParserState Parse(IStringEnumerator argumentEnumerator, IOptionMap map, object options);
@@ -37,26 +39,22 @@ namespace CommandLine
         public static ArgumentParser Create(string argument)
         {
             if (argument.Equals("-", StringComparison.InvariantCulture))
-            {
                 return null;
-            }
+
             if (argument[0] == '-' && argument[1] == '-')
-            {
                 return new LongOptionParser();
-            }
+
             if (argument[0] == '-')
-            {
                 return new OptionGroupParser();
-            }
+
             return null;
         }
 
         public static bool IsInputValue(string argument)
         {
             if (argument.Length > 0)
-            {
                 return argument.Equals("-", StringComparison.InvariantCulture) || argument[0] != '-';
-            }
+
             return true;
         }
 

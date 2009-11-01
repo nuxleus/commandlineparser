@@ -1,4 +1,4 @@
-#region Copyright (C) 2005 - 2009 Giacomo Stelluti Scala
+#region License
 //
 // Command Line Library: OptionListAttribute.cs
 //
@@ -24,12 +24,14 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+//
+#endregion
+#region Using Directives
+using System;
 #endregion
 
 namespace CommandLine
 {
-    using System;
-
     /// <summary>
     /// Models an option that can accept multiple values.
     /// Must be applied to a field compatible with an <see cref="System.Collections.Generic.IList&lt;T&gt;"/> interface
@@ -40,7 +42,7 @@ namespace CommandLine
             Inherited=true)]
     public sealed class OptionListAttribute : OptionAttribute
     {
-        private char separator;
+        private char _separator;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CommandLine.OptionListAttribute"/> class.
@@ -61,7 +63,7 @@ namespace CommandLine
         public OptionListAttribute(string shortName, string longName, char separator)
             : base(shortName, longName)
         {
-            this.separator = separator;
+            _separator = separator;
         }
 
         /// <summary>
@@ -69,8 +71,8 @@ namespace CommandLine
         /// </summary>
         public char Separator
         {
-            get { return this.separator; }
-            set { this.separator = value; }
+            get { return _separator; }
+            set { _separator = value; }
         }
     }
 }

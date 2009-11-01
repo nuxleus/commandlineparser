@@ -1,4 +1,4 @@
-#region Copyright (C) 2005 - 2009 Giacomo Stelluti Scala
+#region License
 //
 // Command Line Library: Program.cs
 //
@@ -24,19 +24,21 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+//
+#endregion
+#region Using Directives
+using System;
+using System.Collections.Generic;
+using System.Text;
+using CommandLine;
+using CommandLine.Text;
 #endregion
 
 namespace SampleApp
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Text;
-    using CommandLine;
-    using CommandLine.Text;
-
     sealed class Program
     {
-        private static readonly HeadingInfo headingInfo = new HeadingInfo("sampleapp", "1.6");
+        private static readonly HeadingInfo _headingInfo = new HeadingInfo("sampleapp", "1.6");
 
         private enum OptimizeFor
         {
@@ -90,7 +92,7 @@ namespace SampleApp
                     HelpText = "Dispaly this help screen.")]
             public string GetUsage()
             {
-                HelpText help = new HelpText(Program.headingInfo);
+                var help = new HelpText(Program._headingInfo);
                 help.Copyright = new CopyrightInfo("Giacomo Stelluti Scala", 2005, 2009);
                 help.AddPreOptionsLine("This is free software. You may redistribute copies of it under the terms of");
                 help.AddPreOptionsLine("the MIT License <http://www.opensource.org/licenses/mit-license.php>.");
@@ -98,6 +100,7 @@ namespace SampleApp
                 help.AddPreOptionsLine(string.Format("       SampleApp -rMyData.in -i -j{0} file0.def file1.def", 9.7));
                 help.AddPreOptionsLine("       SampleApp -rMath.xml -wReport.bin -o *;/;+;-");
                 help.AddOptions(this);
+
                 return help;
             }
             #endregion
@@ -105,12 +108,11 @@ namespace SampleApp
 
         private static void Main(string[] args)
         {
-            Options options = new Options();
+            var options = new Options();
             ICommandLineParser parser = new CommandLineParser(new CommandLineParserSettings(Console.Error));
             if (!parser.ParseArguments(args, options))
-            {
                 Environment.Exit(1);
-            }
+
             Console.WriteLine("Verbose Level: {0}", (options.VerboseLevel < 0 || options.VerboseLevel > 2) ? "#invalid value#" : options.VerboseLevel.ToString());
             Console.WriteLine();
             Console.WriteLine("Reading input file: {0} ...", options.InputFile);
@@ -124,7 +126,7 @@ namespace SampleApp
             Console.WriteLine("  optimize for: {0}", options.Optimization);
             if (options.AllowedOperators != null)
             {
-                StringBuilder builder = new StringBuilder();
+                var builder = new StringBuilder();
                 builder.Append("  allowed operators: ");
                 foreach (string op in options.AllowedOperators)
                 {
@@ -135,14 +137,13 @@ namespace SampleApp
             }
             Console.WriteLine();
             if (options.OutputFile.Length > 0)
-            {
-                headingInfo.WriteMessage(string.Format("Writing elaborated data: {0} ...", options.OutputFile));
-            }
+                _headingInfo.WriteMessage(string.Format("Writing elaborated data: {0} ...", options.OutputFile));
             else
             {
-                headingInfo.WriteMessage("Elaborated data:");
+                _headingInfo.WriteMessage("Elaborated data:");
                 Console.WriteLine("[...]");
             }
+
             Environment.Exit(0);
         }
     }

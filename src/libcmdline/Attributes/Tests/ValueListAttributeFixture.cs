@@ -1,4 +1,4 @@
-#region Copyright (C) 2005 - 2009 Giacomo Stelluti Scala
+#region License
 //
 // Command Line Library: ValueListAttributeFixture.cs
 //
@@ -24,15 +24,17 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+//
+#endregion
+#region Using Directives
+using System;
+using System.Collections.Generic;
+using NUnit.Framework;
 #endregion
 
 #if UNIT_TESTS
 namespace CommandLine.Tests
 {
-    using System;
-    using System.Collections.Generic;
-    using NUnit.Framework;
-
     [TestFixture]
     public class ValueListAttributeFixture
     {
@@ -77,7 +79,7 @@ namespace CommandLine.Tests
         [Test]
         public void GetGenericListOfStringInterfaceReference()
         {
-            MockOptions options = new MockOptions();
+            var options = new MockOptions();
 
             IList<string> values = ValueListAttribute.GetReference(options);
             Assert.IsNotNull(values);
@@ -87,9 +89,9 @@ namespace CommandLine.Tests
         [Test]
         public void UseGenericListOfStringInterfaceReference()
         {
-            MockOptions options = new MockOptions();
+            var options = new MockOptions();
 
-            IList<string> values = ValueListAttribute.GetReference(options);
+            var values = ValueListAttribute.GetReference(options);
             values.Add("value0");
             values.Add("value1");
             values.Add("value2");

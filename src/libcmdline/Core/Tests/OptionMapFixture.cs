@@ -1,4 +1,4 @@
-#region Copyright (C) 2005 - 2009 Giacomo Stelluti Scala
+#region License
 //
 // Command Line Library: OptionMapFixture.cs
 //
@@ -24,96 +24,98 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+//
+#endregion
+#region Using Directives
+using System.Collections.Generic;
+using CommandLine;
+using NUnit.Framework;
 #endregion
 
 #if UNIT_TESTS
 namespace CommandLine.Tests
 {
-    using System.Collections.Generic;
-    using CommandLine;
-    using NUnit.Framework;
-
     [TestFixture]
     public sealed class OptionMapFixture
     {
         #region Helper Nested Class
         class OptionMapBuilder
         {
-            private readonly IOptionMap optionMap;
-            private readonly List<OptionInfo> options;
-            private readonly List<string> names;
+            private readonly IOptionMap _optionMap;
+            private readonly List<OptionInfo> _options;
+            private readonly List<string> _names;
 
             public OptionMapBuilder(int capacity)
             {
-                this.optionMap = new OptionMap(capacity, new CommandLineParserSettings(true));
-                this.options = new List<OptionInfo>(capacity);
-                this.names = new List<string>(capacity);
+                _optionMap = new OptionMap(capacity, new CommandLineParserSettings(true));
+                _options = new List<OptionInfo>(capacity);
+                _names = new List<string>(capacity);
             }
 
             public void AppendOption(string shortName, string longName)
             {
-                OptionAttribute oa = new OptionAttribute(shortName, longName);
-                OptionInfo oi = oa.CreateOptionInfo();
-                this.optionMap[oa.UniqueName] = oi;
-                this.options.Add(oi);
-                this.names.Add(oa.UniqueName);
+                var oa = new OptionAttribute(shortName, longName);
+                var oi = oa.CreateOptionInfo();
+                _optionMap[oa.UniqueName] = oi;
+                _options.Add(oi);
+                _names.Add(oa.UniqueName);
             }
 
             public List<OptionInfo> Options
             {
-                get { return this.options; }
+                get { return _options; }
             }
 
             public List<string> Names
             {
-                get { return this.names; }
+                get { return _names; }
             }
 
             public IOptionMap OptionMap
             {
-                get { return this.optionMap; }
+                get { return _optionMap; }
             }
         }
         #endregion
-        private static IOptionMap optionMap;
-        private static OptionMapBuilder omBuilder;
+        private static IOptionMap _optionMap;
+        private static OptionMapBuilder _omBuilder;
 
         [SetUp]
         public void CreateInstance()
         {
-            omBuilder = new OptionMapBuilder(3);
-            omBuilder.AppendOption("p", "pretend");
-            omBuilder.AppendOption(null, "newuse");
-            omBuilder.AppendOption("D", null);
+            _omBuilder = new OptionMapBuilder(3);
+            _omBuilder.AppendOption("p", "pretend");
+            _omBuilder.AppendOption(null, "newuse");
+            _omBuilder.AppendOption("D", null);
 
-            optionMap = omBuilder.OptionMap;
+            _optionMap = _omBuilder.OptionMap;
         }
 
         [TearDown]
         public void ShutdownInstance()
         {
-            optionMap = null;
+            _optionMap = null;
         }
 
         [Test]
         public void ManageOptions()
         {
-            Assert.AreSame(omBuilder.Options[0], optionMap[omBuilder.Names[0]]);
-            Assert.AreSame(omBuilder.Options[1], optionMap[omBuilder.Names[1]]);
-            Assert.AreSame(omBuilder.Options[2], optionMap[omBuilder.Names[2]]);
+            Assert.AreSame(_omBuilder.Options[0], _optionMap[_omBuilder.Names[0]]);
+            Assert.AreSame(_omBuilder.Options[1], _optionMap[_omBuilder.Names[1]]);
+            Assert.AreSame(_omBuilder.Options[2], _optionMap[_omBuilder.Names[2]]);
         }
 
         [Test]
         public void RetrieveNotExistentShortOption()
         {
-            OptionInfo shortOi = optionMap["y"];
+            var shortOi = _optionMap["y"];
             Assert.IsNull(shortOi);
         }
 
         [Test]
         public void RetrieveNotExistentLongOption()
         {
-            OptionInfo longOi = optionMap["nomorebugshere"];
+            var longOi = _optionMap["nomorebugshere"];
             Assert.IsNull(longOi);
         }
 
@@ -124,13 +126,13 @@ namespace CommandLine.Tests
                 map = new OptionMap(3, new CommandLineParserSettings(true));
             }
 
-            OptionAttribute attribute1 = new OptionAttribute("p", "pretend");
-            OptionAttribute attribute2 = new OptionAttribute(null, "newuse");
-            OptionAttribute attribute3 = new OptionAttribute("D", null);
+            var attribute1 = new OptionAttribute("p", "pretend");
+            var attribute2 = new OptionAttribute(null, "newuse");
+            var attribute3 = new OptionAttribute("D", null);
 
-            OptionInfo option1 = attribute1.CreateOptionInfo();
-            OptionInfo option2 = attribute2.CreateOptionInfo();
-            OptionInfo option3 = attribute3.CreateOptionInfo();
+            var option1 = attribute1.CreateOptionInfo();
+            var option2 = attribute2.CreateOptionInfo();
+            var option3 = attribute3.CreateOptionInfo();
 
             map[attribute1.UniqueName] = option1;
             map[attribute2.UniqueName] = option2;

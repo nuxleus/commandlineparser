@@ -1,4 +1,4 @@
-#region Copyright (C) 2005 - 2009 Giacomo Stelluti Scala
+#region License
 //
 // Command Line Library: ValueListAttribute.cs
 //
@@ -24,14 +24,16 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+//
+#endregion
+#region Using Directives
+using System;
+using System.Collections.Generic;
+using System.Reflection;
 #endregion
 
 namespace CommandLine
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Reflection;
-
     /// <summary>
     /// Models a list of command line arguments that are not options.
     /// Must be applied to a field compatible with an <see cref="System.Collections.Generic.IList&lt;T&gt;"/> interface
@@ -42,12 +44,12 @@ namespace CommandLine
             Inherited=true)]
     public sealed class ValueListAttribute : Attribute
     {
-        private Type concreteType;
-        private int maximumElements;
+        private Type _concreteType;
+        private int _maximumElements;
 
         private ValueListAttribute()
         {
-            this.maximumElements = -1;
+            _maximumElements = -1;
         }
 
         /// <summary>
@@ -59,14 +61,12 @@ namespace CommandLine
             : this()
         {
             if (concreteType == null)
-            {
                 throw new ArgumentNullException("concreteType");
-            }
+
             if (!typeof(IList<string>).IsAssignableFrom(concreteType))
-            {
                 throw new ParserException("The types are incompatible.");
-            }
-            this.concreteType = concreteType;
+
+            _concreteType = concreteType;
         }
 
         /// <summary>
@@ -76,40 +76,39 @@ namespace CommandLine
         /// </summary>
         public int MaximumElements
         {
-            get { return this.maximumElements; }
-            set { this.maximumElements = value; }
+            get { return _maximumElements; }
+            set { _maximumElements = value; }
         }
 
         internal Type ConcreteType
         {
-            get { return this.concreteType; }
+            get { return _concreteType; }
         }
 
         internal static IList<string> GetReference(object target)
         {
             Type concreteType;
-            FieldInfo field = GetField(target, out concreteType);
+            var field = GetField(target, out concreteType);
+
             if (field == null)
-            {
                 return null;
-            }
+
             field.SetValue(target, Activator.CreateInstance(concreteType));
+            
             return (IList<string>)field.GetValue(target);
         }
 
         internal static ValueListAttribute GetAttribute(object target)
         {
-            IList<Pair<FieldInfo, ValueListAttribute>> list =
-                                ReflectionUtil.RetrieveFieldList<ValueListAttribute>(target);
+            var list = ReflectionUtil.RetrieveFieldList<ValueListAttribute>(target);
             if (list.Count == 0)
-            {
                 return null;
-            }
+
             if (list.Count > 1)
-            {
                 throw new InvalidOperationException();
-            }
-            Pair<FieldInfo, ValueListAttribute> pairZero = list[0];
+
+            var pairZero = list[0];
+
             return pairZero.Right;
         }
 
@@ -117,18 +116,16 @@ namespace CommandLine
         {
             concreteType = null;
 
-            IList<Pair<FieldInfo, ValueListAttribute>> list =
-                                ReflectionUtil.RetrieveFieldList<ValueListAttribute>(target);
+            var list = ReflectionUtil.RetrieveFieldList<ValueListAttribute>(target);
             if (list.Count == 0)
-            {
                 return null;
-            }
+
             if (list.Count > 1)
-            {
                 throw new InvalidOperationException();
-            }
-            Pair<FieldInfo, ValueListAttribute> pairZero = list[0];
+
+            var pairZero = list[0];
             concreteType = pairZero.Right.ConcreteType;
+
             return pairZero.Left;
         }
     }

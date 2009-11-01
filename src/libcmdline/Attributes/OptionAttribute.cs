@@ -1,4 +1,4 @@
-#region Copyright (C) 2005 - 2009 Giacomo Stelluti Scala
+#region License
 //
 // Command Line Library: OptionAttribute.cs
 //
@@ -24,12 +24,14 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+//
+#endregion
+#region Using Directives
+using System;
 #endregion
 
 namespace CommandLine
 {
-    using System;
-
     /// <summary>
     /// Models an option specification.
     /// </summary>
@@ -38,8 +40,9 @@ namespace CommandLine
             Inherited=true)]
     public class OptionAttribute : BaseOptionAttribute
     {
-        private string uniqueName;
-        private string mutuallyExclusiveSet;
+        private string _uniqueName;
+        private string _mutuallyExclusiveSet;
+
         internal const string DefaultMutuallyExclusiveSet = "Default";
 
         /// <summary>
@@ -50,33 +53,27 @@ namespace CommandLine
         public OptionAttribute(string shortName, string longName)
         {
             if (!string.IsNullOrEmpty(shortName))
-            {
-                this.uniqueName = shortName;
-            }
+                _uniqueName = shortName;
             else if (!string.IsNullOrEmpty(longName))
-            {
-                this.uniqueName = longName;
-            }
+                _uniqueName = longName;
 
-            if (this.uniqueName == null)
-            {
+            if (_uniqueName == null)
                 throw new InvalidOperationException();
-            }
 
-            this.ShortName = shortName;
-            this.LongName = longName;
+            base.ShortName = shortName;
+            base.LongName = longName;
         }
 
 #if UNIT_TESTS
         internal OptionInfo CreateOptionInfo()
         {
-            return new OptionInfo(this.ShortName, this.LongName);
+            return new OptionInfo(base.ShortName, base.LongName);
         }
 #endif
 
         internal string UniqueName
         {
-            get { return this.uniqueName; }
+            get { return _uniqueName; }
         }
 
         /// <summary>
@@ -84,17 +81,13 @@ namespace CommandLine
         /// </summary>
         public string MutuallyExclusiveSet
         {
-            get { return this.mutuallyExclusiveSet; }
+            get { return _mutuallyExclusiveSet; }
             set
             {
                 if (string.IsNullOrEmpty(value))
-                {
-                    this.mutuallyExclusiveSet = OptionAttribute.DefaultMutuallyExclusiveSet;
-                }
+                    _mutuallyExclusiveSet = OptionAttribute.DefaultMutuallyExclusiveSet;
                 else
-                {
-                    this.mutuallyExclusiveSet = value;
-                }
+                    _mutuallyExclusiveSet = value;
             }
         }
     }

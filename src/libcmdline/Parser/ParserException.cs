@@ -1,6 +1,6 @@
-﻿#region Copyright (C) 2005 - 2009 Giacomo Stelluti Scala
+#region License
 //
-// Command Line Library: MockOptionsBase.cs
+// Command Line Library: ParserException.cs
 //
 // Author:
 //   Giacomo Stelluti Scala (gsscoder@ymail.com)
@@ -24,17 +24,39 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+//
+#endregion
+#region Using Directives
+using System;
+using System.Runtime.Serialization;
 #endregion
 
-#if UNIT_TESTS
-namespace CommandLine.Tests
+namespace CommandLine
 {
-    abstract class MockOptionsBase
+    /// <summary>
+    /// This exception is thrown when a generic parsing error occurs.
+    /// </summary>
+    [Serializable]
+    public sealed class ParserException : Exception, ISerializable
     {
-        public override string ToString()
+        internal ParserException()
+            : base()
         {
-            return MockUtil.ConvertOptionsToString(this);
+        }
+
+        internal ParserException(string message)
+            : base(message)
+        {
+        }
+
+        internal ParserException(string message, Exception innerException)
+            : base(message, innerException)
+        {
+        }
+
+        internal ParserException(SerializationInfo info, StreamingContext context)
+            : base(info, context)
+        {
         }
     }
 }
-#endif

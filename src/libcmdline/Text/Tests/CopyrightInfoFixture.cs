@@ -1,4 +1,4 @@
-#region Copyright (C) 2005 - 2009 Giacomo Stelluti Scala
+#region License
 //
 // Command Line Library: CopyrightInfoFixture.cs
 //
@@ -24,16 +24,18 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+//
+#endregion
+#region Using Directives
+using System;
+using System.Globalization;
+using System.Text;
+using NUnit.Framework;
 #endregion
 
 #if UNIT_TESTS
 namespace CommandLine.Text.Tests
 {
-    using System;
-    using System.Globalization;
-    using System.Text;
-    using NUnit.Framework;
-
     [TestFixture]
     public sealed class CopyrightInfoFixture
     {
@@ -52,7 +54,8 @@ namespace CommandLine.Text.Tests
 
             protected override string FormatYears(int[] years)
             {
-                StringBuilder yearsPart = new StringBuilder(years.Length * 4);
+                var yearsPart = new StringBuilder(years.Length * 4);
+
                 foreach (int year in years)
                 {
                     string y = year.ToString(CultureInfo.InvariantCulture);
@@ -63,6 +66,7 @@ namespace CommandLine.Text.Tests
                     yearsPart.Append(", ");
                 }
                 yearsPart.Remove(yearsPart.Length - 2, 2);
+
                 return yearsPart.ToString();
             }
         }
@@ -71,8 +75,7 @@ namespace CommandLine.Text.Tests
         [Test]
         public void LowerSymbolOneYear()
         {
-            CopyrightInfo copyright = new CopyrightInfo(false,
-                    "Authors, Inc.", 2007);
+            var copyright = new CopyrightInfo(false, "Authors, Inc.", 2007);
 
             Assert.AreEqual("Copyright (c) 2007 Authors, Inc.", copyright.ToString());
         }
@@ -80,15 +83,15 @@ namespace CommandLine.Text.Tests
         [Test]
         public void UpperSymbolTwoConsecutiveYears()
         {
-            CopyrightInfo copyright = new CopyrightInfo(true,
-                    "X & Y Group", 2006, 2007);
+            var copyright = new CopyrightInfo(true, "X & Y Group", 2006, 2007);
+
             Assert.AreEqual("Copyright (C) 2006, 2007 X & Y Group", copyright.ToString());
         }
 
         [Test]
         public void DefaultSymbolTwoNonConsecutiveYears()
         {
-            CopyrightInfo copyright = new CopyrightInfo("W & Z, Inc.", 2005, 2007);
+            var copyright = new CopyrightInfo("W & Z, Inc.", 2005, 2007);
 
             Assert.AreEqual("Copyright (C) 2005 - 2007 W & Z, Inc.", copyright.ToString());
         }
@@ -96,7 +99,7 @@ namespace CommandLine.Text.Tests
         [Test]
         public void DefaultSymbolSeveralYears()
         {
-            CopyrightInfo copyright = new CopyrightInfo("CommandLine, Ltd", 1999, 2003, 2004, 2007);
+            var copyright = new CopyrightInfo("CommandLine, Ltd", 1999, 2003, 2004, 2007);
 
             Assert.AreEqual("Copyright (C) 1999 - 2003, 2004 - 2007 CommandLine, Ltd", copyright.ToString());
         }
@@ -118,8 +121,7 @@ namespace CommandLine.Text.Tests
         [Test]
         public void DerivedClass()
         {
-            CopyrightInfo info = new CopyleftInfo(true,
-                    "Free Company, Inc.", 96, 97, 98, 2005);
+            var info = new CopyleftInfo(true, "Free Company, Inc.", 96, 97, 98, 2005);
 
             Assert.AreEqual("Copyleft (C) '96, '97, '98, 2005 Free Company, Inc.", info.ToString());
         }

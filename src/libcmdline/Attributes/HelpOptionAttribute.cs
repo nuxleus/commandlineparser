@@ -1,4 +1,4 @@
-#region Copyright (C) 2005 - 2009 Giacomo Stelluti Scala
+#region License
 //
 // Command Line Library: HelpOptionAttribute.cs
 //
@@ -24,13 +24,15 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+//
+#endregion
+#region Using Directives
+using System;
+using System.Reflection;
 #endregion
 
 namespace CommandLine
 {
-    using System;
-    using System.Reflection;
-
     /// <summary>
     /// Indicates the instance method that must be invoked when it becomes necessary show your help screen.
     /// The method signature is an instance method with no parameters and <see cref="System.String"/>
@@ -57,8 +59,8 @@ namespace CommandLine
         /// <param name="longName">The long name of the option or null if not used.</param>
         public HelpOptionAttribute(string shortName, string longName)
         {
-            this.ShortName = shortName;
-            this.LongName = longName;
+            base.ShortName = shortName;
+            base.LongName = longName;
         }
 
         /// <summary>
@@ -77,7 +79,7 @@ namespace CommandLine
         {
             text = null;
 
-            MethodInfo method = pair.Left;
+            var method = pair.Left;
             if (!CheckMethodSignature(method))
                 throw new MemberAccessException();
 

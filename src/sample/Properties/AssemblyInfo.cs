@@ -1,4 +1,4 @@
-﻿#region Copyright (C) 2005 - 2008 Giacomo Stelluti Scala
+﻿#region License
 //
 // Command Line Library: CopyrightInfoFixture.cs
 //
@@ -25,10 +25,11 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 #endregion
-
+#region Using Directives
 using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
+#endregion
 
 [assembly: AssemblyTitle(ThisAssembly.Title)]
 [assembly: AssemblyProduct("Command Line Parsing Library")]

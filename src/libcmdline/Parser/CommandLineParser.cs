@@ -1,4 +1,4 @@
-﻿#region Copyright (C) 2005 - 2009 Giacomo Stelluti Scala
+﻿#region License
 //
 // Command Line Library: CommandLineParser.cs
 //
@@ -24,29 +24,31 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+//
+#endregion
+#region Using Directives
+using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
 #endregion
 
 namespace CommandLine
 {
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Reflection;
-
     /// <summary>
     /// Provides methods to parse command line arguments.
     /// Default implementation for <see cref="CommandLine.ICommandLineParser"/>.
     /// </summary>
     public class CommandLineParser : ICommandLineParser
     {
-        private object valueListLock = new object();
-        private CommandLineParserSettings settings;
+        private object _valueListLock = new object();
+        private CommandLineParserSettings _settings;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CommandLine.CommandLineParser"/> class.
         /// </summary>
         public CommandLineParser()
         {
-            this.settings = new CommandLineParserSettings();
+            _settings = new CommandLineParserSettings();
         }
 
         /// <summary>
@@ -59,7 +61,7 @@ namespace CommandLine
         {
             Validator.CheckIsNull(settings, "settings");
 
-            this.settings = settings;
+            _settings = settings;
         }
 
         /// <summary>
@@ -74,7 +76,7 @@ namespace CommandLine
         /// <exception cref="System.ArgumentNullException">Thrown if <paramref name="options"/> is null.</exception>
         public virtual bool ParseArguments(string[] args, object options)
         {
-            return ParseArguments(args, options, settings.HelpWriter);
+            return ParseArguments(args, options, _settings.HelpWriter);
         }
 
         /// <summary>
@@ -95,8 +97,8 @@ namespace CommandLine
             Validator.CheckIsNull(args, "args");
             Validator.CheckIsNull(options, "options");
 
-            Pair<MethodInfo, HelpOptionAttribute> pair =
-                                ReflectionUtil.RetrieveMethod<HelpOptionAttribute>(options);
+            var pair = ReflectionUtil.RetrieveMethod<HelpOptionAttribute>(options);
+
             if (pair != null && helpWriter != null)
             {
                 if (ParseHelp(args, pair.Right) || !DoParseArguments(args, options))
@@ -115,9 +117,9 @@ namespace CommandLine
         private bool DoParseArguments(string[] args, object options)
         {
             bool hadError = false;
-            IOptionMap optionMap = OptionInfo.CreateMap(options, settings);
-            IList<string> valueList = ValueListAttribute.GetReference(options);
-            ValueListAttribute vlAttr = ValueListAttribute.GetAttribute(options);
+            var optionMap = OptionInfo.CreateMap(options, _settings);
+            var valueList = ValueListAttribute.GetReference(options);
+            var vlAttr = ValueListAttribute.GetAttribute(options);
 
             IStringEnumerator arguments = new StringEnumeratorEx(args);
             while (arguments.MoveNext())
@@ -134,16 +136,15 @@ namespace CommandLine
                             hadError = true;
                             break;
                         }
+
                         if ((result & ParserState.MoveOnNextElement) == ParserState.MoveOnNextElement)
-                        {
                             arguments.MoveNext();
-                        }
                     }
                     else if (valueList != null)
                     {
                         if (vlAttr.MaximumElements < 0)
                         {
-                            lock (valueListLock)
+                            lock (_valueListLock)
                             {
                                 valueList.Add(argument);
                             }
@@ -157,7 +158,7 @@ namespace CommandLine
                         {
                             if (vlAttr.MaximumElements > valueList.Count)
                             {
-                                lock (valueListLock)
+                                lock (_valueListLock)
                                 {
                                     valueList.Add(argument);
                                 }
@@ -173,30 +174,29 @@ namespace CommandLine
             }
 
             hadError |= !optionMap.EnforceRules();
+
             return !hadError;
         }
 
         private bool ParseHelp(string[] args, HelpOptionAttribute helpOption)
         {
-            bool caseSensitive = this.settings.CaseSensitive;
+            bool caseSensitive = _settings.CaseSensitive;
 
             for (int i = 0; i < args.Length; i++)
             {
                 if (!string.IsNullOrEmpty(helpOption.ShortName))
                 {
                     if (ArgumentParser.CompareShort(args[i], helpOption.ShortName, caseSensitive))
-                    {
                         return true;
-                    }
                 }
+
                 if (!string.IsNullOrEmpty(helpOption.LongName))
                 {
                     if (ArgumentParser.CompareLong(args[i], helpOption.LongName, caseSensitive))
-                    {
                         return true;
-                    }
                 }
             }
+
             return false;
         }
     }

@@ -1,6 +1,6 @@
-#region Copyright (C) 2005 - 2009 Giacomo Stelluti Scala
+#region License
 //
-// Command Line Library: OptionAttribute.cs
+// Command Line Library: HelpText.cs
 //
 // Author:
 //   Giacomo Stelluti Scala (gsscoder@ymail.com)
@@ -24,14 +24,16 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+//
+#endregion
+#region Using Directives
+using System;
+using System.Collections.Generic;
+using System.Text;
 #endregion
 
 namespace CommandLine.Text
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Text;
-
     /// <summary>
     /// Models an help text and collects related informations.
     /// You can assign it in place of a <see cref="System.String"/> instance, this is why
@@ -40,20 +42,18 @@ namespace CommandLine.Text
     /// </summary>
     public class HelpText
     {
-        #region Private Members
-        private const int builderCapacity = 128;
-        private readonly string heading;
-        private string copyright;
-        private StringBuilder preOptionsHelp;
-        private StringBuilder optionsHelp;
-        private StringBuilder postOptionsHelp;
-        private static readonly string defaultRequiredWord = "Required.";
-        #endregion
+        private const int _builderCapacity = 128;
+        private readonly string _heading;
+        private string _copyright;
+        private StringBuilder _preOptionsHelp;
+        private StringBuilder _optionsHelp;
+        private StringBuilder _postOptionsHelp;
+        private static readonly string _defaultRequiredWord = "Required.";
 
         private HelpText()
         {
-            this.preOptionsHelp = new StringBuilder(builderCapacity);
-            this.postOptionsHelp = new StringBuilder(builderCapacity);
+            _preOptionsHelp = new StringBuilder(_builderCapacity);
+            _postOptionsHelp = new StringBuilder(_builderCapacity);
         }
 
         /// <summary>
@@ -68,7 +68,7 @@ namespace CommandLine.Text
         {
             Validator.CheckIsNullOrEmpty(heading, "heading");
 
-            this.heading = heading;
+            _heading = heading;
         }
 
         /// <summary>
@@ -80,7 +80,7 @@ namespace CommandLine.Text
             set
             {
                 Validator.CheckIsNullOrEmpty(value, "value");
-                this.copyright = value;
+                _copyright = value;
             }
         }
 
@@ -91,7 +91,7 @@ namespace CommandLine.Text
         /// <exception cref="System.ArgumentNullException">Thrown when parameter <paramref name="value"/> is null or empty string.</exception>
         public void AddPreOptionsLine(string value)
         {
-            AddLine(this.preOptionsHelp, value);
+            AddLine(_preOptionsHelp, value);
         }
 
         /// <summary>
@@ -101,7 +101,7 @@ namespace CommandLine.Text
         /// <exception cref="System.ArgumentNullException">Thrown when parameter <paramref name="value"/> is null or empty string.</exception>
         public void AddPostOptionsLine(string value)
         {
-            AddLine(this.postOptionsHelp, value);
+            AddLine(_postOptionsHelp, value);
         }
 
         /// <summary>
@@ -111,7 +111,7 @@ namespace CommandLine.Text
         /// <exception cref="System.ArgumentNullException">Thrown when parameter <paramref name="options"/> is null.</exception>
         public void AddOptions(object options)
         {
-            AddOptions(options, defaultRequiredWord);
+            AddOptions(options, _defaultRequiredWord);
         }
 
         /// <summary>
@@ -126,56 +126,46 @@ namespace CommandLine.Text
             Validator.CheckIsNull(options, "options");
             Validator.CheckIsNullOrEmpty(requiredWord, "requiredWord");
 
-            IList<BaseOptionAttribute> optionList =
-                                ReflectionUtil.RetrieveFieldAttributeList<BaseOptionAttribute>(options);
+            var optionList = ReflectionUtil.RetrieveFieldAttributeList<BaseOptionAttribute>(options);
+            var optionHelp = ReflectionUtil.RetrieveMethodAttributeOnly<HelpOptionAttribute>(options);
 
-            HelpOptionAttribute optionHelp =
-                                ReflectionUtil.RetrieveMethodAttributeOnly<HelpOptionAttribute>(options);
             if (optionHelp != null)
-            {
                 optionList.Add(optionHelp);
-            }
 
             if (optionList.Count == 0)
-            {
                 return;
-            }
 
             int maxLength = GetMaxLength(optionList);
-            this.optionsHelp = new StringBuilder(builderCapacity);
+            _optionsHelp = new StringBuilder(_builderCapacity);
 
             foreach (BaseOptionAttribute option in optionList)
             {
-                this.optionsHelp.Append("  ");
+                _optionsHelp.Append("  ");
                 StringBuilder optionName = new StringBuilder(maxLength);
                 if (option.HasShortName)
                 {
                     optionName.Append(option.ShortName);
+
                     if (option.HasLongName)
-                    {
                         optionName.Append(", ");
-                    }
                 }
+
                 if (option.HasLongName)
-                {
                     optionName.Append(option.LongName);
-                }
+
                 if (optionName.Length < maxLength)
-                {
-                    this.optionsHelp.Append(optionName.ToString().PadRight(maxLength));
-                }
+                    _optionsHelp.Append(optionName.ToString().PadRight(maxLength));
                 else
-                {
-                    this.optionsHelp.Append(optionName.ToString());
-                }
-                this.optionsHelp.Append("\t");
+                    _optionsHelp.Append(optionName.ToString());
+
+                _optionsHelp.Append("\t");
                 if (option.Required)
                 {
-                    this.optionsHelp.Append(requiredWord);
-                    this.optionsHelp.Append(' ');
+                    _optionsHelp.Append(requiredWord);
+                    _optionsHelp.Append(' ');
                 }
-                this.optionsHelp.Append(option.HelpText);
-                this.optionsHelp.Append(Environment.NewLine);
+                _optionsHelp.Append(option.HelpText);
+                _optionsHelp.Append(Environment.NewLine);
             }
         }
 
@@ -186,31 +176,30 @@ namespace CommandLine.Text
         public override string ToString()
         {
             const int extraLength = 10;
-            StringBuilder builder = new StringBuilder(this.heading.Length +
-                                GetLength(this.copyright) + GetLength(this.preOptionsHelp) +
-                                GetLength(this.optionsHelp) + extraLength);
+            var builder = new StringBuilder(_heading.Length + GetLength(_copyright) +
+                GetLength(_preOptionsHelp) + GetLength(_optionsHelp) + extraLength);
 
-            builder.Append(this.heading);
-            if (!string.IsNullOrEmpty(this.copyright))
+            builder.Append(_heading);
+            if (!string.IsNullOrEmpty(_copyright))
             {
                 builder.Append(Environment.NewLine);
-                builder.Append(this.copyright);
+                builder.Append(_copyright);
             }
-            if (this.preOptionsHelp.Length > 0)
+            if (_preOptionsHelp.Length > 0)
             {
                 builder.Append(Environment.NewLine);
-                builder.Append(this.preOptionsHelp.ToString());
+                builder.Append(_preOptionsHelp.ToString());
             }
-            if (this.optionsHelp != null && this.optionsHelp.Length > 0)
+            if (_optionsHelp != null && _optionsHelp.Length > 0)
             {
                 builder.Append(Environment.NewLine);
                 builder.Append(Environment.NewLine);
-                builder.Append(this.optionsHelp.ToString());
+                builder.Append(_optionsHelp.ToString());
             }
-            if (this.postOptionsHelp.Length > 0)
+            if (_postOptionsHelp.Length > 0)
             {
                 builder.Append(Environment.NewLine);
-                builder.Append(this.postOptionsHelp.ToString());
+                builder.Append(_postOptionsHelp.ToString());
             }
 
             return builder.ToString();
@@ -228,38 +217,28 @@ namespace CommandLine.Text
 
         private static void AddLine(StringBuilder builder, string value)
         {
-            //Validator.CheckIsNullOrEmpty(value, "value");
             Validator.CheckIsNull(value, "value");
 
             if (builder.Length > 0)
-            {
                 builder.Append(Environment.NewLine);
-            }
+
             builder.Append(value);
         }
 
         private static int GetLength(string value)
         {
             if (value == null)
-            {
                 return 0;
-            }
-            else
-            {
-                return value.Length;
-            }
+
+            return value.Length;
         }
 
         private static int GetLength(StringBuilder value)
         {
             if (value == null)
-            {
                 return 0;
-            }
-            else
-            {
-                return value.Length;
-            }
+
+            return value.Length;
         }
 
         private static int GetMaxLength(IList<BaseOptionAttribute> optionList)
@@ -271,19 +250,17 @@ namespace CommandLine.Text
                 bool hasShort = option.HasShortName;
                 bool hasLong = option.HasLongName;
                 if (hasShort)
-                {
                     optionLenght += option.ShortName.Length;
-                }
+
                 if (hasLong)
-                {
                     optionLenght += option.LongName.Length;
-                }
+
                 if (hasShort && hasLong)
-                {
                     optionLenght += 2; // ", "
-                }
+
                 length = Math.Max(length, optionLenght);
             }
+
             return length;
         }
     }

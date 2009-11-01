@@ -1,4 +1,4 @@
-#region Copyright (C) 2005 - 2009 Giacomo Stelluti Scala
+#region License
 //
 // Command Line Library: CharEnumeratorEx.cs
 //
@@ -24,39 +24,39 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+//
+#endregion
+#region Using Directives
+using System;
 #endregion
 
 namespace CommandLine
 {
-    using System;
-
     internal sealed class CharEnumeratorEx : IStringEnumerator
     {
-        private string currentElement;
-        private int index;
-        private readonly string data;
+        private string _currentElement;
+        private int _index;
+        private readonly string _data;
 
         public CharEnumeratorEx(string value)
         {
             Validator.CheckIsNullOrEmpty(value, "value");
 
-            this.data = value;
-            this.index = -1;
+            _data = value;
+            _index = -1;
         }
 
         public string Current
         {
             get
             {
-                if (this.index == -1)
-                {
+                if (_index == -1)
                     throw new InvalidOperationException();
-                }
-                if (this.index >= this.data.Length)
-                {
+
+                if (_index >= _data.Length)
                     throw new InvalidOperationException();
-                }
-                return this.currentElement;
+
+                return _currentElement;
             }
         }
 
@@ -64,55 +64,51 @@ namespace CommandLine
         {
             get
             {
-                if (this.index == -1)
-                {
+                if (_index == -1)
                     throw new InvalidOperationException();
-                }
-                if (this.index > this.data.Length)
-                {
+
+                if (_index > _data.Length)
                     throw new InvalidOperationException();
-                }
-                if (this.IsLast)
-                {
+
+                if (IsLast)
                     return null;
-                }
-                return this.data.Substring(this.index + 1, 1);
+
+                return _data.Substring(_index + 1, 1);
             }
         }
 
         public bool IsLast
         {
-            get { return this.index == this.data.Length - 1; }
+            get { return _index == _data.Length - 1; }
         }
 
         public void Reset()
         {
-            this.index = -1;
+            _index = -1;
         }
 
         public bool MoveNext()
         {
-            if (this.index < (this.data.Length - 1))
+            if (_index < (_data.Length - 1))
             {
-                this.index++;
-                this.currentElement = this.data.Substring(this.index, 1);
+                _index++;
+                _currentElement = _data.Substring(_index, 1);
                 return true;
             }
-            this.index = this.data.Length;
+            _index = _data.Length;
+
             return false;
         }
 
         public string GetRemainingFromNext()
         {
-            if (this.index == -1)
-            {
+            if (_index == -1)
                 throw new InvalidOperationException();
-            }
-            if (this.index > this.data.Length)
-            {
+
+            if (_index > _data.Length)
                 throw new InvalidOperationException();
-            }
-            return this.data.Substring(index + 1);
+
+            return _data.Substring(_index + 1);
         }
     }
 }

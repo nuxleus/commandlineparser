@@ -1,4 +1,4 @@
-﻿#region Copyright (C) 2005 - 2009 Giacomo Stelluti Scala
+﻿#region License
 //
 // Command Line Library: CommandLineParserSettings.cs
 //
@@ -24,20 +24,22 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+//
+#endregion
+#region Using Directives
+using System.IO;
 #endregion
 
 namespace CommandLine
 {
-    using System.IO;
-
     /// <summary>
     /// Specifies a set of features to configure a <see cref="CommandLine.CommandLineParser"/> behavior.
     /// </summary>
     public sealed class CommandLineParserSettings
     {
-        private bool caseSensitive = true;
-        private TextWriter helpWriter = null;
-        private bool mutuallyExclusive = false;
+        private bool _caseSensitive = true;
+        private TextWriter _helpWriter = null;
+        private bool _mutuallyExclusive = false;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CommandLine.CommandLineParserSettings"/> class.
@@ -53,7 +55,7 @@ namespace CommandLine
         /// <param name="caseSensitive">If set to true, parsing will be case sensitive.</param>
         public CommandLineParserSettings(bool caseSensitive)
         {
-            this.caseSensitive = caseSensitive;
+            _caseSensitive = caseSensitive;
         }
 
         /// <summary>
@@ -64,7 +66,7 @@ namespace CommandLine
         /// default <see cref="System.Console.Error"/>. Setting this argument to null, will disable help screen.</param>
         public CommandLineParserSettings(TextWriter helpWriter)
         {
-            this.helpWriter = helpWriter;
+            _helpWriter = helpWriter;
         }
 
         /// <summary>
@@ -76,8 +78,8 @@ namespace CommandLine
         /// default <see cref="System.Console.Error"/>. Setting this argument to null, will disable help screen.</param>
         public CommandLineParserSettings(bool caseSensitive, TextWriter helpWriter)
         {
-            this.caseSensitive = caseSensitive;
-            this.helpWriter = helpWriter;
+            _caseSensitive = caseSensitive;
+            _helpWriter = helpWriter;
         }
 
         /// <summary>
@@ -88,8 +90,8 @@ namespace CommandLine
         /// <param name="mutuallyExclusive">If set to true, enable mutually exclusive behavior.</param>
         public CommandLineParserSettings(bool caseSensitive, bool mutuallyExclusive)
         {
-            this.caseSensitive = caseSensitive;
-            this.mutuallyExclusive = mutuallyExclusive;
+            _caseSensitive = caseSensitive;
+            _mutuallyExclusive = mutuallyExclusive;
         }
 
         /// <summary>
@@ -102,9 +104,9 @@ namespace CommandLine
         /// default <see cref="System.Console.Error"/>. Setting this argument to null, will disable help screen.</param>
         public CommandLineParserSettings(bool caseSensitive, bool mutuallyExclusive, TextWriter helpWriter)
         {
-            this.caseSensitive = caseSensitive;
-            this.mutuallyExclusive = mutuallyExclusive;
-            this.helpWriter = helpWriter;
+            _caseSensitive = caseSensitive;
+            _mutuallyExclusive = mutuallyExclusive;
+            _helpWriter = helpWriter;
         }
 
         /// <summary>
@@ -113,8 +115,8 @@ namespace CommandLine
         /// </summary>
         public bool CaseSensitive
         {
-            internal get { return this.caseSensitive; }
-            set { this.caseSensitive = value; }
+            internal get { return _caseSensitive; }
+            set { _caseSensitive = value; }
         }
 
         /// <summary>
@@ -123,8 +125,8 @@ namespace CommandLine
         /// </summary>
         public bool MutuallyExclusive
         {
-            internal get { return this.mutuallyExclusive; }
-            set { this.mutuallyExclusive = value; }
+            internal get { return _mutuallyExclusive; }
+            set { _mutuallyExclusive = value; }
         }
 
         /// <summary>
@@ -133,8 +135,8 @@ namespace CommandLine
         /// </summary>
         public TextWriter HelpWriter
         {
-            internal get { return this.helpWriter; }
-            set { this.helpWriter = value; }
+            internal get { return _helpWriter; }
+            set { _helpWriter = value; }
         }
     }
 }

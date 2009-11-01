@@ -1,4 +1,4 @@
-#region Copyright (C) 2005 - 2009 Giacomo Stelluti Scala
+#region License
 //
 // Command Line Library: OptionMap.cs
 //
@@ -24,38 +24,37 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+//
+#endregion
+#region Using Directives
+using System;
+using System.Collections.Generic;
 #endregion
 
 namespace CommandLine
 {
-    using System;
-    using System.Collections.Generic;
-
     sealed class OptionMap : IOptionMap
     {
-        private CommandLineParserSettings settings;
-        private Dictionary<string, string> names;
-        private Dictionary<string, OptionInfo> map;
-        private Dictionary<string, int> mutuallyExclusiveSetMap;
+        private CommandLineParserSettings _settings;
+        private Dictionary<string, string> _names;
+        private Dictionary<string, OptionInfo> _map;
+        private Dictionary<string, int> _mutuallyExclusiveSetMap;
 
         public OptionMap(int capacity, CommandLineParserSettings settings)
         {
-            this.settings = settings;
+            _settings = settings;
+
             IEqualityComparer<string> comparer;
-            if (this.settings.CaseSensitive)
-            {
+            if (_settings.CaseSensitive)
                 comparer = StringComparer.Ordinal;
-            }
             else
-            {
                 comparer = StringComparer.OrdinalIgnoreCase;
-            }
-            this.names = new Dictionary<string, string>(capacity, comparer);
-            this.map = new Dictionary<string, OptionInfo>(capacity * 2, comparer);
-            if (this.settings.MutuallyExclusive)
-            {
-                this.mutuallyExclusiveSetMap = new Dictionary<string, int>(capacity, StringComparer.OrdinalIgnoreCase);
-            }
+
+            _names = new Dictionary<string, string>(capacity, comparer);
+            _map = new Dictionary<string, OptionInfo>(capacity * 2, comparer);
+
+            if (_settings.MutuallyExclusive)
+                _mutuallyExclusiveSetMap = new Dictionary<string, int>(capacity, StringComparer.OrdinalIgnoreCase);
         }
 
         public OptionInfo this[string key]
@@ -63,28 +62,27 @@ namespace CommandLine
             get
             {
                 OptionInfo option = null;
-                if (this.map.ContainsKey(key))
-                {
-                    option = this.map[key];
-                }
+
+                if (_map.ContainsKey(key))
+                    option = _map[key];
                 else
                 {
                     string optionKey = null;
-                    if (this.names.ContainsKey(key))
+                    if (_names.ContainsKey(key))
                     {
-                        optionKey = this.names[key];
-                        option = this.map[optionKey];
+                        optionKey = _names[key];
+                        option = _map[optionKey];
                     }
                 }
+
                 return option;
             }
             set
             {
-                this.map[key] = value;
+                _map[key] = value;
+
                 if (value.HasBothNames)
-                {
-                    this.names[value.LongName] = value.ShortName;
-                }
+                    _names[value.LongName] = value.ShortName;
             }
         }
 
@@ -95,47 +93,42 @@ namespace CommandLine
 
         private bool EnforceRequiredRule()
         {
-            foreach (OptionInfo option in this.map.Values)
+            foreach (OptionInfo option in _map.Values)
             {
                 if (option.Required && !option.IsDefined)
-                {
                     return false;
-                }
             }
             return true;
         }
 
         private bool EnforceMutuallyExclusiveMap()
         {
-            if (!this.settings.MutuallyExclusive)
-            {
+            if (!_settings.MutuallyExclusive)
                 return true;
-            }
-            foreach (OptionInfo option in this.map.Values)
+
+            foreach (OptionInfo option in _map.Values)
             {
                 if (option.IsDefined && option.MutuallyExclusiveSet != null)
-                {
                     BuildMutuallyExclusiveMap(option);
-                }
             }
-            foreach (int occurrence in this.mutuallyExclusiveSetMap.Values)
+
+            foreach (int occurrence in _mutuallyExclusiveSetMap.Values)
             {
                 if (occurrence > 1)
-                {
                     return false;
-                }
             }
+
             return true;
         }
 
         private void BuildMutuallyExclusiveMap(OptionInfo option)
         {
-            string setName = option.MutuallyExclusiveSet;
-            if (!this.mutuallyExclusiveSetMap.ContainsKey(setName))
-            {
-                this.mutuallyExclusiveSetMap.Add(setName, 0);
-            }
-            this.mutuallyExclusiveSetMap[setName]++;
+            var setName = option.MutuallyExclusiveSet;
+
+            if (!_mutuallyExclusiveSetMap.ContainsKey(setName))
+                _mutuallyExclusiveSetMap.Add(setName, 0);
+
+            _mutuallyExclusiveSetMap[setName]++;
         }
     }
 }

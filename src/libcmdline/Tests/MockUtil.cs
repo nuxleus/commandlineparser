@@ -1,4 +1,4 @@
-﻿#region Copyright (C) 2005 - 2009 Giacomo Stelluti Scala
+﻿#region License
 //
 // Command Line Library: MockUtil.cs
 //
@@ -24,23 +24,26 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+//
+#endregion
+#region Using Directives
+using System;
+using System.Reflection;
+using System.Text;
+using System.Collections.Generic;
 #endregion
 
 #if UNIT_TESTS
 namespace CommandLine.Tests
 {
-    using System;
-    using System.Reflection;
-    using System.Text;
-    using System.Collections.Generic;
-
     static class MockUtil
     {
         public static string ConvertOptionsToString(object instance)
         {
-            StringBuilder builder = new StringBuilder(256);
-            Type type = instance.GetType();
-            FieldInfo[] fields = type.GetFields();            
+            var builder = new StringBuilder(256);
+            var type = instance.GetType();
+            var fields = type.GetFields();            
+
             foreach (FieldInfo field in fields)
             {
                 object[] attrs = field.GetCustomAttributes(false);
@@ -51,12 +54,14 @@ namespace CommandLine.Tests
                     AppendValueListAttribute(builder, instance, field, attr);
                 }
             }
+
             return builder.ToString();
         }
 
         private static void AppendBaseOptionAttribute(StringBuilder builder, object instance, FieldInfo field, object attr)
         {
-            BaseOptionAttribute baseOA = attr as BaseOptionAttribute;
+            var baseOA = attr as BaseOptionAttribute;
+
             if (baseOA != null)
             {
                 if (baseOA.HasShortName)
@@ -79,7 +84,8 @@ namespace CommandLine.Tests
 
         private static void AppendValueListAttribute(StringBuilder builder, object instance, FieldInfo field, object attr)
         {
-            ValueListAttribute valueList = attr as ValueListAttribute;
+            var valueList = attr as ValueListAttribute;
+
             if (valueList != null)
             {
                 IList<string> values = (IList<string>)field.GetValue(instance); //ValueListAttribute.GetReference(instance);

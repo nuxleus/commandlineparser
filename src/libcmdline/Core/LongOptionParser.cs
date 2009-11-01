@@ -1,4 +1,4 @@
-#region Copyright (C) 2005 - 2009 Giacomo Stelluti Scala
+#region License
 //
 // Command Line Library: LongOptionParser.cs
 //
@@ -24,6 +24,7 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+//
 #endregion
 
 namespace CommandLine
@@ -32,19 +33,18 @@ namespace CommandLine
     {
         public sealed override ParserState Parse(IStringEnumerator argumentEnumerator, IOptionMap map, object options)
         {
-            string[] parts = argumentEnumerator.Current.Substring(2).Split(new char[] { '=' }, 2);
-            OptionInfo option = map[parts[0]];
+            var parts = argumentEnumerator.Current.Substring(2).Split(new char[] { '=' }, 2);
+            var option = map[parts[0]];
+
             if (option == null)
-            {
                 return ParserState.Failure;
-            }
+
             option.IsDefined = true;
             if (!option.IsBoolean)
             {
                 if (parts.Length == 1 && (argumentEnumerator.IsLast || !ArgumentParser.IsInputValue(argumentEnumerator.Next)))
-                {
                     return ParserState.Failure;
-                }
+
                 if (parts.Length == 2)
                 {
                     if (option.SetValue(parts[1], options))
@@ -63,17 +63,12 @@ namespace CommandLine
             else
             {
                 if (parts.Length == 2)
-                {
                     return ParserState.Failure;
-                }
+
                 if (option.SetValue(true, options))
-                {
                     return ParserState.Success;
-                }
                 else
-                {
                     return ParserState.Failure;
-                }
             }
         }
     }

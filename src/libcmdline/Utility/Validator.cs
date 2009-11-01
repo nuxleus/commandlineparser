@@ -1,4 +1,4 @@
-#region Copyright (C) 2005 - 2009 Giacomo Stelluti Scala
+#region License
 //
 // Command Line Library: Validator.cs
 //
@@ -24,37 +24,33 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+//
+#endregion
+#region Using Directives
+using System;
 #endregion
 
 namespace CommandLine
 {
-    using System;
-
     static class Validator
     {
         public static void CheckIsNull<T>(T value, string paramName)
                 where T : class
         {
             if (value == null)
-            {
                 throw new ArgumentNullException(paramName);
-            }
         }
 
         public static void CheckIsNullOrEmpty(string value, string paramName)
         {
             if (string.IsNullOrEmpty(value))
-            {
                 throw new ArgumentException(paramName);
-            }
         }
 
         public static void CheckZeroLength<T>(T[] array, string paramName)
         {
             if (array.Length == 0)
-            {
                 throw new ArgumentOutOfRangeException(paramName);
-            }
         }
     }
 }

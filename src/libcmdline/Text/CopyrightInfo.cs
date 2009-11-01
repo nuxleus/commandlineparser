@@ -1,4 +1,4 @@
-#region Copyright (C) 2005 - 2009 Giacomo Stelluti Scala
+#region License
 //
 // Command Line Library: CopyrightInfo.cs
 //
@@ -24,26 +24,28 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+//
+#endregion
+#region Using Directives
+using System.Globalization;
+using System.Text;
 #endregion
 
 namespace CommandLine.Text
 {
-    using System.Globalization;
-    using System.Text;
-
     /// <summary>
     /// Models the copyright informations part of an help text.
     /// You can assign it where you assign any <see cref="System.String"/> instance.
     /// </summary>
     public class CopyrightInfo
     {
-        private readonly bool isSymbolUpper;
-        private readonly int[] years;
-        private readonly string author;
-        private static readonly string defaultCopyrightWord = "Copyright";
-        private static readonly string symbolLower = "(c)";
-        private static readonly string symbolUpper = "(C)";
-        private StringBuilder builder;
+        private readonly bool _isSymbolUpper;
+        private readonly int[] _years;
+        private readonly string _author;
+        private static readonly string _defaultCopyrightWord = "Copyright";
+        private static readonly string _symbolLower = "(c)";
+        private static readonly string _symbolUpper = "(C)";
+        private StringBuilder _builder;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CommandLine.Text.CopyrightInfo"/> class.
@@ -92,10 +94,10 @@ namespace CommandLine.Text
             Validator.CheckZeroLength(years, "years");
 
             const int extraLength = 10;
-            this.isSymbolUpper = isSymbolUpper; //this.symbol = symbol;
-            this.author = author;
-            this.years = years;
-            this.builder = new StringBuilder
+            _isSymbolUpper = isSymbolUpper;
+            _author = author;
+            _years = years;
+            _builder = new StringBuilder
                     (CopyrightWord.Length + author.Length + (4 * years.Length) + extraLength);
         }
 
@@ -105,21 +107,19 @@ namespace CommandLine.Text
         /// <returns>The <see cref="System.String"/> that contains the copyright informations.</returns>
         public override string ToString()
         {
-            builder.Append(this.CopyrightWord);
-            builder.Append(' ');
-            if (this.isSymbolUpper)
-            {
-                builder.Append(symbolUpper);
-            }
+            _builder.Append(CopyrightWord);
+            _builder.Append(' ');
+            if (_isSymbolUpper)
+                _builder.Append(_symbolUpper);
             else
-            {
-                builder.Append(symbolLower);
-            }
-            builder.Append(' ');
-            builder.Append(this.FormatYears(years));
-            builder.Append(' ');
-            builder.Append(this.author);
-            return builder.ToString();
+                _builder.Append(_symbolLower);
+
+            _builder.Append(' ');
+            _builder.Append(FormatYears(_years));
+            _builder.Append(' ');
+            _builder.Append(_author);
+
+            return _builder.ToString();
         }
 
         /// <summary>
@@ -137,7 +137,7 @@ namespace CommandLine.Text
         /// </summary>
         protected virtual string CopyrightWord
         {
-            get { return defaultCopyrightWord; }
+            get { return _defaultCopyrightWord; }
         }
 
         /// <summary>
@@ -149,11 +149,9 @@ namespace CommandLine.Text
         protected virtual string FormatYears(int[] years)
         {
             if (years.Length == 1)
-            {
                 return years[0].ToString(CultureInfo.InvariantCulture);
-            }
 
-            StringBuilder yearsPart = new StringBuilder(years.Length * 6);
+            var yearsPart = new StringBuilder(years.Length * 6);
             for (int i = 0; i < years.Length; i++)
             {
                 yearsPart.Append(years[i].ToString(CultureInfo.InvariantCulture));
@@ -161,15 +159,12 @@ namespace CommandLine.Text
                 if (next < years.Length)
                 {
                     if (years[next] - years[i] > 1)
-                    {
                         yearsPart.Append(" - ");
-                    }
                     else
-                    {
                         yearsPart.Append(", ");
-                    }
                 }
             }
+
             return yearsPart.ToString();
         }
     }

@@ -1,4 +1,4 @@
-#region Copyright (C) 2005 - 2009 Giacomo Stelluti Scala
+#region License
 //
 // Command Line Library: OptionInfo.cs
 //
@@ -24,85 +24,85 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+//
+#endregion
+#region Using Directives
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Reflection;
 #endregion
 
 namespace CommandLine
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Globalization;
-    using System.Reflection;
-
     sealed class OptionInfo
     {
-        private readonly OptionAttribute attribute;
-        private readonly FieldInfo field;
-        private bool required;
-        private string helpText;
-        private bool isDefined;
-        private string shortName;
-        private string longName;
-        private string mutuallyExclusiveSet;
+        private readonly OptionAttribute _attribute;
+        private readonly FieldInfo _field;
+        private bool _required;
+        private string _helpText;
+        private bool _isDefined;
+        private string _shortName;
+        private string _longName;
+        private string _mutuallyExclusiveSet;
 
-        private object setValueLock = new object();
+        private object _setValueLock = new object();
 
         public OptionInfo(OptionAttribute attribute, FieldInfo field)
         {
-            this.required = attribute.Required;
-            this.helpText = attribute.HelpText;
-            this.shortName = attribute.ShortName;
-            this.longName = attribute.LongName;
-            this.mutuallyExclusiveSet = attribute.MutuallyExclusiveSet;
-            this.field = field;
-            this.attribute = attribute;
+            _required = attribute.Required;
+            _helpText = attribute.HelpText;
+            _shortName = attribute.ShortName;
+            _longName = attribute.LongName;
+            _mutuallyExclusiveSet = attribute.MutuallyExclusiveSet;
+            _field = field;
+            _attribute = attribute;
         }
 
 #if UNIT_TESTS
         internal OptionInfo(string shortName, string longName)
         {
-            this.shortName = shortName;
-            this.longName = longName;
+            _shortName = shortName;
+            _longName = longName;
         }
 #endif
-        public static IOptionMap CreateMap(object target, CommandLineParserSettings settings) //public static IOptionMap CreateMap(object target, bool caseSensitive)
+        public static IOptionMap CreateMap(object target, CommandLineParserSettings settings)
         {
-            IList<Pair<FieldInfo, OptionAttribute>> list = ReflectionUtil.RetrieveFieldList<OptionAttribute>(target);
-            IOptionMap map = new OptionMap(list.Count, settings); //IOptionMap map = new OptionMap(list.Count, caseSensitive);
+            var list = ReflectionUtil.RetrieveFieldList<OptionAttribute>(target);
+            IOptionMap map = new OptionMap(list.Count, settings);
+
             foreach (Pair<FieldInfo, OptionAttribute> pair in list)
             {
                 map[pair.Right.UniqueName] = new OptionInfo(pair.Right, pair.Left);
             }
+
             return map;
         }
 
         public bool SetValue(string value, object options)
         {
-            if (attribute is OptionListAttribute)
-            {
-                return this.SetValueList(value, options);
-            }
-            else
-            {
-                return this.SetValueScalar(value, options);
-            }
+            if (_attribute is OptionListAttribute)
+                return SetValueList(value, options);
+
+            return SetValueScalar(value, options);
         }
 
         public bool SetValueScalar(string value, object options)
         {
             try
             {
-                if (this.field.FieldType.IsEnum)
+                if (_field.FieldType.IsEnum)
                 {
-                    lock (this.setValueLock)
+                    lock (_setValueLock)
                     {
-                        this.field.SetValue(options, Enum.Parse(this.field.FieldType, value, true));
+                        _field.SetValue(options, Enum.Parse(_field.FieldType, value, true));
                     }
                 }
                 else
                 {
-                    lock (this.setValueLock)
+                    lock (_setValueLock)
                     {
-                        this.field.SetValue(options, Convert.ChangeType(value, this.field.FieldType, CultureInfo.InvariantCulture));
+                        _field.SetValue(options, Convert.ChangeType(value, _field.FieldType, CultureInfo.InvariantCulture));
                     }
                 }
             }
@@ -118,72 +118,77 @@ namespace CommandLine
             {
                 return false;
             }
+
             return true;
         }
 
         public bool SetValue(bool value, object options)
         {
-            lock (this.setValueLock)
+            lock (_setValueLock)
             {
-                this.field.SetValue(options, value);
+                _field.SetValue(options, value);
+
                 return true;
             }
         }
 
         public bool SetValueList(string value, object options)
         {
-            lock (this.setValueLock)
+            lock (_setValueLock)
             {
-                field.SetValue(options, new List<string>());
-                IList<string> fieldRef = (IList<string>)field.GetValue(options);
-                string[] values = value.Split(((OptionListAttribute)this.attribute).Separator);
+                _field.SetValue(options, new List<string>());
+
+                var fieldRef = (IList<string>)_field.GetValue(options);
+                var values = value.Split(((OptionListAttribute)_attribute).Separator);
+
                 for (int i = 0; i < values.Length; i++)
                 {
                     fieldRef.Add(values[i]);
                 }
+
                 return true;
             }
         }
 
         public string ShortName
         {
-            get { return this.shortName; }
+            get { return _shortName; }
         }
 
         public string LongName
         {
-            get { return this.longName; }
+            get { return _longName; }
         }
 
         public string MutuallyExclusiveSet
         {
-            get { return this.mutuallyExclusiveSet; }
+            get { return _mutuallyExclusiveSet; }
         }
 
         public bool Required
         {
-            get { return this.required; }
+            get { return _required; }
         }
 
         public string HelpText
         {
-            get { return this.helpText; }
+            get { return _helpText; }
         }
 
         public bool IsBoolean
         {
-            get { return this.field.FieldType == typeof(bool); }
+            get { return _field.FieldType == typeof(bool); }
         }
 
         public bool IsDefined
         {
-            get { return this.isDefined; }
-            set { this.isDefined = value; }
+            get { return _isDefined; }
+            set { _isDefined = value; }
         }
 
         public bool HasBothNames
         {
-            get { return (this.shortName != null && this.longName != null); }
+            get { return (_shortName != null && _longName != null); }
         }
     }
 }

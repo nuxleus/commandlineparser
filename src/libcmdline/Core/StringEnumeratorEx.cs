@@ -1,4 +1,4 @@
-#region Copyright (C) 2005 - 2009 Giacomo Stelluti Scala
+#region License
 //
 // Command Line Library: StringEnumeratorEx.cs
 //
@@ -24,40 +24,42 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+//
+#endregion
+#region Using Directives
+using System;
 #endregion
 
 namespace CommandLine
 {
-    using System;
-
     sealed class StringEnumeratorEx : IStringEnumerator
     {
-        private string[] data;
-        private int index;
-        private int endIndex;
+        private string[] _data;
+        private int _index;
+        private int _endIndex;
 
         public StringEnumeratorEx(string[] value)
         {
             Validator.CheckIsNull(value, "value");
 
-            this.data = value;
-            this.index = -1;
-            this.endIndex = value.Length;
+            _data = value;
+            _index = -1;
+            _endIndex = value.Length;
         }
 
         public string Current
         {
             get
             {
-                if (this.index == -1)
+                if (_index == -1)
                 {
                     throw new InvalidOperationException();
                 }
-                if (this.index >= this.endIndex)
+                if (_index >= _endIndex)
                 {
                     throw new InvalidOperationException();
                 }
-                return this.data[this.index];
+                return _data[_index];
             }
         }
 
@@ -65,38 +67,38 @@ namespace CommandLine
         {
             get
             {
-                if (this.index == -1)
+                if (_index == -1)
                 {
                     throw new InvalidOperationException();
                 }
-                if (this.index > this.endIndex)
+                if (_index > _endIndex)
                 {
                     throw new InvalidOperationException();
                 }
-                if (this.IsLast)
+                if (IsLast)
                 {
                     return null;
                 }
-                return this.data[this.index + 1];
+                return _data[_index + 1];
             }
         }
 
         public bool IsLast
         {
-            get { return this.index == this.endIndex - 1; }
+            get { return _index == _endIndex - 1; }
         }
 
         public void Reset()
         {
-            this.index = -1;
+            _index = -1;
         }
 
         public bool MoveNext()
         {
-            if (this.index < this.endIndex)
+            if (_index < _endIndex)
             {
-                this.index++;
-                return this.index < this.endIndex;
+                _index++;
+                return _index < _endIndex;
             }
             return false;
         }

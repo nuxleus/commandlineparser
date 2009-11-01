@@ -1,3 +1,52 @@
+2009-11-01	Giacomo Stelluti Scala	<gsscoder@ymail.com>
+
+	* {all}.cs
+		Modified. Code formatting lightly adjusted for readability and maintainability.
+		
+	* OptionInfo.cs (OptionInfo)
+		[if|else] construct of ::SetValue(string, object) turned into [guard-clause|return].
+		
+	* HelpText.cs (HelpText)
+		[if|else] construct of ::GetLength(*) turned into [guard-clause|return].
+		
+	* IncompatibleTypesException.cs (IncompatibleTypesException)
+		Removed. It's no longer necessary.
+	
+	* ParserException.cs (ParserException)
+		Moved. {project-root}/Exceptions/ParserException.cs was moved to {project-root}/Parser.
+		
+	* Exceptions folder
+		Removed.
+		
+	* NAnt Script (../nant/default.build)
+		Modified. Aligned to Visual Studio project.
+		
+	* Tests folder
+		Created. This folder will contain reusable test code.
+		
+	* MockUtil.cs
+	  MockOptionsBase.cs
+		Moved. Both files moved to {project-root}/Tests folder.
+		
+	* CommandLineParserBaseFixture.cs (CommandLineParserBaseFixture)
+		Added. CommandLineParserBaseFixture will be the base class for testing CommandLineParser.
+		
+	* ValueListAttributeParsingFixture.cs (ValueListAttributeParsingFixture)
+		Added. Groups tests for CommandLineParser type related to ValueList[Attribute]. These tests
+		were first contained in CommandLineParserFixture.
+		
+	* CommandLineParserBaseFixture.cs (CommandLineParserBaseFixture)
+		Modified. See ValueListAttributeParsingFixture[.cs] changes.
+		
+	* CommandLineParserFixture.Mocks.cs (types nested in CommandLineParserFixture)
+		Modified. Added MockOptionsExtended type.
+		
+	* CommandLineLibrary.shfb
+		Removed. This file was converted to a newer version of SandCastle (sc 2.4.10520, hpfb 1.8.0.2 beta).	
+		
+	* CommandLineLibrary.shfbproj
+		Added. This is the new version of CommandLineLibrary.shfb (source for build CHM help file).
+		
 2009-09-16	Giacomo Stelluti Scala	<gsscoder@ymail.com>
 
 	* Parser.cs (Parser)
@@ -11,7 +60,7 @@
 		the overload of ParseArgurguments(...) that accepts helpWriter as argument) means that
 		in case of fail (or help request) you don't want to display any help screen.
 		
-	* Parser folder.
+	* Parser folder
 		Added. Contains ICommandLineParser.cs, CommandLineParser.cs, CommandLineParserSettings.cs
 		
 	* Tests folder
@@ -31,7 +80,7 @@
 		Changed. This type has ben replaced (and adapted) with the version shipped with
 		Common Utility Library (see [1] http://commonapi.codeplex.com/).
 		
-	* Util folder.
+	* Util folder
 		Renamed. Extended to 'Utility'.
 		
 	* CommandLineParserFixture.cs (CommandLineParserFixture)

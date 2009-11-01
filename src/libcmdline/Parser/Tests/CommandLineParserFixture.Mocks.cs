@@ -1,4 +1,4 @@
-﻿#region Copyright (C) 2005 - 2009 Giacomo Stelluti Scala
+﻿#region License
 //
 // Command Line Library: CommandLineParserFixture.Mocks.cs
 //
@@ -24,14 +24,16 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+//
+#endregion
+#region Using Directives
+using System.Collections.Generic;
+using System.IO;
 #endregion
 
 #if UNIT_TESTS
 namespace CommandLine.Tests
 {
-    using System.Collections.Generic;
-    using System.IO;
-
     public sealed partial class CommandLineParserFixture
 	{
         class MockOptions : MockOptionsBase
@@ -44,6 +46,12 @@ namespace CommandLine.Tests
 
             [Option(null, "switch")]
             public bool BoolOption = false;
+        }
+
+        class MockOptionsExtended : MockOptions
+        {
+            [ValueList(typeof(List<string>))]
+            public IList<string> Elements = null;
         }
 
         class MockNumericOptions : MockOptionsBase
@@ -80,36 +88,6 @@ namespace CommandLine.Tests
 
             [Option("d", "double")]
             public double DoubleOption = 0;
-        }
-
-        class MockOptionsWithValueList : MockOptionsBase
-        {
-            [Option("o", "output")]
-            public string OutputFile = string.Empty;
-
-            [Option("w", "overwrite")]
-            public bool Overwrite = false;
-
-            [ValueList(typeof(List<string>))]
-            public IList<string> InputFilenames = null;
-        }
-
-        class MockOptionsWithValueListMaxElemDefined : MockOptionsBase
-        {
-            [Option("o", "output")]
-            public string OutputFile = string.Empty;
-
-            [Option("w", "overwrite")]
-            public bool Overwrite = false;
-
-            [ValueList(typeof(List<string>), MaximumElements = 3)]
-            public IList<string> InputFilenames = null;
-        }
-
-        class MockOptionsWithValueListMaxElemEqZero : MockOptionsBase
-        {
-            [ValueList(typeof(List<string>), MaximumElements = 0)]
-            public IList<string> Junk = null;
         }
 
         class MockOptionsWithOptionList

@@ -1,4 +1,4 @@
-#region Copyright (C) 2005 - 2009 Giacomo Stelluti Scala
+#region License
 //
 // Command Line Library: PairT.cs
 //
@@ -24,49 +24,48 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+//
 #endregion
 
 namespace CommandLine
 {
     sealed class Pair<TLeft, TRight>
     {
-        private readonly TLeft left;
-        private readonly TRight right;
+        private readonly TLeft _left;
+        private readonly TRight _right;
 
         public Pair(TLeft left, TRight right)
         {
-            this.left = left;
-            this.right = right;
+            _left = left;
+            _right = right;
         }
 
         public TLeft Left
         {
-            get { return this.left; }
+            get { return _left; }
         }
 
         public TRight Right
         {
-            get { return this.right; }
+            get { return _right; }
         }
 
         public override int GetHashCode()
         {
-            int leftHash = (this.left == null ? 0 : this.left.GetHashCode());
-            int rightHash = (this.right == null ? 0 : this.right.GetHashCode());
+            int leftHash = (_left == null ? 0 : _left.GetHashCode());
+            int rightHash = (_right == null ? 0 : _right.GetHashCode());
 
             return leftHash ^ rightHash;
         }
 
         public override bool Equals(object obj)
         {
-            Pair<TLeft, TRight> other = obj as Pair<TLeft, TRight>;
+            var other = obj as Pair<TLeft, TRight>;
 
             if (other == null)
-            {
                 return false;
-            }
 
-            return Equals(left, other.left) && Equals(right, other.right);
+            return Equals(_left, other._left) && Equals(_right, other._right);
         }
     }
 }

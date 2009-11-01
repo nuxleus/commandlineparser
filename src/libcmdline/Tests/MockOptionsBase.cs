@@ -1,6 +1,6 @@
-#region Copyright (C) 2005 - 2009 Giacomo Stelluti Scala
+﻿#region License
 //
-// Command Line Library: IncompatibleTypesException.cs
+// Command Line Library: MockOptionsBase.cs
 //
 // Author:
 //   Giacomo Stelluti Scala (gsscoder@ymail.com)
@@ -24,41 +24,18 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+//
 #endregion
 
-namespace CommandLine
+#if UNIT_TESTS
+namespace CommandLine.Tests
 {
-    using System;
-    using System.Runtime.Serialization;
-
-    /// <summary>
-    /// Represents the exception that is thrown when an attempt to assign incopatible types.
-    /// This exception has only backward compatibility purpose, instead catch
-    /// <see cref="CommandLine.ParserException"/>.
-    /// The code will no more throw this type.
-    /// </summary>
-    [Obsolete]
-    [Serializable]
-    public sealed class IncompatibleTypesException : Exception, ISerializable
+    abstract class MockOptionsBase
     {
-        internal IncompatibleTypesException()
-            : base()
+        public override string ToString()
         {
-        }
-
-        internal IncompatibleTypesException(string message)
-            : base(message)
-        {
-        }
-
-        internal IncompatibleTypesException(string message, Exception innerException)
-            : base(message, innerException)
-        {
-        }
-
-        internal IncompatibleTypesException(SerializationInfo info, StreamingContext context)
-            : base(info, context)
-        {
+            return MockUtil.ConvertOptionsToString(this);
         }
     }
 }
+#endif

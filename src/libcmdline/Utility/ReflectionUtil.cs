@@ -1,4 +1,4 @@
-#region Copyright (C) 2005 - 2009 Giacomo Stelluti Scala
+#region License
 //
 // Command Line Library: ReflectionUtil.cs
 //
@@ -24,21 +24,24 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+//
+#endregion
+#region Using Directives
+using System;
+using System.Collections.Generic;
+using System.Reflection;
 #endregion
 
 namespace CommandLine
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Reflection;
-
     static class ReflectionUtil
     {
         public static IList<Pair<FieldInfo, TAttribute>> RetrieveFieldList<TAttribute>(object target)
                 where TAttribute : Attribute
         {
             IList<Pair<FieldInfo, TAttribute>> list = new List<Pair<FieldInfo, TAttribute>>();
-            FieldInfo[] info = target.GetType().GetFields();
+            var info = target.GetType().GetFields();
+
             foreach (FieldInfo field in info)
             {
                 if (!field.IsStatic && !field.IsInitOnly && !field.IsLiteral)
@@ -46,37 +49,18 @@ namespace CommandLine
                     Attribute attribute =
                         Attribute.GetCustomAttribute(field, typeof(TAttribute), false);
                     if (attribute != null)
-                    {
                         list.Add(new Pair<FieldInfo, TAttribute>(field, (TAttribute)attribute));
-                    }
                 }
             }
+
             return list;
         }
 
         public static Pair<MethodInfo, TAttribute> RetrieveMethod<TAttribute>(object target)
                 where TAttribute : Attribute
         {
-            MethodInfo[] info = target.GetType().GetMethods();
-            foreach (MethodInfo method in info)
-            {
-                if (!method.IsStatic)
-                {
-                    Attribute attribute =
-                                                Attribute.GetCustomAttribute(method, typeof(TAttribute), false);
-                    if (attribute != null)
-                    {
-                        return new Pair<MethodInfo, TAttribute>(method, (TAttribute)attribute);
-                    }
-                }
-            }
-            return null;
-        }
+            var info = target.GetType().GetMethods();
 
-        public static TAttribute RetrieveMethodAttributeOnly<TAttribute>(object target)
-                where TAttribute : Attribute
-        {
-            MethodInfo[] info = target.GetType().GetMethods();
             foreach (MethodInfo method in info)
             {
                 if (!method.IsStatic)
@@ -84,11 +68,29 @@ namespace CommandLine
                     Attribute attribute =
                         Attribute.GetCustomAttribute(method, typeof(TAttribute), false);
                     if (attribute != null)
-                    {
-                        return (TAttribute)attribute;
-                    }
+                        return new Pair<MethodInfo, TAttribute>(method, (TAttribute)attribute);
                 }
             }
+
+            return null;
+        }
+
+        public static TAttribute RetrieveMethodAttributeOnly<TAttribute>(object target)
+                where TAttribute : Attribute
+        {
+            var info = target.GetType().GetMethods();
+
+            foreach (MethodInfo method in info)
+            {
+                if (!method.IsStatic)
+                {
+                    Attribute attribute =
+                        Attribute.GetCustomAttribute(method, typeof(TAttribute), false);
+                    if (attribute != null)
+                        return (TAttribute)attribute;
+                }
+            }
+
             return null;
         }
 
@@ -96,7 +98,8 @@ namespace CommandLine
                 where TAttribute : Attribute
         {
             IList<TAttribute> list = new List<TAttribute>();
-            FieldInfo[] info = target.GetType().GetFields();
+            var info = target.GetType().GetFields();
+
             foreach (FieldInfo field in info)
             {
                 if (!field.IsStatic && !field.IsInitOnly && !field.IsLiteral)
@@ -104,11 +107,10 @@ namespace CommandLine
                     Attribute attribute =
                         Attribute.GetCustomAttribute(field, typeof(TAttribute), false);
                     if (attribute != null)
-                    {
                         list.Add((TAttribute)attribute);
-                    }
                 }
             }
+
             return list;
         }
     }

@@ -1,6 +1,6 @@
-#region Copyright (C) 2005 - 2009 Giacomo Stelluti Scala
+#region License
 //
-// Command Line Library: OptionAttribute.cs
+// Command Line Library: HelpOptionAttributeFixture.cs
 //
 // Author:
 //   Giacomo Stelluti Scala (gsscoder@ymail.com)
@@ -24,20 +24,22 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+//
+#endregion
+#region Using Directives
+using System;
+using System.IO;
+using CommandLine.Text;
+using NUnit.Framework;
 #endregion
 
 #if UNIT_TESTS
 namespace CommandLine.Tests
 {
-    using System;
-    using System.IO;
-    using CommandLine.Text;
-    using NUnit.Framework;
-
     [TestFixture]
     public sealed class HelpOptionAttributeFixture
     {
-        private static ICommandLineParser parser = new CommandLineParser();
+        private static ICommandLineParser _parser = new CommandLineParser();
 
         #region Mock Objects
         private class MockOptions
@@ -65,7 +67,7 @@ namespace CommandLine.Tests
             [HelpOption(HelpText="Display this screen.")]
             public string GetUsage()
             {
-                HelpText help = new HelpText(new HeadingInfo("MyProgram", "1.0"));
+                var help = new HelpText(new HeadingInfo("MyProgram", "1.0"));
                 help.Copyright = new CopyrightInfo("Authors, Inc.", 2007);
                 help.AddPreOptionsLine("This software is under the terms of the XYZ License");
                 help.AddPreOptionsLine("(http://license-text.org/show.cgi?xyz).");
@@ -81,9 +83,10 @@ namespace CommandLine.Tests
         [Test]
         public void CorrectInputNotActivatesHelp()
         {
-            MockOptions options = new MockOptions();
-            TextWriter writer = new StringWriter();
-            bool success = parser.ParseArguments(
+            var options = new MockOptions();
+            var writer = new StringWriter();
+
+            bool success = _parser.ParseArguments(
                     new string[] { "-imath.xml", "-oresult.xml" }, options, writer);
 
             Assert.IsTrue(success);
@@ -93,9 +96,10 @@ namespace CommandLine.Tests
         [Test]
         public void BadInputActivatesHelp()
         {
-            MockOptions options = new MockOptions();
-            TextWriter writer = new StringWriter();
-            bool success = parser.ParseArguments(
+            var options = new MockOptions();
+            var writer = new StringWriter();
+
+            bool success = _parser.ParseArguments(
                     new string[] { "math.xml", "-oresult.xml" }, options, writer);
 
             Assert.IsFalse(success);
@@ -109,9 +113,10 @@ namespace CommandLine.Tests
         [Test]
         public void ExplicitHelpActivation()
         {
-            MockOptions options = new MockOptions();
-            TextWriter writer = new StringWriter();
-            bool success = parser.ParseArguments(
+            var options = new MockOptions();
+            var writer = new StringWriter();
+
+            bool success = _parser.ParseArguments(
                     new string[] { "--help" }, options, writer);
 
             Assert.IsFalse(success);

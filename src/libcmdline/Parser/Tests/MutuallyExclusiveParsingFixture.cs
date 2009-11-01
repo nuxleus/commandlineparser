@@ -1,4 +1,4 @@
-﻿#region Copyright (C) 2005 - 2009 Giacomo Stelluti Scala
+﻿#region License
 //
 // Command Line Library: MutuallyExclusiveParsingFixture.cs
 //
@@ -24,18 +24,22 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+//
+#endregion
+#region Using Directives
+using NUnit.Framework;
 #endregion
 
 #if UNIT_TESTS
 namespace CommandLine.Tests
 {
-    using NUnit.Framework;
-
     [TestFixture]
-    public sealed class MutuallyExclusiveParsingFixture
+    public sealed class MutuallyExclusiveParsingFixture : CommandLineParserBaseFixture
     {
-        private static ICommandLineParser parser = new CommandLineParser(
-            new CommandLineParserSettings(false, true));  //mutually exclusive setting enabled (second parameter)
+        protected override ICommandLineParser CreateCommandLineParser()
+        {
+            return new CommandLineParser(new CommandLineParserSettings {MutuallyExclusive = true});
+        }
 
         #region Mock Options
         class MockOptionsWithDefaultSet
@@ -97,28 +101,29 @@ namespace CommandLine.Tests
         [Test]
         public void ParsingOneMutuallyExclusiveOptionSucceeds()
         {
-            MockOptionsWithDefaultSet options = new MockOptionsWithDefaultSet();
-            bool success = parser.ParseArguments(new string[] { "--file=mystuff.xml" }, options);
-            Assert.IsTrue(success);
+            var options = new MockOptionsWithDefaultSet();
+            bool success = base.Parser.ParseArguments(new string[] { "--file=mystuff.xml" }, options);
 
+            Assert.IsTrue(success);
             Assert.AreEqual("mystuff.xml", options.FileName);
         }
 
         [Test]
         public void ParsingTwoMutuallyExclusiveOptionsFails()
         {
-            MockOptionsWithDefaultSet options = new MockOptionsWithDefaultSet();
-            bool success = parser.ParseArguments(new string[] { "-i", "1", "--file=mystuff.xml" }, options);
+            var options = new MockOptionsWithDefaultSet();
+            bool success = base.Parser.ParseArguments(new string[] { "-i", "1", "--file=mystuff.xml" }, options);
+            
             Assert.IsFalse(success);
         }
 
         [Test]
         public void ParsingOneMutuallyExclusiveOptionWithAnotherOptionSucceeds()
         {
-            MockOptionsWithDefaultSet options = new MockOptionsWithDefaultSet();
-            bool success = parser.ParseArguments(new string[] { "--file=mystuff.xml", "-v" }, options);
+            var options = new MockOptionsWithDefaultSet();
+            bool success = base.Parser.ParseArguments(new string[] { "--file=mystuff.xml", "-v" }, options);
+            
             Assert.IsTrue(success);
-
             Assert.AreEqual("mystuff.xml", options.FileName);
             Assert.AreEqual(true, options.Verbose);
         }
@@ -126,10 +131,10 @@ namespace CommandLine.Tests
         [Test]
         public void ParsingTwoMutuallyExclusiveOptionsInTwoSetSucceeds()
         {
-            MockColorOptions options = new MockColorOptions();
-            bool success = parser.ParseArguments(new string[] { "-g167", "--hue", "205" }, options);
+            var options = new MockColorOptions();
+            bool success = base.Parser.ParseArguments(new string[] { "-g167", "--hue", "205" }, options);
+            
             Assert.IsTrue(success);
-
             Assert.AreEqual(167, options.Green);
             Assert.AreEqual(205, options.Hue);
         }
@@ -137,31 +142,32 @@ namespace CommandLine.Tests
         [Test]
         public void ParsingThreeMutuallyExclusiveOptionsInTwoSetFails()
         {
-            MockColorOptions options = new MockColorOptions();
-            bool success = parser.ParseArguments(new string[] { "-g167", "--hue", "205", "--saturation=37" }, options);
+            var options = new MockColorOptions();
+            bool success = base.Parser.ParseArguments(new string[] { "-g167", "--hue", "205", "--saturation=37" }, options);
+            
             Assert.IsFalse(success);
         }
 
         [Test]
         public void ParsingMutuallyExclusiveOptionsAndRequiredOptionFails()
         {
-            MockExtendedColorOptions options = new MockExtendedColorOptions();
-            bool success = parser.ParseArguments(new string[] { "-g167", "--hue", "205" }, options);
+            var options = new MockExtendedColorOptions();
+            bool success = base.Parser.ParseArguments(new string[] { "-g167", "--hue", "205" }, options);
+            
             Assert.IsFalse(success);
         }
 
         [Test]
         public void ParsingMutuallyExclusiveOptionsAndRequiredOptionSucceeds()
         {
-            MockExtendedColorOptions options = new MockExtendedColorOptions();
-            bool success = parser.ParseArguments(new string[] { "-g100", "-h200", "-cRgbColorSet" }, options);
+            var options = new MockExtendedColorOptions();
+            bool success = base.Parser.ParseArguments(new string[] { "-g100", "-h200", "-cRgbColorSet" }, options);
+            
             Assert.IsTrue(success);
-
             Assert.AreEqual(100, options.Green);
             Assert.AreEqual(200, options.Hue);
             Assert.AreEqual(ColorSet.RgbColorSet, options.DefaultColorSet);
         }
-
     }
 }
 #endif

@@ -1,4 +1,4 @@
-#region Copyright (C) 2005 - 2009 Giacomo Stelluti Scala
+#region License
 //
 // Command Line Library: ThisAssembly.cs
 //
@@ -30,6 +30,6 @@ static class ThisAssembly
 {
     internal const string Title = "CommandLine.dll";
     internal const string Copyright = "Copyright (C) 2005 - 2009 Giacomo Stelluti Scala";
-    internal const string Version = "1.6.0.0"; //stable
-    internal const string InformationalVersion = "1.6.0.0";
+    internal const string Version = "1.6.0.5"; //stable
+    internal const string InformationalVersion = "1.6.0.5";
 }

@@ -1,5 +1,6 @@
 Command Line Parser Library
-Version 1.6 (Stable)
+Version 1.6.0.5 (Stable)
+Latest Update: 01-nov-2009.
 
 General Info:
 This library allows command line arguments parsing.
@@ -11,21 +12,29 @@ http://catb.org/~esr/writings/taoup/html/ch10s05.html.
 More info on: http://gsscoder.blogspot.com/.
   
 Build:
+---------------------------------------------------------------------------------------
+[WIN/NET] This version of the code use some C# 3.0 features (still targeting .NET 2.0);
+to successfully compile the project you need to modify the NAnt configuration file
+(NAnt.exe.config). Seek the <frameworks> node and add (e.g. after net-2.0 definition)
+the content of 'net-3.5_fx-node.nant-conf' located in '{libroot}/nant' folder.
+[LINUX/MONO] When you compile with NAnt under Linux be sure to have a version of Mono
+which supports C# 3.0 like 2.1 or higher (but I suggest you Mono 2.4).
+---------------------------------------------------------------------------------------
 If you use NAnt (http://nant.sourceforge.net/), you should copy (*1) your
   nunit.framework.dll
 to the {libroot}/lib subdirectory (located in the root directory of the library).
 Unit Tests are compatible from NUnit 2.2.0.
 Change current directory to {libroot}/nant.
 Production Release:
-	nant -t:net-2.0 build
+	nant build
 Debug+Tests Release:
-	nant -t:net-2.0 tests
-If you use PowerShell you should enclose the -t switch with double quotes:
-	nant "-t:net-2.0" {target}
+	nant tests
 Mono users must use 
-	nant -t:mono-2.0 {target}
-You will find binaries in {libroot}/nant/build.out; warning each run will
-overwrite the previous.
+	nant {target}
+If you still have problems try adding -t:net-3.5 (or -t:mono-3.5 under Linux) between
+nant command and target string.
+You will find binaries in {libroot}/nant/build.out; warning each run will overwrite
+the previous.
 	
 Unit Tests:
 To run unit tests you should copy (*1)
@@ -45,8 +54,9 @@ HelpFile (CHM V1) created with Sandcastle
 try it, simple and powerful!	
 
 Framework Compatibility:
-  MS .NET Framework Version 2.0+
-  Mono 2.0 Profile+
+  C# 3.0+ compiler
+  .NET Framework 2.0+
+  Mono 2.1+ Profile
 
 Licence:
   MIT License

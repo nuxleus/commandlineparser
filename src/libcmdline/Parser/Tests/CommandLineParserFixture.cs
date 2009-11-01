@@ -1,4 +1,4 @@
-#region Copyright (C) 2005 - 2009 Giacomo Stelluti Scala
+#region License
 //
 // Command Line Library: CommandLineParserFixture.cs
 //
@@ -24,48 +24,39 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+//
+#endregion
+#region Using Directives
+using System;
+using System.IO;
+using NUnit.Framework;
 #endregion
 
 #if UNIT_TESTS
 namespace CommandLine.Tests
 {
-    using System;
-    using System.IO;
-    using NUnit.Framework;
-
     [TestFixture]
-    public sealed partial class CommandLineParserFixture
+    public sealed partial class CommandLineParserFixture : CommandLineParserBaseFixture
     {
-        private static ICommandLineParser parser = new CommandLineParser();
-
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void WillThrowExceptionIfArgumentsArrayIsNull()
         {
-            parser.ParseArguments(null, new MockOptions());
+            base.Parser.ParseArguments(null, new MockOptions());
         }
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void WillThrowExceptionIfOptionsInstanceIsNull()
         {
-            parser.ParseArguments(new string[] { }, null);
+            base.Parser.ParseArguments(new string[] { }, null);
         }
-
-        //[Test]
-        //[ExpectedException(typeof(ArgumentNullException))]
-        //public void WillThrowExceptionIfTextWriterIsNull()
-        //{
-        //    TextWriter helpWriter = null; // needed for let the compiler choose the correct overload
-        //    parser.ParseArguments(new string[] { }, new MockOptions(), helpWriter);
-        //}
 
         [Test]
         public void ParseStringOption()
         {
-            MockOptions options = new MockOptions();
-            bool success = parser.ParseArguments(
-                    new string[] { "-s", "something" }, options);
+            var options = new MockOptions();
+            bool success = base.Parser.ParseArguments(new string[] { "-s", "something" }, options);
 
             Assert.IsTrue(success);
             Assert.AreEqual("something", options.StringOption);
@@ -75,8 +66,8 @@ namespace CommandLine.Tests
         [Test]
         public void ParseStringIntegerBoolOptions()
         {
-            MockOptions options = new MockOptions();
-            bool success = parser.ParseArguments(
+            var options = new MockOptions();
+            bool success = base.Parser.ParseArguments(
                     new string[] { "-s", "another string", "-i100", "--switch" }, options);
 
             Assert.IsTrue(success);
@@ -89,9 +80,8 @@ namespace CommandLine.Tests
         [Test]
         public void ParseShortAdjacentOptions()
         {
-            MockBoolPrevalentOptions options = new MockBoolPrevalentOptions();
-            bool success = parser.ParseArguments(
-                    new string[] { "-ca", "-d65" }, options);
+            var options = new MockBoolPrevalentOptions();
+            bool success = base.Parser.ParseArguments(new string[] { "-ca", "-d65" }, options);
 
             Assert.IsTrue(success);
             Assert.IsTrue(options.OptionC);
@@ -104,9 +94,8 @@ namespace CommandLine.Tests
         [Test]
         public void ParseShortLongOptions()
         {
-            MockBoolPrevalentOptions options = new MockBoolPrevalentOptions();
-            bool success = parser.ParseArguments(
-                    new string[] { "-b", "--double=9" }, options);
+            var options = new MockBoolPrevalentOptions();
+            bool success = base.Parser.ParseArguments(new string[] { "-b", "--double=9" }, options);
 
             Assert.IsTrue(success);
             Assert.IsTrue(options.OptionB);
@@ -115,74 +104,12 @@ namespace CommandLine.Tests
             Assert.AreEqual(9, options.DoubleOption);
             Console.WriteLine(options);
         }
-
-        #region ValueListAttribute Tests
-        [Test]
-        public void ValueListAttributeIsolatesNonOptionValues()
-        {
-            MockOptionsWithValueList options = new MockOptionsWithValueList();
-            bool success = parser.ParseArguments(
-                new string[] { "file1.ext", "file2.ext", "file3.ext", "-wo", "out.ext" }, options);
-
-            Assert.IsTrue(success);
-            Assert.AreEqual("file1.ext", options.InputFilenames[0]);
-            Assert.AreEqual("file2.ext", options.InputFilenames[1]);
-            Assert.AreEqual("file3.ext", options.InputFilenames[2]);
-            Assert.AreEqual("out.ext", options.OutputFile);
-            Assert.IsTrue(options.Overwrite);
-            Console.WriteLine(options);
-        }
-
-        [Test]
-        public void ValueListWithMaxElemInsideBounds()
-        {
-            MockOptionsWithValueListMaxElemDefined options = new MockOptionsWithValueListMaxElemDefined();
-            bool success = parser.ParseArguments(
-                    new string[] { "file.a", "file.b", "file.c" }, options);
-
-            Assert.IsTrue(success);
-            Assert.AreEqual("file.a", options.InputFilenames[0]);
-            Assert.AreEqual("file.b", options.InputFilenames[1]);
-            Assert.AreEqual("file.c", options.InputFilenames[2]);
-            Assert.AreEqual(String.Empty, options.OutputFile);
-            Assert.IsFalse(options.Overwrite);
-            Console.WriteLine(options);
-        }
-
-        [Test]
-        public void ValueListWithMaxElemOutsideBounds()
-        {
-            MockOptionsWithValueListMaxElemDefined options = new MockOptionsWithValueListMaxElemDefined();
-            bool success = parser.ParseArguments(
-                    new string[] { "file.a", "file.b", "file.c", "file.d" }, options);
-
-            Assert.IsFalse(success);
-        }
-
-        [Test]
-        public void ValueListWithMaxElemSetToZeroSucceeds()
-        {
-            MockOptionsWithValueListMaxElemEqZero options = new MockOptionsWithValueListMaxElemEqZero();
-            bool success = parser.ParseArguments(new string[] { }, options);
-
-            Assert.IsTrue(success);
-            Assert.AreEqual(0, options.Junk.Count);
-            Console.WriteLine(options);
-        }
-
-        [Test]
-        public void ValueListWithMaxElemSetToZeroFailes()
-        {
-            MockOptionsWithValueListMaxElemEqZero options = new MockOptionsWithValueListMaxElemEqZero();
-            Assert.IsFalse(parser.ParseArguments(new string[] { "some", "value" }, options));
-        }
-        #endregion //end ValueListAttribute Tests
-
+ 
         [Test]
         public void ParseOptionList()
         {
-            MockOptionsWithOptionList options = new MockOptionsWithOptionList();
-            bool success = parser.ParseArguments(new string[] {
+            var options = new MockOptionsWithOptionList();
+            bool success = base.Parser.ParseArguments(new string[] {
                                 "-s", "string1:stringTwo:stringIII", "-f", "test-file.txt" }, options);
 
             Assert.IsTrue(success);
@@ -200,18 +127,18 @@ namespace CommandLine.Tests
         [Test]
         public void ShortOptionRefusesEqualToken()
         {
-            MockOptions options = new MockOptions();
+            var options = new MockOptions();
 
-            Assert.IsFalse(parser.ParseArguments(new string[] { "-i=10" }, options));
+            Assert.IsFalse(base.Parser.ParseArguments(new string[] { "-i=10" }, options));
             Console.WriteLine(options);
         }
 
         [Test]
         public void ParseEnumOptions()
         {
-            MockOptionsWithEnum options = new MockOptionsWithEnum();
+            var options = new MockOptionsWithEnum();
 
-            bool success = parser.ParseArguments(new string[] { "-f", "data.bin", "-a", "ReadWrite" }, options);
+            bool success = base.Parser.ParseArguments(new string[] { "-f", "data.bin", "-a", "ReadWrite" }, options);
 
             Assert.IsTrue(success);
             Assert.AreEqual("data.bin", options.FileName);
@@ -223,16 +150,18 @@ namespace CommandLine.Tests
         [Test]
         public void ParsingNonExistentShortOptionFailsWithoutThrowingAnException()
         {
-            MockOptions options = new MockOptions();
-            bool success = parser.ParseArguments(new string[] { "-x" }, options);
+            var options = new MockOptions();
+            bool success = base.Parser.ParseArguments(new string[] { "-x" }, options);
+
             Assert.IsFalse(success);
         }
 
         [Test]
         public void ParsingNonExistentLongOptionFailsWithoutThrowingAnException()
         {
-            MockOptions options = new MockOptions();
-            bool success = parser.ParseArguments(new string[] { "--extend" }, options);
+            var options = new MockOptions();
+            bool success = base.Parser.ParseArguments(new string[] { "--extend" }, options);
+
             Assert.IsFalse(success);
         }
         #endregion
@@ -242,8 +171,9 @@ namespace CommandLine.Tests
         public void DefaultParsingIsCaseSensitive()
         {
             ICommandLineParser local = new CommandLineParser();
-            MockOptionsCaseSensitive options = new MockOptionsCaseSensitive();
+            var options = new MockOptionsCaseSensitive();
             bool success = local.ParseArguments(new string[] { "-a", "alfa", "--beta-OPTION", "beta" }, options);
+
             Assert.IsTrue(success);
             Assert.AreEqual("alfa", options.AlfaOption);
             Assert.AreEqual("beta", options.BetaOption);
@@ -253,8 +183,9 @@ namespace CommandLine.Tests
         public void UsingWrongCaseWithDefaultFails()
         {
             ICommandLineParser local = new CommandLineParser();
-            MockOptionsCaseSensitive options = new MockOptionsCaseSensitive();
+            var options = new MockOptionsCaseSensitive();
             bool success = local.ParseArguments(new string[] { "-A", "alfa", "--Beta-Option", "beta" }, options);
+
             Assert.IsFalse(success);
         }
 
@@ -262,8 +193,9 @@ namespace CommandLine.Tests
         public void DisablingCaseSensitive()
         {
             ICommandLineParser local = new CommandLineParser(new CommandLineParserSettings(false)); //Ref.: #DGN0001
-            MockOptionsCaseSensitive options = new MockOptionsCaseSensitive();
+            var options = new MockOptionsCaseSensitive();
             bool success = local.ParseArguments(new string[] { "-A", "alfa", "--Beta-Option", "beta" }, options);
+
             Assert.IsTrue(success);
             Assert.AreEqual("alfa", options.AlfaOption);
             Assert.AreEqual("beta", options.BetaOption);
@@ -275,56 +207,63 @@ namespace CommandLine.Tests
         [Test]
         public void PassingNoValueToAStringTypeLongOptionFails()
         {
-            MockOptions options = new MockOptions();
-            bool success = parser.ParseArguments(new string[] { "--string" }, options);
+            var options = new MockOptions();
+            bool success = base.Parser.ParseArguments(new string[] { "--string" }, options);
+
             Assert.IsFalse(success);
         }
 
         [Test]
         public void PassingNoValueToAByteTypeLongOptionFails()
         {
-            MockNumericOptions options = new MockNumericOptions();
-            bool success = parser.ParseArguments(new string[] { "--byte" }, options);
+            var options = new MockNumericOptions();
+            bool success = base.Parser.ParseArguments(new string[] { "--byte" }, options);
+
             Assert.IsFalse(success);
         }
 
         [Test]
         public void PassingNoValueToAShortTypeLongOptionFails()
         {
-            MockNumericOptions options = new MockNumericOptions();
-            bool success = parser.ParseArguments(new string[] { "--short" }, options);
+            var options = new MockNumericOptions();
+            bool success = base.Parser.ParseArguments(new string[] { "--short" }, options);
+
             Assert.IsFalse(success);
         }
 
         [Test]
         public void PassingNoValueToAIntegerTypeLongOptionFails()
         {
-            MockNumericOptions options = new MockNumericOptions();
-            bool success = parser.ParseArguments(new string[] { "--int" }, options);
+            var options = new MockNumericOptions();
+            bool success = base.Parser.ParseArguments(new string[] { "--int" }, options);
+
             Assert.IsFalse(success);
         }
 
         [Test]
         public void PassingNoValueToALongTypeLongOptionFails()
         {
-            MockNumericOptions options = new MockNumericOptions();
-            bool success = parser.ParseArguments(new string[] { "--long" }, options);
+            var options = new MockNumericOptions();
+            bool success = base.Parser.ParseArguments(new string[] { "--long" }, options);
+
             Assert.IsFalse(success);
         }
 
         [Test]
         public void PassingNoValueToAFloatTypeLongOptionFails()
         {
-            MockNumericOptions options = new MockNumericOptions();
-            bool success = parser.ParseArguments(new string[] { "--float" }, options);
+            var options = new MockNumericOptions();
+            bool success = base.Parser.ParseArguments(new string[] { "--float" }, options);
+
             Assert.IsFalse(success);
         }
 
         [Test]
         public void PassingNoValueToADoubleTypeLongOptionFails()
         {
-            MockNumericOptions options = new MockNumericOptions();
-            bool success = parser.ParseArguments(new string[] { "--double" }, options);
+            var options = new MockNumericOptions();
+            bool success = base.Parser.ParseArguments(new string[] { "--double" }, options);
+
             Assert.IsFalse(success);
         }
         #endregion
@@ -333,8 +272,9 @@ namespace CommandLine.Tests
         [Test]
         public void AllowSingleDashAsOptionInputValue()
         {
-            MockOptions options = new MockOptions();
-            bool success = parser.ParseArguments(new string[] { "--string", "-" }, options);
+            var options = new MockOptions();
+            bool success = base.Parser.ParseArguments(new string[] { "--string", "-" }, options);
+
             Assert.IsTrue(success);
             Assert.AreEqual("-", options.StringOption);
         }
@@ -342,13 +282,14 @@ namespace CommandLine.Tests
         [Test]
         public void AllowSingleDashAsNonOptionValue()
         {
-            MockOptionsWithValueList options = new MockOptionsWithValueList();
-            bool success = parser.ParseArguments(new string[] { "-oparser.xml", "-", "-w" }, options);
+            var options = new MockOptionsExtended();
+            bool success = base.Parser.ParseArguments(new string[] { "-sparser.xml", "-", "--switch" }, options);
+
             Assert.IsTrue(success);
-            Assert.AreEqual("parser.xml", options.OutputFile);
-            Assert.AreEqual(true, options.Overwrite);
-            Assert.AreEqual(1, options.InputFilenames.Count);
-            Assert.AreEqual("-", options.InputFilenames[0]);
+            Assert.AreEqual("parser.xml", options.StringOption);
+            Assert.AreEqual(true, options.BoolOption);
+            Assert.AreEqual(1, options.Elements.Count);
+            Assert.AreEqual("-", options.Elements[0]);
         }
         #endregion
     }

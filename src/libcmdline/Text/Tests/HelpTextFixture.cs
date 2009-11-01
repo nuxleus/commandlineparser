@@ -1,4 +1,4 @@
-﻿#region Copyright (C) 2005 - 2009 Giacomo Stelluti Scala
+﻿#region License
 //
 // Command Line Library: HelpTextFixture.cs
 //
@@ -25,15 +25,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 #endregion
+#region Using Directives
+using System;
+using System.Collections.Generic;
+using System.Text;
+using NUnit.Framework;
+#endregion
 
 #if UNIT_TESTS
 namespace CommandLine.Text.Tests
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Text;
-    using NUnit.Framework;
-
     [TestFixture]
     public sealed class HelpTextFixture
     {
@@ -46,13 +47,13 @@ namespace CommandLine.Text.Tests
             public string FileName = string.Empty;
         }
 
-        private static HelpText helpText = new HelpText(
+        private static HelpText _helpText = new HelpText(
             new HeadingInfo(ThisAssembly.Title, ThisAssembly.Version));
 
         [Test]
         public void AddAnEmptyPreOptionsLineIsAllowed()
         {
-            helpText.AddPreOptionsLine(string.Empty); // == ""
+            _helpText.AddPreOptionsLine(string.Empty); // == ""
         }
 
         /// <summary>
@@ -61,7 +62,7 @@ namespace CommandLine.Text.Tests
         [Test]
         public void PostOptionsLinesFeatureAdded()
         {
-            HelpText local = new HelpText("Heading Info.");
+            var local = new HelpText("Heading Info.");
             local.AddPreOptionsLine("This is a first pre-options line.");
             local.AddPreOptionsLine("This is a second pre-options line.");
             local.AddOptions(new MockOptions());

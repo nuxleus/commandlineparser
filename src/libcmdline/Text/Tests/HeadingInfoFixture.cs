@@ -1,4 +1,4 @@
-#region Copyright (C) 2005 - 2009 Giacomo Stelluti Scala
+#region License
 //
 // Command Line Library: HeadingInfoFixture.cs
 //
@@ -24,37 +24,45 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+//
+#endregion
+#region Using Directives
+using System;
+using System.IO;
+using NUnit.Framework;
 #endregion
 
 #if UNIT_TESTS
 namespace CommandLine.Text.Tests
 {
-    using System;
-    using System.IO;
-    using NUnit.Framework;
-
     [TestFixture]
     public sealed class HeadingInfoFixture
     {
         [Test]
         public void OnlyProgramName()
         {
-            HeadingInfo hi = new HeadingInfo("myprog");
+            var hi = new HeadingInfo("myprog");
             string s = hi;
+
             Assert.AreEqual("myprog", s);
-            StringWriter sw = new StringWriter();
+
+            var sw = new StringWriter();
             hi.WriteMessage("a message", sw);
+
             Assert.AreEqual("myprog: a message" + Environment.NewLine, sw.ToString());
         }
 
         [Test]
         public void ProgramNameAndVersion()
         {
-            HeadingInfo hi = new HeadingInfo("myecho", "2.5");
+            var hi = new HeadingInfo("myecho", "2.5");
             string s = hi;
+
             Assert.AreEqual("myecho 2.5", s);
-            StringWriter sw = new StringWriter();
+
+            var sw = new StringWriter();
             hi.WriteMessage("hello unit-test", sw);
+
             Assert.AreEqual("myecho: hello unit-test" + Environment.NewLine, sw.ToString());
         }
     }
