@@ -59,7 +59,7 @@ namespace CommandLine
         /// aspects and behaviors of the parser.</param>
         public CommandLineParser(CommandLineParserSettings settings)
         {
-            Validator.CheckIsNull(settings, "settings");
+            Assumes.NotNull(settings, "settings");
 
             _settings = settings;
         }
@@ -94,8 +94,8 @@ namespace CommandLine
         /// <exception cref="System.ArgumentNullException">Thrown if <paramref name="options"/> is null.</exception>
         public virtual bool ParseArguments(string[] args, object options, TextWriter helpWriter)
         {
-            Validator.CheckIsNull(args, "args");
-            Validator.CheckIsNull(options, "options");
+            Assumes.NotNull(args, "args");
+            Assumes.NotNull(options, "options");
 
             var pair = ReflectionUtil.RetrieveMethod<HelpOptionAttribute>(options);
 

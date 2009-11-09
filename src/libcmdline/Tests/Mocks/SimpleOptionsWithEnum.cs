@@ -1,6 +1,6 @@
-#region License
+﻿#region License
 //
-// Command Line Library: CommandLineParserBaseFixture.cs
+// Command Line Library: SimpleOptionsWithEnum.cs
 //
 // Author:
 //   Giacomo Stelluti Scala (gsscoder@ymail.com)
@@ -28,32 +28,15 @@
 #endregion
 #if UNIT_TESTS
 #region Using Directives
-using System;
 using System.IO;
-using NUnit.Framework;
 #endregion
 
-namespace CommandLine.Tests
+namespace CommandLine.Tests.Mocks
 {
-    public abstract class CommandLineParserBaseFixture
+    class SimpleOptionsWithEnum : SimpleOptions
     {
-        private ICommandLineParser _parser = null;
-
-        protected virtual ICommandLineParser CreateCommandLineParser()
-        {
-            return new CommandLineParser();
-        }
-
-        protected ICommandLineParser Parser
-        {
-            get
-            {
-                if (_parser == null)
-                    _parser = CreateCommandLineParser();
-
-                return _parser;
-            }
-        }
+        [Option("a", "access", Required = true)]
+        public FileAccess FileAccess = FileAccess.Read;
     }
 }
 #endif

@@ -25,6 +25,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 #endregion
+#if UNIT_TESTS
 #region Using Directives
 using System;
 using System.Collections.Generic;
@@ -32,7 +33,6 @@ using System.Text;
 using NUnit.Framework;
 #endregion
 
-#if UNIT_TESTS
 namespace CommandLine.Text.Tests
 {
     [TestFixture]

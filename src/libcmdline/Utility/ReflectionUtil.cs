@@ -113,5 +113,10 @@ namespace CommandLine
 
             return list;
         }
+
+        public static bool IsNullableType(Type type)
+        {
+            return type.IsGenericType && type.GetGenericTypeDefinition().Equals(typeof(Nullable<>));
+        }
     }
 }

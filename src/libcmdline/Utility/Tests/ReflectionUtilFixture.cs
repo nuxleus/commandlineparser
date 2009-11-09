@@ -26,6 +26,7 @@
 // THE SOFTWARE.
 //
 #endregion
+#if UNIT_TESTS
 #region Using Directives
 using System;
 using System.Collections.Generic;
@@ -33,7 +34,6 @@ using System.Reflection;
 using NUnit.Framework;
 #endregion
 
-#if UNIT_TESTS
 namespace CommandLine.Tests
 {
     [TestFixture]

@@ -102,7 +102,7 @@
     <Compile Include="Text\HelpText.cs" />
     <Compile Include="Text\Tests\HeadingInfoFixture.cs" />
     <Compile Include="Utility\Tests\ReflectionUtilFixture.cs" />
-    <Compile Include="Utility\Validator.cs" />
+    <Compile Include="Utility\Assumes.cs" />
     <Compile Include="Utility\ReflectionUtil.cs" />
     <Compile Include="Core\StringEnumeratorEx.cs" />
     <Compile Include="Attributes\OptionAttribute.cs" />
@@ -138,17 +138,32 @@
     <Compile Include="Parser\ParserException.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Parser\Tests\CommandLineParserFixture.Mocks.cs" />
-    <Compile Include="Tests\MockOptionsBase.cs" />
+    <Compile Include="Tests\Mocks\OptionsBase.cs" />
     <Compile Include="Tests\MockUtil.cs" />
     <Compile Include="Text\Tests\HelpTextFixture.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attributes\Tests\AttributesFixture.cs" />
     <Compile Include="Parser\CommandLineParserSettings.cs" />
     <Compile Include="Parser\Tests\CommandLineParserSettingsFixture.cs" />
+    <Compile Include="Parser\Tests\NullableTypesParsingFixture.cs" />
     <Compile Include="Parser\Tests\ValueListAttributeParsingFixture.cs" />
     <Compile Include="Parser\Tests\MutuallyExclusiveParsingFixture.cs" />
     <Compile Include="Tests\CommandLineParserBaseFixture.cs" />
+    <Compile Include="Tests\Mocks\BooleanSetOptions.cs" />
+    <Compile Include="Tests\Mocks\NullableTypesOptions.cs" />
+    <Compile Include="Tests\Mocks\OptionsWithValueListMaximumZero.cs" />
+    <Compile Include="Tests\Mocks\OptionsWithValueListMaximumThree.cs" />
+    <Compile Include="Tests\Mocks\OptionsWithMultipleSetAndOneOption.cs" />
+    <Compile Include="Tests\Mocks\OptionsWithMultipleSet.cs" />
+    <Compile Include="Tests\Mocks\OptionsWithDefaultSet.cs" />
+    <Compile Include="Tests\Mocks\SimpleOptionsWithHelpOption.cs" />
+    <Compile Include="Tests\Mocks\MixedCaseOptions.cs" />
+    <Compile Include="Tests\Mocks\SimpleOptionsWithEnum.cs" />
+    <Compile Include="Tests\Mocks\SimpleOptionsWithOptionList.cs" />
+    <Compile Include="Tests\Mocks\NumberSetOptions.cs" />
+    <Compile Include="Tests\Mocks\SimpleOptionsWithValueList.cs" />
+    <Compile Include="Tests\Mocks\SimpleOptions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

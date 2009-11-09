@@ -40,7 +40,7 @@ namespace CommandLine
 
         public CharEnumeratorEx(string value)
         {
-            Validator.CheckIsNullOrEmpty(value, "value");
+            Assumes.NotNullOrEmpty(value, "value");
 
             _data = value;
             _index = -1;

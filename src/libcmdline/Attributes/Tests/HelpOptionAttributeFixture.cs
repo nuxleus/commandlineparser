@@ -26,6 +26,7 @@
 // THE SOFTWARE.
 //
 #endregion
+#if UNIT_TESTS
 #region Using Directives
 using System;
 using System.IO;
@@ -33,7 +34,6 @@ using CommandLine.Text;
 using NUnit.Framework;
 #endregion
 
-#if UNIT_TESTS
 namespace CommandLine.Tests
 {
     [TestFixture]
@@ -41,7 +41,7 @@ namespace CommandLine.Tests
     {
         private static ICommandLineParser _parser = new CommandLineParser();
 
-        #region Mock Objects
+#region Mock Objects
         private class MockOptions
         {
             [Option("i", "input",

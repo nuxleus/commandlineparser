@@ -1,6 +1,6 @@
-#region License
+﻿#region License
 //
-// Command Line Library: Validator.cs
+// Command Line Library: OptionsWithValueListMaximumZero.cs
 //
 // Author:
 //   Giacomo Stelluti Scala (gsscoder@ymail.com)
@@ -26,31 +26,17 @@
 // THE SOFTWARE.
 //
 #endregion
+#if UNIT_TESTS
 #region Using Directives
-using System;
+using System.Collections.Generic;
 #endregion
 
-namespace CommandLine
+namespace CommandLine.Tests.Mocks
 {
-    static class Validator
+    class OptionsWithValueListMaximumZero : OptionsBase
     {
-        public static void CheckIsNull<T>(T value, string paramName)
-                where T : class
-        {
-            if (value == null)
-                throw new ArgumentNullException(paramName);
-        }
-
-        public static void CheckIsNullOrEmpty(string value, string paramName)
-        {
-            if (string.IsNullOrEmpty(value))
-                throw new ArgumentException(paramName);
-        }
-
-        public static void CheckZeroLength<T>(T[] array, string paramName)
-        {
-            if (array.Length == 0)
-                throw new ArgumentOutOfRangeException(paramName);
-        }
+        [ValueList(typeof(List<string>), MaximumElements = 0)]
+        public IList<string> Junk = null;
     }
 }
+#endif

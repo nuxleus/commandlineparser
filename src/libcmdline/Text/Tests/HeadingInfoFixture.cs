@@ -26,13 +26,13 @@
 // THE SOFTWARE.
 //
 #endregion
+#if UNIT_TESTS
 #region Using Directives
 using System;
 using System.IO;
 using NUnit.Framework;
 #endregion
 
-#if UNIT_TESTS
 namespace CommandLine.Text.Tests
 {
     [TestFixture]

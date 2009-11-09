@@ -40,7 +40,7 @@ namespace CommandLine
 
         public StringEnumeratorEx(string[] value)
         {
-            Validator.CheckIsNull(value, "value");
+            Assumes.NotNull(value, "value");
 
             _data = value;
             _index = -1;
@@ -105,7 +105,7 @@ namespace CommandLine
 
         public string GetRemainingFromNext()
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
     }
 }

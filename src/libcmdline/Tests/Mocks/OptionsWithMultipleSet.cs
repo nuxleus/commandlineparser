@@ -1,6 +1,6 @@
-#region License
+﻿#region License
 //
-// Command Line Library: CommandLineParserBaseFixture.cs
+// Command Line Library: OptionsWithMultipleSet.cs
 //
 // Author:
 //   Giacomo Stelluti Scala (gsscoder@ymail.com)
@@ -26,34 +26,32 @@
 // THE SOFTWARE.
 //
 #endregion
+
 #if UNIT_TESTS
-#region Using Directives
-using System;
-using System.IO;
-using NUnit.Framework;
-#endregion
-
-namespace CommandLine.Tests
+namespace CommandLine.Tests.Mocks
 {
-    public abstract class CommandLineParserBaseFixture
+    class OptionsWithMultipleSet
     {
-        private ICommandLineParser _parser = null;
+        // rgb mutually exclusive set
+        [Option("r", "red", MutuallyExclusiveSet = "rgb")]
+        public byte Red = 0;
 
-        protected virtual ICommandLineParser CreateCommandLineParser()
-        {
-            return new CommandLineParser();
-        }
+        [Option("g", "green", MutuallyExclusiveSet = "rgb")]
+        public byte Green = 0;
 
-        protected ICommandLineParser Parser
-        {
-            get
-            {
-                if (_parser == null)
-                    _parser = CreateCommandLineParser();
+        [Option("b", "blue", MutuallyExclusiveSet = "rgb")]
+        public byte Blue = 0;
 
-                return _parser;
-            }
-        }
+        // hsv mutually exclusive set
+        [Option("h", "hue", MutuallyExclusiveSet = "hsv")]
+        public short Hue = 0;
+
+        [Option("s", "saturation", MutuallyExclusiveSet = "hsv")]
+        public byte Saturation = 0;
+
+        [Option("v", "value", MutuallyExclusiveSet = "hsv")]
+        public byte Value = 0;
     }
+
 }
 #endif

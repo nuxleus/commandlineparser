@@ -66,7 +66,7 @@ namespace CommandLine.Text
         public HelpText(string heading)
             : this()
         {
-            Validator.CheckIsNullOrEmpty(heading, "heading");
+            Assumes.NotNullOrEmpty(heading, "heading");
 
             _heading = heading;
         }
@@ -79,7 +79,7 @@ namespace CommandLine.Text
         {
             set
             {
-                Validator.CheckIsNullOrEmpty(value, "value");
+                Assumes.NotNullOrEmpty(value, "value");
                 _copyright = value;
             }
         }
@@ -123,8 +123,8 @@ namespace CommandLine.Text
         /// <exception cref="System.ArgumentNullException">Thrown when parameter <paramref name="requiredWord"/> is null or empty string.</exception>
         public void AddOptions(object options, string requiredWord)
         {
-            Validator.CheckIsNull(options, "options");
-            Validator.CheckIsNullOrEmpty(requiredWord, "requiredWord");
+            Assumes.NotNull(options, "options");
+            Assumes.NotNullOrEmpty(requiredWord, "requiredWord");
 
             var optionList = ReflectionUtil.RetrieveFieldAttributeList<BaseOptionAttribute>(options);
             var optionHelp = ReflectionUtil.RetrieveMethodAttributeOnly<HelpOptionAttribute>(options);
@@ -217,7 +217,7 @@ namespace CommandLine.Text
 
         private static void AddLine(StringBuilder builder, string value)
         {
-            Validator.CheckIsNull(value, "value");
+            Assumes.NotNull(value, "value");
 
             if (builder.Length > 0)
                 builder.Append(Environment.NewLine);

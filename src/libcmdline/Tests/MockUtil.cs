@@ -26,6 +26,7 @@
 // THE SOFTWARE.
 //
 #endregion
+#if UNIT_TESTS
 #region Using Directives
 using System;
 using System.Reflection;
@@ -33,7 +34,6 @@ using System.Text;
 using System.Collections.Generic;
 #endregion
 
-#if UNIT_TESTS
 namespace CommandLine.Tests
 {
     static class MockUtil

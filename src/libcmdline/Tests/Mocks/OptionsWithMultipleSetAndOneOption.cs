@@ -1,6 +1,6 @@
-#region License
+﻿#region License
 //
-// Command Line Library: CommandLineParserBaseFixture.cs
+// Command Line Library: OptionsWithMultipleSetAndOneOption.cs
 //
 // Author:
 //   Giacomo Stelluti Scala (gsscoder@ymail.com)
@@ -26,34 +26,16 @@
 // THE SOFTWARE.
 //
 #endregion
+
 #if UNIT_TESTS
-#region Using Directives
-using System;
-using System.IO;
-using NUnit.Framework;
-#endregion
-
-namespace CommandLine.Tests
+namespace CommandLine.Tests.Mocks
 {
-    public abstract class CommandLineParserBaseFixture
+    enum ColorSet {Undefined, RgbColorSet, HsvColorSet}
+
+    class OptionsWithMultipleSetAndOneOption : OptionsWithMultipleSet
     {
-        private ICommandLineParser _parser = null;
-
-        protected virtual ICommandLineParser CreateCommandLineParser()
-        {
-            return new CommandLineParser();
-        }
-
-        protected ICommandLineParser Parser
-        {
-            get
-            {
-                if (_parser == null)
-                    _parser = CreateCommandLineParser();
-
-                return _parser;
-            }
-        }
+        [Option("c", "default-color-set", Required = true)]
+        public ColorSet DefaultColorSet = ColorSet.Undefined;
     }
 }
 #endif

@@ -65,7 +65,7 @@ namespace SampleApp
 
             [Option("v", null,
                     HelpText = "Verbose level. Range: from 0 to 2.")]
-            public int VerboseLevel = 0;
+            public int? VerboseLevel = null;
 
             [Option("i", null,
                    HelpText = "If file has errors don't stop processing.")]
@@ -85,7 +85,7 @@ namespace SampleApp
             public IList<string> DefinitionFiles = null;
 
             [OptionList("o", "operators", Separator=';',
-                HelpText = "Operators included in processing (+, -, ...).")]
+                HelpText = "Operators included in processing (+;-;...).")]
             public IList<string> AllowedOperators = null;
             
             [HelpOption(
@@ -113,9 +113,12 @@ namespace SampleApp
             if (!parser.ParseArguments(args, options))
                 Environment.Exit(1);
 
-            Console.WriteLine("Verbose Level: {0}", (options.VerboseLevel < 0 || options.VerboseLevel > 2) ? "#invalid value#" : options.VerboseLevel.ToString());
+            if (options.VerboseLevel == null)
+                Console.Write("verbose Off");
+            else
+                Console.WriteLine("verbose Level: {0}", (options.VerboseLevel < 0 || options.VerboseLevel > 2) ? "#invalid value#" : options.VerboseLevel.ToString());
             Console.WriteLine();
-            Console.WriteLine("Reading input file: {0} ...", options.InputFile);
+            Console.WriteLine("input file: {0} ...", options.InputFile);
             foreach (string defFile in options.DefinitionFiles)
             {
                 Console.WriteLine("  using definition file: {0}", defFile);
@@ -137,10 +140,10 @@ namespace SampleApp
             }
             Console.WriteLine();
             if (options.OutputFile.Length > 0)
-                _headingInfo.WriteMessage(string.Format("Writing elaborated data: {0} ...", options.OutputFile));
+                _headingInfo.WriteMessage(string.Format("writing elaborated data: {0} ...", options.OutputFile));
             else
             {
-                _headingInfo.WriteMessage("Elaborated data:");
+                _headingInfo.WriteMessage("elaborated data:");
                 Console.WriteLine("[...]");
             }
 

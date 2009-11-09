@@ -43,12 +43,18 @@ namespace CommandLine
         private string _helpText;
 
         /// <summary>
-        /// Short name of this command line option. This name is usually a single character.
+        /// Short name of this command line option. You can use only one character.
         /// </summary>
         public string ShortName
         {
             get { return _shortName; }
-            internal set { _shortName = value; }
+            internal set
+            {
+                if (value != null && value.Length > 1)
+                    throw new ArgumentException("shortName");
+
+                _shortName = value;
+            }
         }
 
         /// <summary>

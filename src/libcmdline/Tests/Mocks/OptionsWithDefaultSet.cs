@@ -1,6 +1,6 @@
-#region License
+﻿#region License
 //
-// Command Line Library: CommandLineParserBaseFixture.cs
+// Command Line Library: OptionsWithDefaultSet.cs
 //
 // Author:
 //   Giacomo Stelluti Scala (gsscoder@ymail.com)
@@ -26,34 +26,24 @@
 // THE SOFTWARE.
 //
 #endregion
+
 #if UNIT_TESTS
-#region Using Directives
-using System;
-using System.IO;
-using NUnit.Framework;
-#endregion
-
-namespace CommandLine.Tests
+namespace CommandLine.Tests.Mocks
 {
-    public abstract class CommandLineParserBaseFixture
+    class OptionsWithDefaultSet : OptionsBase
     {
-        private ICommandLineParser _parser = null;
+        [Option("f", "file", MutuallyExclusiveSet = null)]
+        public string FileName = null;
 
-        protected virtual ICommandLineParser CreateCommandLineParser()
-        {
-            return new CommandLineParser();
-        }
+        [Option("i", "file-id", MutuallyExclusiveSet = null)]
+        public int FileId = int.MinValue;
 
-        protected ICommandLineParser Parser
-        {
-            get
-            {
-                if (_parser == null)
-                    _parser = CreateCommandLineParser();
+        [Option("d", "file-default", MutuallyExclusiveSet = null)]
+        public bool FileDefault = false;
 
-                return _parser;
-            }
-        }
+        [Option("v", "verbose")]
+        public bool Verbose = false;
     }
+
 }
 #endif

@@ -1,6 +1,6 @@
-#region License
+﻿#region License
 //
-// Command Line Library: CommandLineParserBaseFixture.cs
+// Command Line Library: BooleanSetOptions.cs
 //
 // Author:
 //   Giacomo Stelluti Scala (gsscoder@ymail.com)
@@ -26,34 +26,23 @@
 // THE SOFTWARE.
 //
 #endregion
+
 #if UNIT_TESTS
-#region Using Directives
-using System;
-using System.IO;
-using NUnit.Framework;
-#endregion
-
-namespace CommandLine.Tests
+namespace CommandLine.Tests.Mocks
 {
-    public abstract class CommandLineParserBaseFixture
+    class BooleanSetOptions : OptionsBase
     {
-        private ICommandLineParser _parser = null;
+        [Option("a", "option-a")]
+        public bool BooleanOne = false;
 
-        protected virtual ICommandLineParser CreateCommandLineParser()
-        {
-            return new CommandLineParser();
-        }
+        [Option("b", "option-b")]
+        public bool BooleanTwo = false;
 
-        protected ICommandLineParser Parser
-        {
-            get
-            {
-                if (_parser == null)
-                    _parser = CreateCommandLineParser();
+        [Option("c", "option-c")]
+        public bool BooleanThree = false;
 
-                return _parser;
-            }
-        }
+        [Option("d", "double")]
+        public double NonBooleanValue = 0;
     }
 }
 #endif

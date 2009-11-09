@@ -26,40 +26,24 @@
 // THE SOFTWARE.
 //
 #endregion
+#if UNIT_TESTS
 #region Using Directives
 using System.IO;
+using CommandLine.Tests.Mocks;
 using NUnit.Framework;
 #endregion
 
-#if UNIT_TESTS
 namespace CommandLine.Tests
 {
     [TestFixture]
     public sealed class CommandLineParserSettingsFixture
     {
-        #region Mocks
-        sealed class MockOptions
-        {
-            [Option(null, "filename")]
-            public string FileName = string.Empty;
-
-            [Option("o", "overwrite")]
-            public bool Overwrite = false;
-
-            [HelpOption]
-            public string GetUsage()
-            {
-                return "MockOptions::GetUsage()";
-            }
-        }
-        #endregion
-
         [Test]
         public void SettingHelpWriterUsingConstructor()
         {
             var writer = new StringWriter();
             ICommandLineParser parser = new CommandLineParser(new CommandLineParserSettings(writer));
-            var options = new MockOptions();
+            var options = new SimpleOptionsWithHelpOption();
             
             bool success = parser.ParseArguments(new string[] {"--help"}, options);
 
@@ -74,7 +58,7 @@ namespace CommandLine.Tests
             var settings = new CommandLineParserSettings();
             settings.HelpWriter = writer;
             ICommandLineParser parser = new CommandLineParser(settings);
-            var options = new MockOptions();
+            var options = new SimpleOptionsWithHelpOption();
 
             bool success = parser.ParseArguments(new string[] { "--help" }, options);
 
@@ -87,7 +71,7 @@ namespace CommandLine.Tests
         {
             var writer = new StringWriter();
             ICommandLineParser parser = new CommandLineParser(new CommandLineParserSettings());
-            var options = new MockOptions();
+            var options = new SimpleOptionsWithHelpOption();
 
             bool success = parser.ParseArguments(new string[] { "--help" }, options, writer);
 

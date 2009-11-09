@@ -1,6 +1,6 @@
 #region License
 //
-// Command Line Library: CommandLineParserBaseFixture.cs
+// Command Line Library: Validator.cs
 //
 // Author:
 //   Giacomo Stelluti Scala (gsscoder@ymail.com)
@@ -26,34 +26,31 @@
 // THE SOFTWARE.
 //
 #endregion
-#if UNIT_TESTS
 #region Using Directives
 using System;
-using System.IO;
-using NUnit.Framework;
 #endregion
 
-namespace CommandLine.Tests
+namespace CommandLine
 {
-    public abstract class CommandLineParserBaseFixture
+    static class Assumes
     {
-        private ICommandLineParser _parser = null;
-
-        protected virtual ICommandLineParser CreateCommandLineParser()
+        public static void NotNull<T>(T value, string paramName)
+                where T : class
         {
-            return new CommandLineParser();
+            if (value == null)
+                throw new ArgumentNullException(paramName);
         }
 
-        protected ICommandLineParser Parser
+        public static void NotNullOrEmpty(string value, string paramName)
         {
-            get
-            {
-                if (_parser == null)
-                    _parser = CreateCommandLineParser();
+            if (string.IsNullOrEmpty(value))
+                throw new ArgumentException(paramName);
+        }
 
-                return _parser;
-            }
+        public static void NotZeroLength<T>(T[] array, string paramName)
+        {
+            if (array.Length == 0)
+                throw new ArgumentOutOfRangeException(paramName);
         }
     }
 }
-#endif

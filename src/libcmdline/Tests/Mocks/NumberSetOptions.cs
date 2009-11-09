@@ -1,6 +1,6 @@
-#region License
+﻿#region License
 //
-// Command Line Library: CommandLineParserBaseFixture.cs
+// Command Line Library: NumberSetOptions.cs
 //
 // Author:
 //   Giacomo Stelluti Scala (gsscoder@ymail.com)
@@ -26,34 +26,29 @@
 // THE SOFTWARE.
 //
 #endregion
+
 #if UNIT_TESTS
-#region Using Directives
-using System;
-using System.IO;
-using NUnit.Framework;
-#endregion
-
-namespace CommandLine.Tests
+namespace CommandLine.Tests.Mocks
 {
-    public abstract class CommandLineParserBaseFixture
+    class NumberSetOptions : OptionsBase
     {
-        private ICommandLineParser _parser = null;
+        [Option("b", "byte")]
+        public byte ByteValue = 0;
 
-        protected virtual ICommandLineParser CreateCommandLineParser()
-        {
-            return new CommandLineParser();
-        }
+        [Option("s", "short")]
+        public short ShortValue = 0;
 
-        protected ICommandLineParser Parser
-        {
-            get
-            {
-                if (_parser == null)
-                    _parser = CreateCommandLineParser();
+        [Option("i", "int")]
+        public int IntegerValue = 0;
 
-                return _parser;
-            }
-        }
+        [Option("l", "long")]
+        public long LongValue = 0;
+
+        [Option("f", "float")]
+        public float FloatValue = 0;
+
+        [Option("d", "double")]
+        public double DoubleValue = 0;
     }
 }
 #endif

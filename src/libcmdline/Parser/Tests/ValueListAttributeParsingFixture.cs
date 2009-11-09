@@ -26,75 +26,46 @@
 // THE SOFTWARE.
 //
 #endregion
+#if UNIT_TESTS
 #region Using Directives
 using System;
 using System.Collections.Generic;
+using CommandLine.Tests.Mocks;
 using NUnit.Framework;
 #endregion
 
-#if UNIT_TESTS
 namespace CommandLine.Tests
 {
     [TestFixture]
-    public sealed partial class ValueListAttributeParsingFixture : CommandLineParserBaseFixture
+    public sealed class ValueListAttributeParsingFixture : CommandLineParserBaseFixture
     {
-        class MockOptionsWithValueList : MockOptionsBase
-        {
-            [Option("o", "output")]
-            public string OutputFile = string.Empty;
-
-            [Option("w", "overwrite")]
-            public bool Overwrite = false;
-
-            [ValueList(typeof(List<string>))]
-            public IList<string> InputFilenames = null;
-        }
-
-        class MockOptionsWithValueListMaxElemDefined : MockOptionsBase
-        {
-            [Option("o", "output")]
-            public string OutputFile = string.Empty;
-
-            [Option("w", "overwrite")]
-            public bool Overwrite = false;
-
-            [ValueList(typeof(List<string>), MaximumElements = 3)]
-            public IList<string> InputFilenames = null;
-        }
-
-        class MockOptionsWithValueListMaxElemEqZero : MockOptionsBase
-        {
-            [ValueList(typeof(List<string>), MaximumElements = 0)]
-            public IList<string> Junk = null;
-        }
-
         [Test]
         public void ValueListAttributeIsolatesNonOptionValues()
         {
-            var options = new MockOptionsWithValueList();
+            var options = new SimpleOptionsWithValueList();
             bool success = base.Parser.ParseArguments(
-                new string[] { "file1.ext", "file2.ext", "file3.ext", "-wo", "out.ext" }, options);
+                new string[] { "--switch", "file1.ext", "file2.ext", "file3.ext", "-s", "out.ext" }, options);
 
             Assert.IsTrue(success);
-            Assert.AreEqual("file1.ext", options.InputFilenames[0]);
-            Assert.AreEqual("file2.ext", options.InputFilenames[1]);
-            Assert.AreEqual("file3.ext", options.InputFilenames[2]);
-            Assert.AreEqual("out.ext", options.OutputFile);
-            Assert.IsTrue(options.Overwrite);
+            Assert.AreEqual("file1.ext", options.Items[0]);
+            Assert.AreEqual("file2.ext", options.Items[1]);
+            Assert.AreEqual("file3.ext", options.Items[2]);
+            Assert.AreEqual("out.ext", options.StringValue);
+            Assert.IsTrue(options.BooleanValue);
             Console.WriteLine(options);
         }
 
         [Test]
         public void ValueListWithMaxElemInsideBounds()
         {
-            var options = new MockOptionsWithValueListMaxElemDefined();
+            var options = new OptionsWithValueListMaximumThree();
             bool success = base.Parser.ParseArguments(new string[] { "file.a", "file.b", "file.c" }, options);
 
             Assert.IsTrue(success);
             Assert.AreEqual("file.a", options.InputFilenames[0]);
             Assert.AreEqual("file.b", options.InputFilenames[1]);
             Assert.AreEqual("file.c", options.InputFilenames[2]);
-            Assert.AreEqual(String.Empty, options.OutputFile);
+            Assert.IsNull(options.OutputFile);
             Assert.IsFalse(options.Overwrite);
             Console.WriteLine(options);
         }
@@ -102,7 +73,7 @@ namespace CommandLine.Tests
         [Test]
         public void ValueListWithMaxElemOutsideBounds()
         {
-            var options = new MockOptionsWithValueListMaxElemDefined();
+            var options = new OptionsWithValueListMaximumThree();
             bool success = base.Parser.ParseArguments(
                     new string[] { "file.a", "file.b", "file.c", "file.d" }, options);
 
@@ -112,7 +83,7 @@ namespace CommandLine.Tests
         [Test]
         public void ValueListWithMaxElemSetToZeroSucceeds()
         {
-            var options = new MockOptionsWithValueListMaxElemEqZero();
+            var options = new OptionsWithValueListMaximumZero();
             bool success = base.Parser.ParseArguments(new string[] { }, options);
 
             Assert.IsTrue(success);
@@ -123,7 +94,7 @@ namespace CommandLine.Tests
         [Test]
         public void ValueListWithMaxElemSetToZeroFailes()
         {
-            var options = new MockOptionsWithValueListMaxElemEqZero();
+            var options = new OptionsWithValueListMaximumZero();
 
             Assert.IsFalse(base.Parser.ParseArguments(new string[] { "some", "value" }, options));
         }

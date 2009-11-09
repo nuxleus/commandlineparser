@@ -1,6 +1,6 @@
 ﻿#region License
 //
-// Command Line Library: MockOptionsBase.cs
+// Command Line Library: OptionsWithValueListMaximumThree.cs
 //
 // Author:
 //   Giacomo Stelluti Scala (gsscoder@ymail.com)
@@ -26,16 +26,23 @@
 // THE SOFTWARE.
 //
 #endregion
-
 #if UNIT_TESTS
-namespace CommandLine.Tests
+#region Using Directives
+using System.Collections.Generic;
+#endregion
+
+namespace CommandLine.Tests.Mocks
 {
-    abstract class MockOptionsBase
+    class OptionsWithValueListMaximumThree : OptionsBase
     {
-        public override string ToString()
-        {
-            return MockUtil.ConvertOptionsToString(this);
-        }
+        [Option("o", "output")]
+        public string OutputFile = null;
+
+        [Option("w", "overwrite")]
+        public bool Overwrite = false;
+
+        [ValueList(typeof(List<string>), MaximumElements = 3)]
+        public IList<string> InputFilenames = null;
     }
 }
 #endif

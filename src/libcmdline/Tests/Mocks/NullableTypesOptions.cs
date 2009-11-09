@@ -1,6 +1,6 @@
-#region License
+﻿#region License
 //
-// Command Line Library: CommandLineParserBaseFixture.cs
+// Command Line Library: NullableTypesOptions.cs
 //
 // Author:
 //   Giacomo Stelluti Scala (gsscoder@ymail.com)
@@ -28,32 +28,25 @@
 #endregion
 #if UNIT_TESTS
 #region Using Directives
-using System;
 using System.IO;
-using NUnit.Framework;
 #endregion
 
-namespace CommandLine.Tests
+
+namespace CommandLine.Tests.Mocks
 {
-    public abstract class CommandLineParserBaseFixture
+    class NullableTypesOptions : OptionsBase
     {
-        private ICommandLineParser _parser = null;
+        [Option("i", "int")]
+        public int? IntegerValue = null;
 
-        protected virtual ICommandLineParser CreateCommandLineParser()
-        {
-            return new CommandLineParser();
-        }
+        [Option("e", "enum")]
+        public FileAccess? EnumValue = null;
 
-        protected ICommandLineParser Parser
-        {
-            get
-            {
-                if (_parser == null)
-                    _parser = CreateCommandLineParser();
+        [Option("d", "double")]
+        public double? DoubleValue = null;
 
-                return _parser;
-            }
-        }
-    }
+        [Option("s", "string")]
+        public string StringValue = null;
+    } 
 }
 #endif

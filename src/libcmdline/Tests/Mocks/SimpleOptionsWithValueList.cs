@@ -1,6 +1,6 @@
-#region License
+﻿#region License
 //
-// Command Line Library: CommandLineParserBaseFixture.cs
+// Command Line Library: SimpleOptionsWithValueList.cs
 //
 // Author:
 //   Giacomo Stelluti Scala (gsscoder@ymail.com)
@@ -26,34 +26,17 @@
 // THE SOFTWARE.
 //
 #endregion
-#if UNIT_TESTS
 #region Using Directives
-using System;
-using System.IO;
-using NUnit.Framework;
+using System.Collections.Generic;
 #endregion
 
-namespace CommandLine.Tests
+#if UNIT_TESTS
+namespace CommandLine.Tests.Mocks
 {
-    public abstract class CommandLineParserBaseFixture
+    class SimpleOptionsWithValueList : SimpleOptions
     {
-        private ICommandLineParser _parser = null;
-
-        protected virtual ICommandLineParser CreateCommandLineParser()
-        {
-            return new CommandLineParser();
-        }
-
-        protected ICommandLineParser Parser
-        {
-            get
-            {
-                if (_parser == null)
-                    _parser = CreateCommandLineParser();
-
-                return _parser;
-            }
-        }
+        [ValueList(typeof(List<string>))]
+        public IList<string> Items = null;
     }
 }
 #endif

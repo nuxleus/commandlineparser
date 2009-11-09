@@ -1,3 +1,128 @@
+2009-11-09	Giacomo Stelluti Scala	<gsscoder@ymail.com>
+
+	* Mocks folder
+		Created. The new folder is a subdirectory of {project-root>/Tests.
+		All types inside this folder will belong to namespace CommandLine.Tests.Mocks.
+
+	* MockOptionsBase.cs (MockOptionsBase)
+		Moved. This source file was moved and renamed to OptionsBase.cs (OptionsBase).
+		
+	* SimpleOptions.cs (SimpleOptions)
+		Created. Refactoring of CommandLineParserFixture.MockOptions.
+		
+	* SimpleOptionsWithValueList.cs (SimpleOptions)
+		Created. Refactoring of CommandLineParserFixture.MockOptionsExtended.
+		
+	* NumberSetOptions.cs (NumberSetOptions)
+		Created. Refactoring of CommandLineParserFixture.MockNumericOptions.
+		
+	* BooleanSetOptions (BooleanSetOptions)
+		Created. Refactoring of CommandLineParserFixture.MockBoolPrevalentOptions.
+		
+	* SimpleOptionsWithOptionList (SimpleOptionsWithOptionList)
+		Created. Refactoring of CommandLineParserFixture.MockOptionsWithOptionList.
+		
+	* SimpleOptionsWithEnum (SimpleOptionsWithEnum)
+		Created. Refactoring of CommandLineParserFixture.MockOptionsWithEnum.
+		
+	* MixedCaseOptions (MixedCaseOptions)
+		Created. Refactoring of CommandLineParserFixture.MockOptionsCaseSensitive.
+		
+	* CommandLineParserFixture.Mocks.cs
+		Removed. The partial CommandLineParserFixture in this code file is now empty.
+		
+	* CommandLineParserFixture.cs (CommandLineParserFixture)
+		Modified. The type CommandLineParserFixture is no longer partial.
+
+	* CommandLineParserSettingsFixture.cs (CommandLineParserSettingsFixture)
+		Modified. Type CommandLineParserSettingsFixture.MockOptions moved in a separate file.
+
+	* SimpleOptionsWithHelpOption.cs (SimpleOptionsWithHelpOption)
+		Created. Refactoring of CommandLineParserSettingsFixture.MockOptions.
+		
+	* OptionsWithDefaultSet.cs (OptionsWithDefaultSet)
+		Created. Refactoring of MutuallyExclusiveParsingFixture.MockOptionsWithDefaultSet.
+		
+	* OptionsWithMultipleSet.cs (OptionsWithMultipleSet)
+		Created. Refactoring of MutuallyExclusiveParsingFixture.MockColorOptions.
+		
+	* OptionsWithMultipleSetAndOneOption.cs (OptionsWithMultipleSetAndOneOption)
+		Created. Refactoring of MutuallyExclusiveParsingFixture.MockExtendedColorOptions.
+
+	* MutuallyExclusiveParsingFixture.cs (MutuallyExclusiveParsingFixture)
+		Modified. Nested mock types moved to separate files.
+
+	* ValueListAttributeParsingFixture.cs (ValueListAttributeParsingFixture)
+		Modified. Nested type MockOptionsWithValueList removed and replaced with SimpleOptionsWithValueList.
+		Nested type MockOptionsWithValueListMaxElemDefined removed and replaced with OptionsWithValueListMaximumThree.
+		Nested type MockOptionsWithValueListMaxElemEqZero removed and replaced with OptionsWithValueListMaximumZero.
+		
+	* SimpleOptionsWithValueList.cs (SimpleOptionsWithValueList)
+	  OptionsWithValueListMaximumThree.cs (OptionsWithValueListMaximumThree)
+	  OptionsWithValueListMaximumZero.cs (OptionsWithValueListMaximumZero)
+		Created. Compare above.
+		
+	* NAnt Script (../nant/default.build)
+		Modified. Aligned to Visual Studio project.
+		
+	* Validator.cs (Validator)
+		Renamed. In a near future I plan to use types with 'validator' semantic to enable validation of
+		parsed values. So I've renamed this type (that validates methods arguments) with a more
+		meaningful 'Assumes[.cs]'.
+		I've also refactored names of methods.
+
+	* HelpText.cs (HelpText)
+	  HeadingInfo.cs (HeadingInfo)
+	  CopyrightInfo.cs (CopyrightInfo)
+	  CommandLineParser.cs (CommandLineParser)
+	  StringEnumeratorEx.cs (StringEnumeratorEx)
+	  CharEnumeratorEx.cs (CharEnumeratorEx)
+		Modified. Reference to Validator type changed to Assumes type.
+
+	* BaseOptionAttribute.cs (BaseOptionAttribute)
+		Modified. The short name of an option can now be made by only one character.
+		This satisfy #DGN0002 ([1] http://commandline.codeplex.com/WorkItem/View.aspx?WorkItemId=9077
+		by andy78smith).
+
+	* AttributesFixture.cs
+		Created. New tests for #DGN0002 (see [1]).
+		
+	* StringEnumeratorEx.cs (StringEnumeratorEx)
+		Modified. ::GetRemainingFromNext() now throws a more correct System.NotSupportedException
+		instead of System.NotImplementedException.
+		
+	* NullableTypesParsingFixture.cs (NullableTypesParsingFixture)
+		Created. #REQ0003 ([2] http://commandline.codeplex.com/WorkItem/View.aspx?WorkItemId=7649
+		by jeffwilcox).
+		
+	* NullableTypesOptions.cs (NullableTypesOptions)
+		Created. Mock object for NullableTypesParsingFixture.
+		
+	* OptionInfo.cs (OptionInfo)
+		Modified. Added ::SetNullableValue(string, object) to handle nullable types; see [2].
+		::SetValueScalar(string, object) marked private (not necessary to be public).
+		::SetValueList(string, object) marked private (not necessary to be public).
+
+	* ReflectionUtil.cs (ReflectionUtil)
+		Modified. Added method ::IsNullableType(Type); see [2].
+		
+	* CommandLineParserFixture.cs (CommandLineParserFixture.cs)
+		Modified. ::PassingNoValueToAIntegerTypeLongOptionFails corrected in ::PassingNoValueToAnIntegerTypeLongOptionFails.
+		
+	* config folder
+		Created. This new subdirectory created inside {project-roo}/doc will host configuration related files.
+		
+	* net-3.5_fx-node.nant-conf
+		Moved/Renamed. Moved to {project-roo}/doc/config and renamed as NAnt.exe.config.part.
+		
+	* CommandLine.sln
+		Moved. The MS Visual C# 2008 EE solution file is now under {project-root} directory.
+		This satisfy #REQ0004 ([3] http://commandline.codeplex.com/WorkItem/View.aspx?WorkItemId=9080
+		by x97mdr).
+		
+	* msvs2008 folder
+		Removed.
+		
 2009-11-01	Giacomo Stelluti Scala	<gsscoder@ymail.com>
 
 	* {all}.cs

@@ -90,8 +90,8 @@ namespace CommandLine.Text
         /// <exception cref="System.ArgumentOutOfRangeException">Thrown when parameter <paramref name="years"/> is not supplied.</exception>
         public CopyrightInfo(bool isSymbolUpper, string author, params int[] years)
         {
-            Validator.CheckIsNullOrEmpty(author, "author");
-            Validator.CheckZeroLength(years, "years");
+            Assumes.NotNullOrEmpty(author, "author");
+            Assumes.NotZeroLength(years, "years");
 
             const int extraLength = 10;
             _isSymbolUpper = isSymbolUpper;

@@ -29,6 +29,7 @@
 #region Using Directives
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Globalization;
 using System.Reflection;
 #endregion
@@ -84,10 +85,13 @@ namespace CommandLine
             if (_attribute is OptionListAttribute)
                 return SetValueList(value, options);
 
+            if (ReflectionUtil.IsNullableType(_field.FieldType))
+                return SetNullableValue(value, options);
+
             return SetValueScalar(value, options);
         }
 
-        public bool SetValueScalar(string value, object options)
+        private bool SetValueScalar(string value, object options)
         {
             try
             {
@@ -122,6 +126,27 @@ namespace CommandLine
             return true;
         }
 
+        private bool SetNullableValue(string value, object options)
+        {
+            var nc = new NullableConverter(_field.FieldType);
+
+            try
+            {
+                lock (_setValueLock)
+                {
+                    _field.SetValue(options, nc.ConvertFromString(null, CultureInfo.InvariantCulture, value));
+                }
+            }
+            // the FormatException (thrown by ConvertFromString) is thrown as Exception.InnerException,
+            // so we've catch directly Exception
+            catch (Exception) 
+            {
+                return false;
+            }
+
+            return true;
+        }
+
         public bool SetValue(bool value, object options)
         {
             lock (_setValueLock)
@@ -132,7 +157,7 @@ namespace CommandLine
             }
         }
 
-        public bool SetValueList(string value, object options)
+        private bool SetValueList(string value, object options)
         {
             lock (_setValueLock)
             {
