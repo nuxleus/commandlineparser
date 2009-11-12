@@ -4,7 +4,9 @@
 //
 // Author:
 //   Giacomo Stelluti Scala (gsscoder@ymail.com)
-//
+// Contributor(s):
+//   Steve Evans
+// 
 // Copyright (C) 2005 - 2009 Giacomo Stelluti Scala
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -47,8 +49,22 @@ namespace CommandLine.Text.Tests
             public string FileName = string.Empty;
         }
 
-        private static HelpText _helpText = new HelpText(
-            new HeadingInfo(ThisAssembly.Title, ThisAssembly.Version));
+        private class MockOptionsWithLongDescription
+        {
+            [Option("v", "verbose", HelpText = "This is the description of the verbosity to test out the wrapping capabilities of the Help Text.")]
+            public bool Verbose = false;
+
+            [Option(null, "input-file", HelpText = "This is a very long description of the Input File argument that gets passed in.  It should  be passed in as a string.")]
+            public string FileName = string.Empty;
+        }
+
+        private HelpText _helpText;
+
+        [SetUp]
+        public void SetUp()
+        {
+            _helpText = new HelpText(new HeadingInfo(ThisAssembly.Title, ThisAssembly.Version));
+        }
 
         [Test]
         public void AddAnEmptyPreOptionsLineIsAllowed()
@@ -70,11 +86,26 @@ namespace CommandLine.Text.Tests
             local.AddPostOptionsLine("This is a second post-options line.");
 
             string help = local.ToString();
-            Console.Write(help);
 
             string[] lines = help.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
             Assert.AreEqual(lines[lines.Length - 2], "This is a first post-options line.");
             Assert.AreEqual(lines[lines.Length - 1], "This is a second post-options line.");
+        }
+
+        [Test]
+        public void WhenHelpTextIsLongerThanWidthItWillWrapAroundAsIfInAColumn()
+        {
+            _helpText.MaximumDisplayWidth = 40;
+            _helpText.AddOptions(new MockOptionsWithLongDescription());
+            string help = _helpText.ToString();
+
+            string[] lines = help.Split(new[] {Environment.NewLine}, StringSplitOptions.None);
+            Assert.AreEqual(lines[2], "  v, verbose    This is the description", "The first line should have the arguments and the start of the Help Text.");
+            string formattingMessage = "Beyond the second line should be formatted as though it's in a column.";
+            Assert.AreEqual(lines[3], "                of the verbosity to ", formattingMessage);
+            Assert.AreEqual(lines[4], "                test out the wrapping ", formattingMessage);
+            Assert.AreEqual(lines[5], "                capabilities of the ", formattingMessage);
+            Assert.AreEqual(lines[6], "                Help Text.", formattingMessage);
         }
     }
 }

@@ -84,8 +84,12 @@ namespace SampleApp
             [ValueList(typeof(List<string>))]
             public IList<string> DefinitionFiles = null;
 
-            [OptionList("o", "operators", Separator=';',
-                HelpText = "Operators included in processing (+;-;...).")]
+            //[OptionList("o", "operators", Separator=';',
+            //    HelpText = "Operators included in processing (+;-;...).")]
+            [OptionList("o", "operators", Separator = ';',
+                HelpText = "Operators included in processing (+;-;...)." +
+                " Separate each operator with a semicolon." +
+                " Do not include spaces between operators and separator.")]
             public IList<string> AllowedOperators = null;
             
             [HelpOption(
@@ -93,6 +97,7 @@ namespace SampleApp
             public string GetUsage()
             {
                 var help = new HelpText(Program._headingInfo);
+                help.AdditionalNewLineAfterOption = true;
                 help.Copyright = new CopyrightInfo("Giacomo Stelluti Scala", 2005, 2009);
                 help.AddPreOptionsLine("This is free software. You may redistribute copies of it under the terms of");
                 help.AddPreOptionsLine("the MIT License <http://www.opensource.org/licenses/mit-license.php>.");
@@ -106,6 +111,10 @@ namespace SampleApp
             #endregion
         }
 
+        /// <summary>
+        /// Application's Entry Point.
+        /// </summary>
+        /// <param name="args">Command Line Arguments splitted by the System.</param>
         private static void Main(string[] args)
         {
             var options = new Options();
@@ -113,10 +122,17 @@ namespace SampleApp
             if (!parser.ParseArguments(args, options))
                 Environment.Exit(1);
 
+            DoCoreTask(options);
+
+            Environment.Exit(0);
+        }
+
+        private static void DoCoreTask(Options options)
+        {
             if (options.VerboseLevel == null)
-                Console.Write("verbose Off");
+                Console.Write("verbose [off]");
             else
-                Console.WriteLine("verbose Level: {0}", (options.VerboseLevel < 0 || options.VerboseLevel > 2) ? "#invalid value#" : options.VerboseLevel.ToString());
+                Console.WriteLine("verbose [on]: {0}", (options.VerboseLevel < 0 || options.VerboseLevel > 2) ? "#invalid value#" : options.VerboseLevel.ToString());
             Console.WriteLine();
             Console.WriteLine("input file: {0} ...", options.InputFile);
             foreach (string defFile in options.DefinitionFiles)
@@ -126,7 +142,7 @@ namespace SampleApp
             Console.WriteLine("  start offset: {0}", options.StartOffset);
             Console.WriteLine("  tabular data computation: {0}", options.Calculate.ToString().ToLowerInvariant());
             Console.WriteLine("  on errors: {0}", options.IgnoreErrors ? "continue" : "stop processing");
-            Console.WriteLine("  optimize for: {0}", options.Optimization);
+            Console.WriteLine("  optimize for: {0}", options.Optimization.ToString().ToLowerInvariant());
             if (options.AllowedOperators != null)
             {
                 var builder = new StringBuilder();
@@ -146,8 +162,6 @@ namespace SampleApp
                 _headingInfo.WriteMessage("elaborated data:");
                 Console.WriteLine("[...]");
             }
-
-            Environment.Exit(0);
         }
     }
 }

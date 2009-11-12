@@ -1,3 +1,16 @@
+2009-11-12	Giacomo Stelluti Scala	<gsscoder@ymail.com>
+
+	* Program.cs (SampleApp.Program)
+		Modified. Minor internal refactoring.
+		
+	* HelpText.cs
+		Modified. [Steve Evans ->] Added support for automatic text wrap.
+		Updated the type XML comment.
+		Added possibility to add an additional new line after description of an option (::AdditionalNewLineAfterOption).
+		
+	* HelpTextFixture.cs 
+		Modified. [Steve Evans ->] Added test code for new features of HelpText (see above).
+				
 2009-11-09	Giacomo Stelluti Scala	<gsscoder@ymail.com>
 
 	* Mocks folder

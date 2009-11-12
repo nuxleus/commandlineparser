@@ -4,6 +4,8 @@
 //
 // Author:
 //   Giacomo Stelluti Scala (gsscoder@ymail.com)
+// Contributor(s):
+//   Steve Evans
 //
 // Copyright (C) 2005 - 2009 Giacomo Stelluti Scala
 //
@@ -36,15 +38,16 @@ namespace CommandLine.Text
 {
     /// <summary>
     /// Models an help text and collects related informations.
-    /// You can assign it in place of a <see cref="System.String"/> instance, this is why
-    /// this type lacks a method to add lines after the options usage informations;
-    /// simple use a <see cref="System.Text.StringBuilder"/> or similar solutions.
+    /// You can assign it in place of a <see cref="System.String"/> instance.
     /// </summary>
     public class HelpText
     {
         private const int _builderCapacity = 128;
+        private const int _defaultMaximumLength = 80; // default console width
+        private int? _maximumDisplayWidth;
         private readonly string _heading;
         private string _copyright;
+        private bool _additionalNewLineAfterOption;
         private StringBuilder _preOptionsHelp;
         private StringBuilder _optionsHelp;
         private StringBuilder _postOptionsHelp;
@@ -85,13 +88,37 @@ namespace CommandLine.Text
         }
 
         /// <summary>
+        /// Gets or sets the maximum width of the display.  This determines word wrap when displaying the text.
+        /// </summary>
+        /// <value>The maximum width of the display.</value>
+        public int MaximumDisplayWidth
+        {
+            get { return _maximumDisplayWidth.HasValue ? _maximumDisplayWidth.Value : _defaultMaximumLength; }
+            set { _maximumDisplayWidth = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets whether to add an additional line after the description of the option.
+        /// </summary>
+        public bool AdditionalNewLineAfterOption
+        {
+            get { return _additionalNewLineAfterOption; }
+            set { _additionalNewLineAfterOption = value; }
+        }
+
+        /// <summary>
         /// Adds a text line after copyright and before options usage informations.
         /// </summary>
         /// <param name="value">A <see cref="System.String"/> instance.</param>
         /// <exception cref="System.ArgumentNullException">Thrown when parameter <paramref name="value"/> is null or empty string.</exception>
         public void AddPreOptionsLine(string value)
         {
-            AddLine(_preOptionsHelp, value);
+            AddPreOptionsLine(value, MaximumDisplayWidth);
+        }
+
+        private void AddPreOptionsLine(string value, int maximumLength)
+        {
+            AddLine(_preOptionsHelp, value, maximumLength);
         }
 
         /// <summary>
@@ -126,47 +153,113 @@ namespace CommandLine.Text
             Assumes.NotNull(options, "options");
             Assumes.NotNullOrEmpty(requiredWord, "requiredWord");
 
+            AddOptions(options, requiredWord, MaximumDisplayWidth);
+        }
+
+        /// <summary>
+        /// Adds a text block with options usage informations.
+        /// </summary>
+        /// <param name="options">The instance that collected command line arguments parsed with the <see cref="CommandLine.Parser"/> class.</param>
+        /// <param name="requiredWord">The word to use when the option is required.</param>
+        /// <param name="maximumLength">The maximum length of the help documentation.</param>
+        /// <exception cref="System.ArgumentNullException">Thrown when parameter <paramref name="options"/> is null.</exception>
+        /// <exception cref="System.ArgumentNullException">Thrown when parameter <paramref name="requiredWord"/> is null or empty string.</exception>
+        public void AddOptions(object options, string requiredWord, int maximumLength)
+        {
+            Assumes.NotNull(options, "options");
+            Assumes.NotNullOrEmpty(requiredWord, "requiredWord");
+
             var optionList = ReflectionUtil.RetrieveFieldAttributeList<BaseOptionAttribute>(options);
             var optionHelp = ReflectionUtil.RetrieveMethodAttributeOnly<HelpOptionAttribute>(options);
 
             if (optionHelp != null)
+            {
                 optionList.Add(optionHelp);
+            }
 
             if (optionList.Count == 0)
+            {
                 return;
+            }
 
             int maxLength = GetMaxLength(optionList);
             _optionsHelp = new StringBuilder(_builderCapacity);
-
+            int remainingSpace = maximumLength - (maxLength + 6);
             foreach (BaseOptionAttribute option in optionList)
             {
-                _optionsHelp.Append("  ");
-                StringBuilder optionName = new StringBuilder(maxLength);
-                if (option.HasShortName)
-                {
-                    optionName.Append(option.ShortName);
+                AddOption(requiredWord, maxLength, option, remainingSpace);
+            }
+        }
 
-                    if (option.HasLongName)
-                        optionName.Append(", ");
-                }
+        private void AddOption(string requiredWord, int maxLength, BaseOptionAttribute option, int widthOfHelpText)
+        {
+            _optionsHelp.Append("  ");
+            StringBuilder optionName = new StringBuilder(maxLength);
+            if (option.HasShortName)
+            {
+                optionName.AppendFormat("{0}", option.ShortName);
 
                 if (option.HasLongName)
-                    optionName.Append(option.LongName);
-
-                if (optionName.Length < maxLength)
-                    _optionsHelp.Append(optionName.ToString().PadRight(maxLength));
-                else
-                    _optionsHelp.Append(optionName.ToString());
-
-                _optionsHelp.Append("\t");
-                if (option.Required)
                 {
-                    _optionsHelp.Append(requiredWord);
-                    _optionsHelp.Append(' ');
+                    optionName.Append(", ");
                 }
-                _optionsHelp.Append(option.HelpText);
-                _optionsHelp.Append(Environment.NewLine);
             }
+
+            if (option.HasLongName)
+            {
+                optionName.AppendFormat("{0}", option.LongName);
+            }
+
+            if (optionName.Length < maxLength)
+            {
+                _optionsHelp.Append(optionName.ToString().PadRight(maxLength));
+            }
+            else
+            {
+                _optionsHelp.Append(optionName.ToString());
+            }
+
+            _optionsHelp.Append("    ");
+            if (option.Required)
+            {
+                option.HelpText = String.Format("{0} ", requiredWord) + option.HelpText;
+            }
+
+            if (!string.IsNullOrEmpty(option.HelpText))
+            {
+                do
+                {
+                    int wordBuffer = 0;
+                    var words = option.HelpText.Split(new[] {' '});
+                    for (int i = 0; i < words.Length; i++)
+                    {
+                        if (words[i].Length < (widthOfHelpText - wordBuffer))
+                        {
+                            _optionsHelp.Append(words[i]);
+                            wordBuffer += words[i].Length;
+                            if ((widthOfHelpText - wordBuffer) > 1 && i != words.Length - 1)
+                            {
+                                _optionsHelp.Append(" ");
+                                wordBuffer++;
+                            }
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                    option.HelpText = option.HelpText.Substring(Math.Min(wordBuffer, option.HelpText.Length)).Trim();
+                    if (option.HelpText.Length > 0)
+                    {
+                        _optionsHelp.Append(Environment.NewLine);
+                        _optionsHelp.Append(new string(' ', maxLength + 6));
+                    }
+                } while (option.HelpText.Length > widthOfHelpText);
+            }
+            _optionsHelp.Append(option.HelpText);
+            _optionsHelp.Append(Environment.NewLine);
+            if (_additionalNewLineAfterOption)
+                _optionsHelp.Append(Environment.NewLine);
         }
 
         /// <summary>
@@ -215,29 +308,66 @@ namespace CommandLine.Text
             return info.ToString();
         }
 
-        private static void AddLine(StringBuilder builder, string value)
+        private void AddLine(StringBuilder builder, string value)
+        {
+            Assumes.NotNull(value, "value");
+
+            AddLine(builder, value, MaximumDisplayWidth);
+        }
+
+        private static void AddLine(StringBuilder builder, string value, int maximumLength)
         {
             Assumes.NotNull(value, "value");
 
             if (builder.Length > 0)
+            {
                 builder.Append(Environment.NewLine);
-
+            }
+            do
+            {
+                int wordBuffer = 0;
+                string[] words = value.Split(new[] { ' ' });
+                for (int i = 0; i < words.Length; i++)
+                {
+                    if (words[i].Length < (maximumLength - wordBuffer))
+                    {
+                        builder.Append(words[i]);
+                        wordBuffer += words[i].Length;
+                        if ((maximumLength - wordBuffer) > 1 && i != words.Length - 1)
+                        {
+                            builder.Append(" ");
+                            wordBuffer++;
+                        }
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+                value = value.Substring(Math.Min(wordBuffer, value.Length));
+                if(value.Length > 0)
+                {
+                    builder.Append(Environment.NewLine);
+                }
+            } while (value.Length > maximumLength);
             builder.Append(value);
         }
 
         private static int GetLength(string value)
         {
             if (value == null)
+            {
                 return 0;
-
+            }
             return value.Length;
         }
 
         private static int GetLength(StringBuilder value)
         {
             if (value == null)
+            {
                 return 0;
-
+            }
             return value.Length;
         }
 
@@ -250,17 +380,19 @@ namespace CommandLine.Text
                 bool hasShort = option.HasShortName;
                 bool hasLong = option.HasLongName;
                 if (hasShort)
+                {
                     optionLenght += option.ShortName.Length;
-
+                }
                 if (hasLong)
+                {
                     optionLenght += option.LongName.Length;
-
+                }
                 if (hasShort && hasLong)
+                {
                     optionLenght += 2; // ", "
-
+                }
                 length = Math.Max(length, optionLenght);
             }
-
             return length;
         }
     }

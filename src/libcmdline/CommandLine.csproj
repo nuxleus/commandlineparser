@@ -99,7 +99,6 @@
     <Compile Include="Core\ParserState.cs" />
     <Compile Include="Text\HeadingInfo.cs" />
     <Compile Include="Text\Tests\CopyrightInfoFixture.cs" />
-    <Compile Include="Text\HelpText.cs" />
     <Compile Include="Text\Tests\HeadingInfoFixture.cs" />
     <Compile Include="Utility\Tests\ReflectionUtilFixture.cs" />
     <Compile Include="Utility\Assumes.cs" />
@@ -140,7 +139,6 @@
     </Compile>
     <Compile Include="Tests\Mocks\OptionsBase.cs" />
     <Compile Include="Tests\MockUtil.cs" />
-    <Compile Include="Text\Tests\HelpTextFixture.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attributes\Tests\AttributesFixture.cs" />
@@ -164,6 +162,8 @@
     <Compile Include="Tests\Mocks\NumberSetOptions.cs" />
     <Compile Include="Tests\Mocks\SimpleOptionsWithValueList.cs" />
     <Compile Include="Tests\Mocks\SimpleOptions.cs" />
+    <Compile Include="Text\HelpText.cs" />
+    <Compile Include="Text\Tests\HelpTextFixture.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
