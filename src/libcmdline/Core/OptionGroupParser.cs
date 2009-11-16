@@ -31,9 +31,9 @@ namespace CommandLine
 {
     sealed class OptionGroupParser : ArgumentParser
     {
-        public sealed override ParserState Parse(IStringEnumerator argumentEnumerator, IOptionMap map, object options)
+        public sealed override ParserState Parse(IArgumentEnumerator argumentEnumerator, OptionMap map, object options)
         {
-            IStringEnumerator group = new CharEnumeratorEx(argumentEnumerator.Current.Substring(1));
+            IArgumentEnumerator group = new OneCharStringEnumerator(argumentEnumerator.Current.Substring(1));
             while (group.MoveNext())
             {
                 var option = map[group.Current];

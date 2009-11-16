@@ -42,7 +42,6 @@ namespace CommandLine
         private readonly FieldInfo _field;
         private bool _required;
         private string _helpText;
-        private bool _isDefined;
         private string _shortName;
         private string _longName;
         private string _mutuallyExclusiveSet;
@@ -67,10 +66,10 @@ namespace CommandLine
             _longName = longName;
         }
 #endif
-        public static IOptionMap CreateMap(object target, CommandLineParserSettings settings)
+        public static OptionMap CreateMap(object target, CommandLineParserSettings settings)
         {
             var list = ReflectionUtil.RetrieveFieldList<OptionAttribute>(target);
-            IOptionMap map = new OptionMap(list.Count, settings);
+            OptionMap map = new OptionMap(list.Count, settings);
 
             foreach (Pair<FieldInfo, OptionAttribute> pair in list)
             {
@@ -205,11 +204,7 @@ namespace CommandLine
             get { return _field.FieldType == typeof(bool); }
         }
 
-        public bool IsDefined
-        {
-            get { return _isDefined; }
-            set { _isDefined = value; }
-        }
+        public bool IsDefined { get; set; }
 
         public bool HasBothNames
         {

@@ -5,7 +5,7 @@
 // Author:
 //   Giacomo Stelluti Scala (gsscoder@ymail.com)
 // Contributor(s):
-//   Steve Evans
+//   Steven Evans
 // 
 // Copyright (C) 2005 - 2009 Giacomo Stelluti Scala
 //

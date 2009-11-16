@@ -41,7 +41,7 @@ namespace CommandLine.Tests
         #region Helper Nested Class
         class OptionMapBuilder
         {
-            private readonly IOptionMap _optionMap;
+            private readonly OptionMap _optionMap;
             private readonly List<OptionInfo> _options;
             private readonly List<string> _names;
 
@@ -71,13 +71,13 @@ namespace CommandLine.Tests
                 get { return _names; }
             }
 
-            public IOptionMap OptionMap
+            public OptionMap OptionMap
             {
                 get { return _optionMap; }
             }
         }
         #endregion
-        private static IOptionMap _optionMap;
+        private static OptionMap _optionMap;
         private static OptionMapBuilder _omBuilder;
 
         [SetUp]
@@ -119,12 +119,10 @@ namespace CommandLine.Tests
             Assert.IsNull(longOi);
         }
 
-        private static IOptionMap CreateMap(ref OptionMap map,  IDictionary<string, OptionInfo> optionCache)
+        private static OptionMap CreateMap(ref OptionMap map,  IDictionary<string, OptionInfo> optionCache)
         {
             if (map == null)
-            {
                 map = new OptionMap(3, new CommandLineParserSettings(true));
-            }
 
             var attribute1 = new OptionAttribute("p", "pretend");
             var attribute2 = new OptionAttribute(null, "newuse");

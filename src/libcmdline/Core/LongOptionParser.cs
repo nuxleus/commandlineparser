@@ -31,7 +31,7 @@ namespace CommandLine
 {
     sealed class LongOptionParser : ArgumentParser
     {
-        public sealed override ParserState Parse(IStringEnumerator argumentEnumerator, IOptionMap map, object options)
+        public sealed override ParserState Parse(IArgumentEnumerator argumentEnumerator, OptionMap map, object options)
         {
             var parts = argumentEnumerator.Current.Substring(2).Split(new char[] { '=' }, 2);
             var option = map[parts[0]];

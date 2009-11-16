@@ -37,14 +37,13 @@ namespace CommandLine
     /// </summary>
     public sealed class CommandLineParserSettings
     {
-        private bool _caseSensitive = true;
-        private TextWriter _helpWriter = null;
-        private bool _mutuallyExclusive = false;
+        private const bool _caseSensitiveDefault = true;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CommandLine.CommandLineParserSettings"/> class.
         /// </summary>
         public CommandLineParserSettings()
+            : this(_caseSensitiveDefault)
         {
         }
 
@@ -55,7 +54,7 @@ namespace CommandLine
         /// <param name="caseSensitive">If set to true, parsing will be case sensitive.</param>
         public CommandLineParserSettings(bool caseSensitive)
         {
-            _caseSensitive = caseSensitive;
+            CaseSensitive = caseSensitive;
         }
 
         /// <summary>
@@ -65,8 +64,9 @@ namespace CommandLine
         /// <param name="helpWriter">Any instance derived from <see cref="System.IO.TextWriter"/>,
         /// default <see cref="System.Console.Error"/>. Setting this argument to null, will disable help screen.</param>
         public CommandLineParserSettings(TextWriter helpWriter)
+            : this(_caseSensitiveDefault)
         {
-            _helpWriter = helpWriter;
+            HelpWriter = helpWriter;
         }
 
         /// <summary>
@@ -78,8 +78,8 @@ namespace CommandLine
         /// default <see cref="System.Console.Error"/>. Setting this argument to null, will disable help screen.</param>
         public CommandLineParserSettings(bool caseSensitive, TextWriter helpWriter)
         {
-            _caseSensitive = caseSensitive;
-            _helpWriter = helpWriter;
+            CaseSensitive = caseSensitive;
+            HelpWriter = helpWriter;
         }
 
         /// <summary>
@@ -90,8 +90,8 @@ namespace CommandLine
         /// <param name="mutuallyExclusive">If set to true, enable mutually exclusive behavior.</param>
         public CommandLineParserSettings(bool caseSensitive, bool mutuallyExclusive)
         {
-            _caseSensitive = caseSensitive;
-            _mutuallyExclusive = mutuallyExclusive;
+            CaseSensitive = caseSensitive;
+            MutuallyExclusive = mutuallyExclusive;
         }
 
         /// <summary>
@@ -104,39 +104,27 @@ namespace CommandLine
         /// default <see cref="System.Console.Error"/>. Setting this argument to null, will disable help screen.</param>
         public CommandLineParserSettings(bool caseSensitive, bool mutuallyExclusive, TextWriter helpWriter)
         {
-            _caseSensitive = caseSensitive;
-            _mutuallyExclusive = mutuallyExclusive;
-            _helpWriter = helpWriter;
+            CaseSensitive = caseSensitive;
+            MutuallyExclusive = mutuallyExclusive;
+            HelpWriter = helpWriter;
         }
 
         /// <summary>
         /// Gets or sets the case comparison behavior.
         /// Default is set to true.
         /// </summary>
-        public bool CaseSensitive
-        {
-            internal get { return _caseSensitive; }
-            set { _caseSensitive = value; }
-        }
+        public bool CaseSensitive { internal get; set; }
 
         /// <summary>
         /// Gets or sets the mutually exclusive behavior.
         /// Default is set to false.
         /// </summary>
-        public bool MutuallyExclusive
-        {
-            internal get { return _mutuallyExclusive; }
-            set { _mutuallyExclusive = value; }
-        }
+        public bool MutuallyExclusive { internal get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="System.IO.TextWriter"/> used for help method output.
         /// Setting this property to null, will disable help screen.
         /// </summary>
-        public TextWriter HelpWriter
-        {
-            internal get { return _helpWriter; }
-            set { _helpWriter = value; }
-        }
+        public TextWriter HelpWriter { internal get; set; }
     }
 }

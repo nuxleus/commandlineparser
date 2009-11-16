@@ -42,8 +42,6 @@ namespace CommandLine
             Inherited=true)]
     public sealed class OptionListAttribute : OptionAttribute
     {
-        private char _separator;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="CommandLine.OptionListAttribute"/> class.
         /// </summary>
@@ -63,16 +61,12 @@ namespace CommandLine
         public OptionListAttribute(string shortName, string longName, char separator)
             : base(shortName, longName)
         {
-            _separator = separator;
+            Separator = separator;
         }
 
         /// <summary>
         /// Gets or sets the values separator character.
         /// </summary>
-        public char Separator
-        {
-            get { return _separator; }
-            set { _separator = value; }
-        }
+        public char Separator { get; set; }
     }
 }

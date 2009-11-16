@@ -80,7 +80,6 @@
     <Compile Include="Attributes\Tests\HelpOptionAttributeFixture.cs" />
     <Compile Include="Attributes\Tests\ValueListAttributeFixture.cs" />
     <Compile Include="Parser\CommandLineParser.cs" />
-    <Compile Include="Core\IOptionMap.cs" />
     <Compile Include="Core\Tests\EnumeratorsFixture.cs" />
     <Compile Include="Core\Tests\OptionMapFixture.cs" />
     <Compile Include="Parser\ICommandLineParser.cs" />
@@ -91,7 +90,7 @@
     <Compile Include="Core\ArgumentParser.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Core\IStringEnumerator.cs" />
+    <Compile Include="Core\IArgumentEnumerator.cs" />
     <Compile Include="Core\LongOptionParser.cs" />
     <Compile Include="Core\OptionGroupParser.cs" />
     <Compile Include="Core\OptionInfo.cs" />
@@ -103,10 +102,10 @@
     <Compile Include="Utility\Tests\ReflectionUtilFixture.cs" />
     <Compile Include="Utility\Assumes.cs" />
     <Compile Include="Utility\ReflectionUtil.cs" />
-    <Compile Include="Core\StringEnumeratorEx.cs" />
+    <Compile Include="Core\StringArrayEnumerator.cs" />
     <Compile Include="Attributes\OptionAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Core\CharEnumeratorEx.cs">
+    <Compile Include="Core\OneCharStringEnumerator.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Attributes\ValueListAttribute.cs" />

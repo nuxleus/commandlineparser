@@ -45,11 +45,10 @@ namespace CommandLine
     public sealed class ValueListAttribute : Attribute
     {
         private Type _concreteType;
-        private int _maximumElements;
 
         private ValueListAttribute()
         {
-            _maximumElements = -1;
+            MaximumElements = -1;
         }
 
         /// <summary>
@@ -74,11 +73,7 @@ namespace CommandLine
         /// If lesser than 0, no upper bound is fixed.
         /// If equal to 0, no elements are allowed.
         /// </summary>
-        public int MaximumElements
-        {
-            get { return _maximumElements; }
-            set { _maximumElements = value; }
-        }
+        public int MaximumElements { get; set; }
 
         internal Type ConcreteType
         {

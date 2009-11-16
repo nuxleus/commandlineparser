@@ -3,8 +3,8 @@ Command Line Parser Library
 Project Author/Coordinator: Giacomo Stelluti Scala
 Contributor(s): Steve Evans
 ---------------------------------------------------------------------------------------
-Version 1.6.9.95 (beta)
-Latest Update: 12-nov-2009.
+Version 1.6.19.99 (beta)
+Latest Update: 16-nov-2009.
 
 General Info:
 This library allows command line arguments parsing.

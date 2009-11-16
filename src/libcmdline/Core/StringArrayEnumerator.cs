@@ -1,6 +1,6 @@
 #region License
 //
-// Command Line Library: CharEnumeratorEx.cs
+// Command Line Library: StringArrayEnumerator.cs
 //
 // Author:
 //   Giacomo Stelluti Scala (gsscoder@ymail.com)
@@ -32,18 +32,19 @@ using System;
 
 namespace CommandLine
 {
-    internal sealed class CharEnumeratorEx : IStringEnumerator
+    sealed class StringArrayEnumerator : IArgumentEnumerator
     {
-        private string _currentElement;
+        private string[] _data;
         private int _index;
-        private readonly string _data;
+        private int _endIndex;
 
-        public CharEnumeratorEx(string value)
+        public StringArrayEnumerator(string[] value)
         {
-            Assumes.NotNullOrEmpty(value, "value");
+            Assumes.NotNull(value, "value");
 
             _data = value;
             _index = -1;
+            _endIndex = value.Length;
         }
 
         public string Current
@@ -51,12 +52,14 @@ namespace CommandLine
             get
             {
                 if (_index == -1)
+                {
                     throw new InvalidOperationException();
-
-                if (_index >= _data.Length)
+                }
+                if (_index >= _endIndex)
+                {
                     throw new InvalidOperationException();
-
-                return _currentElement;
+                }
+                return _data[_index];
             }
         }
 
@@ -65,21 +68,24 @@ namespace CommandLine
             get
             {
                 if (_index == -1)
+                {
                     throw new InvalidOperationException();
-
-                if (_index > _data.Length)
+                }
+                if (_index > _endIndex)
+                {
                     throw new InvalidOperationException();
-
+                }
                 if (IsLast)
+                {
                     return null;
-
-                return _data.Substring(_index + 1, 1);
+                }
+                return _data[_index + 1];
             }
         }
 
         public bool IsLast
         {
-            get { return _index == _data.Length - 1; }
+            get { return _index == _endIndex - 1; }
         }
 
         public void Reset()
@@ -89,26 +95,17 @@ namespace CommandLine
 
         public bool MoveNext()
         {
-            if (_index < (_data.Length - 1))
+            if (_index < _endIndex)
             {
                 _index++;
-                _currentElement = _data.Substring(_index, 1);
-                return true;
+                return _index < _endIndex;
             }
-            _index = _data.Length;
-
             return false;
         }
 
         public string GetRemainingFromNext()
         {
-            if (_index == -1)
-                throw new InvalidOperationException();
-
-            if (_index > _data.Length)
-                throw new InvalidOperationException();
-
-            return _data.Substring(_index + 1);
+            throw new NotSupportedException();
         }
     }
 }

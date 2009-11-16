@@ -121,7 +121,7 @@ namespace CommandLine
             var valueList = ValueListAttribute.GetReference(options);
             var vlAttr = ValueListAttribute.GetAttribute(options);
 
-            IStringEnumerator arguments = new StringEnumeratorEx(args);
+            IArgumentEnumerator arguments = new StringArrayEnumerator(args);
             while (arguments.MoveNext())
             {
                 string argument = arguments.Current;

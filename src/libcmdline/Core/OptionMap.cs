@@ -33,7 +33,7 @@ using System.Collections.Generic;
 
 namespace CommandLine
 {
-    sealed class OptionMap : IOptionMap
+    sealed class OptionMap //: IOptionMap
     {
         private CommandLineParserSettings _settings;
         private Dictionary<string, string> _names;

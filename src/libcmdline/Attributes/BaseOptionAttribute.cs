@@ -38,9 +38,6 @@ namespace CommandLine
     public abstract class BaseOptionAttribute : Attribute
     {
         private string _shortName;
-        private string _longName;
-        private bool _required;
-        private string _helpText;
 
         /// <summary>
         /// Short name of this command line option. You can use only one character.
@@ -60,20 +57,12 @@ namespace CommandLine
         /// <summary>
         /// Long name of this command line option. This name is usually a single english word.
         /// </summary>
-        public string LongName
-        {
-            get { return _longName; }
-            internal set { _longName = value; }
-        }
+        public string LongName { get; internal set; }
 
         /// <summary>
         /// True if this command line option is required.
         /// </summary>
-        public virtual bool Required
-        {
-            get { return _required; }
-            set { _required = value; }
-        }
+        public virtual bool Required { get; set; }
 
         internal bool HasShortName
         {
@@ -82,16 +71,12 @@ namespace CommandLine
 
         internal bool HasLongName
         {
-            get { return !string.IsNullOrEmpty(_longName); }
+            get { return !string.IsNullOrEmpty(LongName); }
         }
 
         /// <summary>
         /// A short description of this command line option. Usually a sentence summary. 
         /// </summary>
-        public string HelpText
-        {
-            get { return _helpText; }
-            set { _helpText = value; }
-        }
+        public string HelpText { get; set; }
     }
 }

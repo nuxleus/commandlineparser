@@ -44,7 +44,7 @@ namespace CommandLine.Tests
             const string valueThree = "three";
 
             string[] values = { valueOne, valueTwo, valueThree };
-            IStringEnumerator e = new StringEnumeratorEx(values);
+            IArgumentEnumerator e = new StringArrayEnumerator(values);
             e.MoveNext();
 
             Assert.AreEqual(valueOne, e.Current);
@@ -67,7 +67,7 @@ namespace CommandLine.Tests
         [Test]
         public void CharIteration()
         {
-            IStringEnumerator e = new CharEnumeratorEx("abcd");
+            IArgumentEnumerator e = new OneCharStringEnumerator("abcd");
             e.MoveNext();
 
             Assert.AreEqual("a", e.Current);

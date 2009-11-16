@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 //
-// Command Line Library: IOptionMap.cs
+// Command Line Library: IArgumentEnumerator.cs
 //
 // Author:
 //   Giacomo Stelluti Scala (gsscoder@ymail.com)
@@ -26,16 +26,18 @@
 // THE SOFTWARE.
 //
 #endregion
-#region Using Directives
-using System.Collections.Generic;
-#endregion
 
 namespace CommandLine
 {
-    interface IOptionMap
+    interface IArgumentEnumerator
     {
-        OptionInfo this[string key] { get; set; }
+        bool MoveNext();
+        string GetRemainingFromNext();
 
-        bool EnforceRules();
+        string Current { get; }
+        string Next { get; }
+        bool IsLast { get; }
+
+        void Reset();
     }
 }

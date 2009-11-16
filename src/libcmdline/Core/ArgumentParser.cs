@@ -34,7 +34,7 @@ namespace CommandLine
 {
     internal abstract class ArgumentParser
     {
-        public abstract ParserState Parse(IStringEnumerator argumentEnumerator, IOptionMap map, object options);
+        public abstract ParserState Parse(IArgumentEnumerator argumentEnumerator, OptionMap map, object options);
 
         public static ArgumentParser Create(string argument)
         {

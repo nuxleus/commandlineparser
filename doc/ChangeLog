@@ -1,15 +1,78 @@
+2009-11-16	Giacomo Stelluti Scala	<gsscoder@ymail.com>
+
+	* IStringEnumerator.cs -> IArgumentEnumerator.cs (IArgumentEnumerator)
+		Renamed. This interface is used to enumerate over a string vector (old StringEnumeratorEx)
+		or a string item of this vector (old CharEnumeratorEx). I think that IArgumentEnumerator is a more
+		meaningful name.
+	
+	* OptionGroupParser.cs (OptionGroupParser)
+		Modified. Reference to IStringEnumerator changed to IArgumentEnumerator.
+		Reference to CharEnumeratorEx changed to OneCharStringEnumerator.
+		OptionMap referenced directly (IOptionMap interface currently removed).
+		
+	* LongOptionParser.cs (LongOptionParser)
+		Modified. Reference to IStringEnumerator changed to IArgumentEnumerator.
+		OptionMap referenced directly (IOptionMap interface currently removed).
+		
+	* StringEnumeratorEx.cs -> StringArrayEnumerator.cs (StringArrayEnumerator)
+		Renamed. This isn't an extended version of CLR StringEnumerator. It's really a custom string array
+		enumerator. So I decided to refactor it, starting from giving it a correct name.
+
+	* CharEnumeratorEx.cs -> OneCharStringEnumerator.cs (OneCharStringEnumerator)
+		Renamed. This is really a string enumerator that has its ::Current member made of a
+		1-char string. Motivation for name refactoring as above.
+
+	* CommandLineParser.cs (CommandLineParser)
+		Modified. Reference to IStringEnumerator changed to IArgumentEnumerator.
+		Reference to StringEnumeratorEx changed to StringArrayEnumerator.
+		OptionMap referenced directly (IOptionMap interface currently removed).
+		
+	* EnumeratorsFixture.cs (EnumeratorsFixture)
+		Modified. Reference to IStringEnumerator changed to IArgumentEnumerator.
+		Reference to CharEnumeratorEx changed to OneCharStringEnumerator.
+		Reference to StringEnumeratorEx changed to StringArrayEnumerator.
+		
+	* IOptionMap.cs (IOptionMap)
+		Removed. Why keep an internal interface inherited only from one concrete type?
+		
+	* OptionMap.cs (OptionMap)
+		Modified. Inheritance from IOptionMap removed.
+		
+	* OptionInfo.cs (OptionInfo)
+		Modified. OptionMap referenced directly (IOptionMap interface currently removed).
+		::IsDefined defined with automatic property syntax.
+
+	* ArgumentParser.cs (ArgumentParser)
+		Modified. Reference to IStringEnumerator changed to IArgumentEnumerator.
+		OptionMap referenced directly (IOptionMap interface currently removed).
+		
+	* OptionMapFixture.cs (OptionMapFixture)
+		Modified. OptionMap referenced directly (IOptionMap interface currently removed).
+	
+	* BaseOptionAttribute.cs (BaseOptionAttribute)
+		Modified. Where possible, automatic properties used.
+		
+	* OptionListAttribute.cs (OptionListAttribute)
+		Modified. ::Separator defined with automatic property syntax.
+	
+	* ValueListAttribute.cs (ValueListAttribute)
+		Modified. ::MaximumElements defined with automatic property syntax.
+		
+	* CommandLineParserSettings.cs (ValueListAttribute)
+		Modified. Where possible, automatic properties used.
+		
 2009-11-12	Giacomo Stelluti Scala	<gsscoder@ymail.com>
 
 	* Program.cs (SampleApp.Program)
 		Modified. Minor internal refactoring.
 		
 	* HelpText.cs
-		Modified. [Steve Evans ->] Added support for automatic text wrap.
+		Modified. [Steven Evans ->] Added support for automatic text wrap.
 		Updated the type XML comment.
 		Added possibility to add an additional new line after description of an option (::AdditionalNewLineAfterOption).
 		
 	* HelpTextFixture.cs 
-		Modified. [Steve Evans ->] Added test code for new features of HelpText (see above).
+		Modified. [Steven Evans ->] Added test code for new features of HelpText (see above).
 				
 2009-11-09	Giacomo Stelluti Scala	<gsscoder@ymail.com>
 
