@@ -133,21 +133,27 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Parser\ParserException.cs">
+    <Compile Include="Parser\CommandLineParserException.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Tests\Mocks\OptionsBase.cs" />
     <Compile Include="Tests\MockUtil.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attributes\OptionArrayAttribute.cs" />
     <Compile Include="Attributes\Tests\AttributesFixture.cs" />
+    <Compile Include="Core\Tests\ArgumentParserFixture.cs" />
     <Compile Include="Parser\CommandLineParserSettings.cs" />
     <Compile Include="Parser\Tests\CommandLineParserSettingsFixture.cs" />
+    <Compile Include="Parser\Tests\OptionArrayAttributeParsingFixture.cs" />
     <Compile Include="Parser\Tests\NullableTypesParsingFixture.cs" />
     <Compile Include="Parser\Tests\ValueListAttributeParsingFixture.cs" />
     <Compile Include="Parser\Tests\MutuallyExclusiveParsingFixture.cs" />
     <Compile Include="Tests\CommandLineParserBaseFixture.cs" />
+    <Compile Include="Tests\BaseFixture.cs" />
     <Compile Include="Tests\Mocks\BooleanSetOptions.cs" />
+    <Compile Include="Tests\Mocks\SimpleOptionsWithArrayAndValueList.cs" />
+    <Compile Include="Tests\Mocks\SimpleOptionsWithArray.cs" />
     <Compile Include="Tests\Mocks\NullableTypesOptions.cs" />
     <Compile Include="Tests\Mocks\OptionsWithValueListMaximumZero.cs" />
     <Compile Include="Tests\Mocks\OptionsWithValueListMaximumThree.cs" />

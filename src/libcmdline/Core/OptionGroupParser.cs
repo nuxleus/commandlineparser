@@ -26,6 +26,9 @@
 // THE SOFTWARE.
 //
 #endregion
+#region Using Directives
+using System.Collections.Generic;
+#endregion
 
 namespace CommandLine
 {
@@ -49,20 +52,49 @@ namespace CommandLine
 
                     if (!group.IsLast)
                     {
-                        if (option.SetValue(group.GetRemainingFromNext(), options))
-                            return ParserState.Success;
-                        else
-                            return ParserState.Failure;
+                        if (!option.IsArray) // modified
+                        {   // normal branch
+                            if (option.SetValue(group.GetRemainingFromNext(), options))
+                                return ParserState.Success;
+                            else
+                                return ParserState.Failure;
+                        }
+                        else // -> array target management
+                        {
+                            if (!option.IsAttributeArrayCompatible)
+                                throw new CommandLineParserException();
+
+                            var items = base.GetNextInputValues(argumentEnumerator);
+                            items.Insert(0, group.GetRemainingFromNext());
+                            if (option.SetValue(items, options))
+                                return ParserState.Success | ParserState.MoveOnNextElement;
+                            else
+                                return ParserState.Failure;
+                        }
                     }
 
                     if (!argumentEnumerator.IsLast && !ArgumentParser.IsInputValue(argumentEnumerator.Next))
                         return ParserState.Failure;
                     else
                     {
-                        if (option.SetValue(argumentEnumerator.Next, options))
-                            return ParserState.Success | ParserState.MoveOnNextElement;
-                        else
-                            return ParserState.Failure;
+                        if (!option.IsArray) // modified
+                        {   // normal branch
+                            if (option.SetValue(argumentEnumerator.Next, options))
+                                return ParserState.Success | ParserState.MoveOnNextElement;
+                            else
+                                return ParserState.Failure;
+                        }
+                        else // -> array target management
+                        {
+                            if (!option.IsAttributeArrayCompatible)
+                                throw new CommandLineParserException();
+
+                            var items = base.GetNextInputValues(argumentEnumerator);
+                            if (option.SetValue(items, options))
+                                return ParserState.Success; // return ParserState.Success | ParserState.MoveOnNextElement;
+                            else
+                                return ParserState.Failure;
+                        }
                     }
                 }
                 else

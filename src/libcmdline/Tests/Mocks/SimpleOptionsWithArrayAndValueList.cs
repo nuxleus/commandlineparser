@@ -1,6 +1,6 @@
-#region License
+﻿#region License
 //
-// Command Line Library: IArgumentEnumerator.cs
+// Command Line Library: SimpleOptionsWithArrayAndValueList.cs
 //
 // Author:
 //   Giacomo Stelluti Scala (gsscoder@ymail.com)
@@ -26,20 +26,17 @@
 // THE SOFTWARE.
 //
 #endregion
+#if UNIT_TESTS
 #region Using Directives
-using System;
 using System.Collections.Generic;
 #endregion
 
-namespace CommandLine
+namespace CommandLine.Tests.Mocks
 {
-    interface IArgumentEnumerator : IEnumerator<string> //, ICloneable
+    class SimpleOptionsWithArrayAndValueList : SimpleOptionsWithArray
     {
-        string GetRemainingFromNext();
-
-        string Next { get; }
-        bool IsLast { get; }
-
-        bool MovePrevious();
+        [ValueList(typeof(List<string>))]
+        public IList<string> Items = null;
     }
 }
+#endif

@@ -1,6 +1,6 @@
 #region License
 //
-// Command Line Library: CommandLineParserBaseFixture.cs
+// Command Line Library: BaseFixture.cs
 //
 // Author:
 //   Giacomo Stelluti Scala (gsscoder@ymail.com)
@@ -30,38 +30,48 @@
 #region Using Directives
 using System;
 using System.IO;
+using System.Collections;
+using System.Collections.Generic;
 using NUnit.Framework;
 #endregion
 
 namespace CommandLine.Tests
 {
-    public abstract class CommandLineParserBaseFixture : BaseFixture
+    public abstract class BaseFixture
     {
-        private ICommandLineParser _parser = null;
+        //protected void AssertArrayItemEqual(string[] expected, string[] actual)
+        //{
+        //    Assert.AreEqual(expected.Length, actual.Length);
+        //    for (int i = 0; i < expected.Length; i++)
+        //    {
+        //        Assert.AreEqual(expected[i], actual[i]);
+        //    }
+        //}
 
-        protected virtual ICommandLineParser CreateCommandLineParser()
-        {
-            return new CommandLineParser();
-        }
+        //protected void AssertArrayItemEqual(int[] expected, int[] actual)
+        //{
+        //    Assert.AreEqual(expected.Length, actual.Length);
+        //    for (int i = 0; i < expected.Length; i++)
+        //    {
+        //        Assert.AreEqual(expected[i], actual[i]);
+        //    }
+        //}
 
-        protected void AssertParserSuccess(bool result)
+        protected void AssertArrayItemEqual<T>(T[] expected, T[] actual)
         {
-            Assert.IsTrue(result);
-        }
-
-        protected void AssertParserFailure(bool result)
-        {
-            Assert.IsFalse(result);
-        }
-
-        protected ICommandLineParser Parser
-        {
-            get
+            Assert.AreEqual(expected.Length, actual.Length);
+            for (int i = 0; i < expected.Length; i++)
             {
-                if (_parser == null)
-                    _parser = CreateCommandLineParser();
+                Assert.AreEqual(expected[i], actual[i]);
+            }
+        }
 
-                return _parser;
+        protected void AssertArrayItemEqual(string[] expected, IList<string> actual)
+        {
+            Assert.AreEqual(expected.Length, actual.Count);
+            for (int i = 0; i < expected.Length; i++)
+            {
+                Assert.AreEqual(expected[i], actual[i]);
             }
         }
     }

@@ -28,6 +28,7 @@
 #endregion
 #region Using Directives
 using System;
+using System.Collections.Generic;
 #endregion
 
 namespace CommandLine
@@ -57,6 +58,25 @@ namespace CommandLine
 
             return true;
         }
+
+        // modified -> for OptionArrayAttribute support
+        protected IList<string> GetNextInputValues(IArgumentEnumerator ae)
+        {
+            IList<string> list = new List<string>();
+            //var clone = (IArgumentEnumerator)argumentEnumerator.Clone();
+            
+            while (ae.MoveNext())
+            {
+                if (IsInputValue(ae.Current))
+                    list.Add(ae.Current);
+                else
+                    break;
+            }
+            if (!ae.MovePrevious())
+                throw new CommandLineParserException();
+
+            return list;
+        }    
 
         public static bool CompareShort(string argument, string option, bool caseSensitive)
         {

@@ -32,10 +32,12 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using System.Reflection;
+using System.Diagnostics;
 #endregion
 
 namespace CommandLine
 {
+    [DebuggerDisplay("ShortName = {ShortName}, LongName = {LongName}")]
     sealed class OptionInfo
     {
         private readonly OptionAttribute _attribute;
@@ -88,6 +90,21 @@ namespace CommandLine
                 return SetNullableValue(value, options);
 
             return SetValueScalar(value, options);
+        }
+
+        public bool SetValue(IList<string> values, object options)
+        {
+            Type elementType = _field.FieldType.GetElementType();
+            Array array = Array.CreateInstance(elementType, values.Count);
+            
+            for (int i = 0; i < array.Length; i++)
+            {
+                array.SetValue(Convert.ChangeType(values[i], elementType, CultureInfo.InvariantCulture), i);
+            }
+
+            _field.SetValue(options, array);
+
+            return true;
         }
 
         private bool SetValueScalar(string value, object options)
@@ -202,6 +219,16 @@ namespace CommandLine
         public bool IsBoolean
         {
             get { return _field.FieldType == typeof(bool); }
+        }
+
+        public bool IsArray
+        {
+            get { return _field.FieldType.IsArray; }
+        }
+
+        public bool IsAttributeArrayCompatible
+        {
+            get { return _attribute is OptionArrayAttribute; }
         }
 
         public bool IsDefined { get; set; }

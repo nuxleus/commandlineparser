@@ -26,19 +26,23 @@
 // THE SOFTWARE.
 //
 #endregion
+//#define EXEC_TESTS
 #region Using Directives
 using System;
 using System.Collections.Generic;
 using System.Text;
 using CommandLine;
 using CommandLine.Text;
+#if UNIT_TESTS && EXEC_TESTS
+using CommandLine.Tests;
+#endif
 #endregion
 
 namespace SampleApp
 {
     sealed class Program
     {
-        private static readonly HeadingInfo _headingInfo = new HeadingInfo("sampleapp", "1.6");
+        private static readonly HeadingInfo _headingInfo = new HeadingInfo("sampleapp", "1.7");
 
         private enum OptimizeFor
         {
@@ -117,6 +121,9 @@ namespace SampleApp
         /// <param name="args">Command Line Arguments splitted by the System.</param>
         private static void Main(string[] args)
         {
+#if UNIT_TESTS && EXEC_TESTS
+            RunATestForDebugging();
+#endif
             var options = new Options();
             ICommandLineParser parser = new CommandLineParser(new CommandLineParserSettings(Console.Error));
             if (!parser.ParseArguments(args, options))
@@ -163,5 +170,23 @@ namespace SampleApp
                 Console.WriteLine("[...]");
             }
         }
+
+#if UNIT_TESTS && EXEC_TESTS
+        private static void RunATestForDebugging()
+        {
+            OptionArrayAttributeParsingFixture f = new OptionArrayAttributeParsingFixture();
+            //ArgumentParserFixture f2 = new ArgumentParserFixture();
+            //f.ParseStringArrayOptionUsingShortName();
+            //f.ParseStringArrayOptionUsingShortNameWithValueAdjacent();
+            //f.ParseStringArrayOptionUsingLongName();
+            //f.ParseStringArrayOptionUsingLongNameWithEqualSign();
+            //f.ParseStringArrayOptionUsingShortNameAndStringOptionAfter();
+            f.ParseStringArrayOptionUsingLongNameWithValueList();
+            //f2.GetNextInputValues();
+            Console.Write("press any key");
+            Console.ReadKey();
+            Environment.Exit(1);
+        }
+#endif
     }
 }

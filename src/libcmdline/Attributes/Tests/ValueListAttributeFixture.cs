@@ -58,7 +58,7 @@ namespace CommandLine.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(ParserException))]
+        [ExpectedException(typeof(CommandLineParserException))]
         public void WillThrowExceptionIfConcreteTypeIsIncompatible()
         {
             new ValueListAttribute(new List<object>().GetType());

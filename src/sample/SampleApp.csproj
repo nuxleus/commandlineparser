@@ -51,7 +51,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'DebugTests|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\DebugTests\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;UNIT_TESTS</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>

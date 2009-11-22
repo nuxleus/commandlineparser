@@ -63,7 +63,7 @@ namespace CommandLine
                 throw new ArgumentNullException("concreteType");
 
             if (!typeof(IList<string>).IsAssignableFrom(concreteType))
-                throw new ParserException("The types are incompatible.");
+                throw new CommandLineParserException("The types are incompatible.");
 
             _concreteType = concreteType;
         }

@@ -28,6 +28,7 @@
 #endregion
 #region Using Directives
 using System;
+using System.Collections;
 #endregion
 
 namespace CommandLine
@@ -59,6 +60,8 @@ namespace CommandLine
                 return _currentElement;
             }
         }
+
+        object IEnumerator.Current { get { return Current; } }
 
         public string Next
         {
@@ -110,5 +113,19 @@ namespace CommandLine
 
             return _data.Substring(_index + 1);
         }
+
+        public bool MovePrevious()
+        {
+            throw new NotSupportedException();
+        }
+
+        void IDisposable.Dispose()
+        {
+        }
+
+        //public object Clone()
+        //{
+        //    return base.MemberwiseClone();
+        //}
     }
 }

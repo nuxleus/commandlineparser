@@ -37,9 +37,6 @@ namespace CommandLine
     /// Must be applied to a field compatible with an <see cref="System.Collections.Generic.IList&lt;T&gt;"/> interface
     /// of <see cref="System.String"/> instances.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Field,
-            AllowMultiple=false,
-            Inherited=true)]
     public sealed class OptionListAttribute : OptionAttribute
     {
         /// <summary>

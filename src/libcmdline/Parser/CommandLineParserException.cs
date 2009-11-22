@@ -1,6 +1,6 @@
 #region License
 //
-// Command Line Library: BaseOptionAttribute.cs
+// Command Line Library: CommandLineParserException.cs
 //
 // Author:
 //   Giacomo Stelluti Scala (gsscoder@ymail.com)
@@ -28,56 +28,35 @@
 #endregion
 #region Using Directives
 using System;
-//using System.Diagnostics;
+using System.Runtime.Serialization;
 #endregion
 
 namespace CommandLine
 {
     /// <summary>
-    /// Provides base properties for creating an attribute, used to define rules for command line parsing.
+    /// This exception is thrown when a generic parsing error occurs.
     /// </summary>
-    public abstract class BaseOptionAttribute : Attribute
+    [Serializable]
+    public sealed class CommandLineParserException : Exception, ISerializable
     {
-        private string _shortName;
-
-        /// <summary>
-        /// Short name of this command line option. You can use only one character.
-        /// </summary>
-        public string ShortName
+        internal CommandLineParserException()
+            : base()
         {
-            get { return _shortName; }
-            internal set
-            {
-                if (value != null && value.Length > 1)
-                    throw new ArgumentException("shortName");
-
-                _shortName = value;
-            }
         }
 
-        /// <summary>
-        /// Long name of this command line option. This name is usually a single english word.
-        /// </summary>
-        public string LongName { get; internal set; }
-
-        /// <summary>
-        /// True if this command line option is required.
-        /// </summary>
-        public virtual bool Required { get; set; }
-
-        internal bool HasShortName
+        internal CommandLineParserException(string message)
+            : base(message)
         {
-            get { return !string.IsNullOrEmpty(_shortName); }
         }
 
-        internal bool HasLongName
+        internal CommandLineParserException(string message, Exception innerException)
+            : base(message, innerException)
         {
-            get { return !string.IsNullOrEmpty(LongName); }
         }
 
-        /// <summary>
-        /// A short description of this command line option. Usually a sentence summary. 
-        /// </summary>
-        public string HelpText { get; set; }
+        internal CommandLineParserException(SerializationInfo info, StreamingContext context)
+            : base(info, context)
+        {
+        }
     }
 }

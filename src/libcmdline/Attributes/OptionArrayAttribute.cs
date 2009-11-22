@@ -1,6 +1,6 @@
 #region License
 //
-// Command Line Library: ParserException.cs
+// Command Line Library: OptionArrayAttribute.cs
 //
 // Author:
 //   Giacomo Stelluti Scala (gsscoder@ymail.com)
@@ -28,34 +28,22 @@
 #endregion
 #region Using Directives
 using System;
-using System.Runtime.Serialization;
 #endregion
 
 namespace CommandLine
 {
     /// <summary>
-    /// This exception is thrown when a generic parsing error occurs.
+    /// Models an option that can accept multiple values as separated arguments.
     /// </summary>
-    [Serializable]
-    public sealed class ParserException : Exception, ISerializable
+    public sealed class OptionArrayAttribute : OptionAttribute
     {
-        internal ParserException()
-            : base()
-        {
-        }
-
-        internal ParserException(string message)
-            : base(message)
-        {
-        }
-
-        internal ParserException(string message, Exception innerException)
-            : base(message, innerException)
-        {
-        }
-
-        internal ParserException(SerializationInfo info, StreamingContext context)
-            : base(info, context)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CommandLine.OptionArrayAttribute"/> class.
+        /// </summary>
+        /// <param name="shortName">The short name of the option or null if not used.</param>
+        /// <param name="longName">The long name of the option or null if not used.</param>
+        public OptionArrayAttribute(string shortName, string longName)
+            : base(shortName, longName)
         {
         }
     }

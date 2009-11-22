@@ -1,3 +1,52 @@
+2009-11-22	Giacomo Stelluti Scala	<gsscoder@ymail.com>
+
+	* IArgumentEnumerator.cs
+		Modified. The interface now inherits from IEnumerator<string>.
+		Added ::MovePrevious() method to be implemented (for now only) by StringArrayEnumerator.
+		
+	* OneCharStringEnumerator.cs (OneCharStringEnumerator)
+		Modified. See IArgumentEnumerator[.cs].
+		
+	* StringArrayEnumerator.cs (StringArrayEnumerator)
+		Modified. See IArgumentEnumerator[.cs].
+	
+	* OptionMap.cs (OptionMap)
+		Modified.
+		
+	* OptionListAttribute.cs (OptionListAttribute)
+		Modified. AttributeUsage removed, it's inherited from Option[Attribute].
+		
+	* OptionArrayAttribute.cs (OptionArrayAttribute)
+		Added. This new attribute defines an option to store multiple values in an array.
+		
+	* OptionInfo.cs (OptionInfo)
+		Modified. ::IsArray property added.
+		::IsAttributeArrayCompatible property added.
+		::SetValue(IList<string>, object) method added to handle OptionArray[Attribute].
+		
+	* SimpleOptionsWithArray.cs (SimpleOptionsWithArray)
+	* SimpleOptionsWithArrayAndValueList.cs (SimpleOptionsWithArrayAndValueList)
+		Added.
+		
+	* OptionArrayAttributeParsingFixture.cs (OptionArrayAttributeParsingFixture)
+		Added. Unit tests for parsing with OptionArray[Attribute].
+		
+	* ArgumentParser.cs (ArgumentParser)
+		Modified. Added protected method ::GetNextInputValues(IArgumentEnumerator) for handle OptionArray[Attribute].
+
+	* ArgumentParserFixture.cs (ArgumentParserFixture)
+		Added.
+		
+	* ParserException.cs -> CommandLineParserException.cs (CommandLineParserException)
+		Renamed. CommandLineParserException is a name more consistent with other CommandLineParser* types
+		than ParserException.
+		
+	* BaseFixture.cs (BaseFixture)
+		Added. This is another step towards unit tests refactoring.
+
+	* CommandLineParserBaseFixture.cs (CommandLineParserBaseFixture)
+		Modified. Now inherits from BaseFixture. 
+
 2009-11-16	Giacomo Stelluti Scala	<gsscoder@ymail.com>
 
 	* IStringEnumerator.cs -> IArgumentEnumerator.cs (IArgumentEnumerator)

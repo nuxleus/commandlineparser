@@ -33,9 +33,9 @@ using System.Collections.Generic;
 
 namespace CommandLine
 {
-    sealed class OptionMap //: IOptionMap
+    sealed class OptionMap
     {
-        private CommandLineParserSettings _settings;
+        private readonly CommandLineParserSettings _settings;
         private Dictionary<string, string> _names;
         private Dictionary<string, OptionInfo> _map;
         private Dictionary<string, int> _mutuallyExclusiveSetMap;

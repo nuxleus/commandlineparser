@@ -47,17 +47,46 @@ namespace CommandLine
 
                 if (parts.Length == 2)
                 {
-                    if (option.SetValue(parts[1], options))
-                        return ParserState.Success;
-                    else
-                        return ParserState.Failure;
+                    if (!option.IsArray) // modified
+                    {   // normal branch
+                        if (option.SetValue(parts[1], options))
+                            return ParserState.Success;
+                        else
+                            return ParserState.Failure;
+                    }
+                    else // -> array target management
+                    {
+                        if (!option.IsAttributeArrayCompatible)
+                            throw new CommandLineParserException();
+
+                        var items = base.GetNextInputValues(argumentEnumerator);
+                        items.Insert(0, parts[1]);
+                        if (option.SetValue(items, options))
+                            return ParserState.Success; // return ParserState.Success | ParserState.MoveOnNextElement;
+                        else
+                            return ParserState.Failure;
+                    }
                 }
                 else
                 {
-                    if (option.SetValue(argumentEnumerator.Next, options))
-                        return ParserState.Success | ParserState.MoveOnNextElement;
-                    else
-                        return ParserState.Failure;
+                    if (!option.IsArray) // modified
+                    {   // normal branch
+                        if (option.SetValue(argumentEnumerator.Next, options))
+                            return ParserState.Success | ParserState.MoveOnNextElement;
+                        else
+                            return ParserState.Failure;
+                    }
+                    else // -> array target management
+                    {
+                        if (!option.IsAttributeArrayCompatible)
+                            throw new CommandLineParserException();
+
+                        var items = base.GetNextInputValues(argumentEnumerator);
+                        if (option.SetValue(items, options))
+                            return ParserState.Success | ParserState.MoveOnNextElement;
+                        else
+                            return ParserState.Failure;
+                    }
                 }
             }
             else

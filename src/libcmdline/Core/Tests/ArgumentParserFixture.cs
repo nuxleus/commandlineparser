@@ -1,6 +1,6 @@
 #region License
 //
-// Command Line Library: IArgumentEnumerator.cs
+// Command Line Library: ArgumentParserFixture.cs
 //
 // Author:
 //   Giacomo Stelluti Scala (gsscoder@ymail.com)
@@ -26,20 +26,46 @@
 // THE SOFTWARE.
 //
 #endregion
+#if UNIT_TESTS
 #region Using Directives
 using System;
 using System.Collections.Generic;
+using NUnit.Framework;
 #endregion
 
-namespace CommandLine
+namespace CommandLine.Tests
 {
-    interface IArgumentEnumerator : IEnumerator<string> //, ICloneable
+    [TestFixture]
+    public sealed class ArgumentParserFixture
     {
-        string GetRemainingFromNext();
+        class MockParser : ArgumentParser
+        {
+            public override ParserState Parse(IArgumentEnumerator argumentEnumerator, OptionMap map, object options)
+            {
+                throw new NotImplementedException();
+            }
 
-        string Next { get; }
-        bool IsLast { get; }
+            public IList<string> PublicWrapperOfGetNextInputValues(IArgumentEnumerator ae)
+            {
+                return base.GetNextInputValues(ae);
+            }
+        }
 
-        bool MovePrevious();
+        [Test]
+        public void GetNextInputValues()
+        {
+            var mock = new MockParser();
+            var ae = new StringArrayEnumerator(new string[] { "--optarr", "one", "two", "--plain", "3" });
+
+            ae.MoveNext(); // skip first, working like in a real case
+
+            var items = mock.PublicWrapperOfGetNextInputValues(ae);
+
+            Assert.AreEqual(2, items.Count);
+            Assert.AreEqual("one", items[0]);
+            Assert.AreEqual("two", items[1]);
+            Assert.AreEqual("two", ae.Current);
+        }
     }
 }
+#endif
