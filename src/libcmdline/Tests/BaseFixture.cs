@@ -28,9 +28,6 @@
 #endregion
 #if UNIT_TESTS
 #region Using Directives
-using System;
-using System.IO;
-using System.Collections;
 using System.Collections.Generic;
 using NUnit.Framework;
 #endregion
@@ -39,24 +36,6 @@ namespace CommandLine.Tests
 {
     public abstract class BaseFixture
     {
-        //protected void AssertArrayItemEqual(string[] expected, string[] actual)
-        //{
-        //    Assert.AreEqual(expected.Length, actual.Length);
-        //    for (int i = 0; i < expected.Length; i++)
-        //    {
-        //        Assert.AreEqual(expected[i], actual[i]);
-        //    }
-        //}
-
-        //protected void AssertArrayItemEqual(int[] expected, int[] actual)
-        //{
-        //    Assert.AreEqual(expected.Length, actual.Length);
-        //    for (int i = 0; i < expected.Length; i++)
-        //    {
-        //        Assert.AreEqual(expected[i], actual[i]);
-        //    }
-        //}
-
         protected void AssertArrayItemEqual<T>(T[] expected, T[] actual)
         {
             Assert.AreEqual(expected.Length, actual.Length);

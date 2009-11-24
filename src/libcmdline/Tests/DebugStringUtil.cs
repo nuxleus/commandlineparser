@@ -1,6 +1,6 @@
 ﻿#region License
 //
-// Command Line Library: MockUtil.cs
+// Command Line Library: DebugStringUtil.cs
 //
 // Author:
 //   Giacomo Stelluti Scala (gsscoder@ymail.com)
@@ -29,14 +29,14 @@
 #if UNIT_TESTS
 #region Using Directives
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
-using System.Collections.Generic;
 #endregion
 
 namespace CommandLine.Tests
 {
-    static class MockUtil
+    static class DebugStringUtil
     {
         public static string ConvertOptionsToString(object instance)
         {
@@ -88,7 +88,7 @@ namespace CommandLine.Tests
 
             if (valueList != null)
             {
-                IList<string> values = (IList<string>)field.GetValue(instance); //ValueListAttribute.GetReference(instance);
+                IList<string> values = (IList<string>)field.GetValue(instance);
                 foreach (string value in values)
                 {
                     builder.Append("non-option value: ");

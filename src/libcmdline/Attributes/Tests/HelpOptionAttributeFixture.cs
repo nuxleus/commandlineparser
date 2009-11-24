@@ -37,11 +37,9 @@ using NUnit.Framework;
 namespace CommandLine.Tests
 {
     [TestFixture]
-    public sealed class HelpOptionAttributeFixture
+    public sealed class HelpOptionAttributeFixture : CommandLineParserBaseFixture
     {
-        private static ICommandLineParser _parser = new CommandLineParser();
-
-#region Mock Objects
+        #region Mock Objects
         private class MockOptions
         {
             [Option("i", "input",
@@ -86,10 +84,10 @@ namespace CommandLine.Tests
             var options = new MockOptions();
             var writer = new StringWriter();
 
-            bool success = _parser.ParseArguments(
+            bool result = base.Parser.ParseArguments(
                     new string[] { "-imath.xml", "-oresult.xml" }, options, writer);
 
-            Assert.IsTrue(success);
+            base.AssertParserSuccess(result);
             Assert.AreEqual(0, writer.ToString().Length);
         }
 
@@ -99,10 +97,10 @@ namespace CommandLine.Tests
             var options = new MockOptions();
             var writer = new StringWriter();
 
-            bool success = _parser.ParseArguments(
+            bool result = base.Parser.ParseArguments(
                     new string[] { "math.xml", "-oresult.xml" }, options, writer);
 
-            Assert.IsFalse(success);
+            base.AssertParserFailure(result);
 
             string helpText = writer.ToString();
             Assert.IsTrue(helpText.Length > 0);
@@ -116,15 +114,14 @@ namespace CommandLine.Tests
             var options = new MockOptions();
             var writer = new StringWriter();
 
-            bool success = _parser.ParseArguments(
+            bool result = base.Parser.ParseArguments(
                     new string[] { "--help" }, options, writer);
 
-            Assert.IsFalse(success);
+            base.AssertParserFailure(result);
 
             string helpText = writer.ToString();
             Assert.IsTrue(helpText.Length > 0);
         }
-
     }
 }
 #endif

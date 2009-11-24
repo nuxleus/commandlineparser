@@ -34,7 +34,7 @@ namespace CommandLine.Tests.Mocks
     {
         public override string ToString()
         {
-            return MockUtil.ConvertOptionsToString(this);
+            return DebugStringUtil.ConvertOptionsToString(this);
         }
     }
 }

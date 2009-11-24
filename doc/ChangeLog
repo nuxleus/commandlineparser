@@ -1,6 +1,47 @@
+2009-11-24	Giacomo Stelluti Scala	<gsscoder@ymail.com>
+
+	---------------------------------------------------------------------------------------
+	+ file added
+	* file modified
+	- file deleted
+	~ file renamed
+	> file moved
+	---------------------------------------------------------------------------------------
+		
+	+ Core/TargetWrapper.cs
+		Added. Decouples the instance that will contain parsed values by the code that consumes it.
+
+	* Core/ArgumentParser.cs (ArgumentParser)
+		Modified. Added method ::BooleanToParserState(...) with two overloads (this simple method will
+		make code of [LongOption|OptionGroup]Parser more clean - or so I hope).
+		Added ::EnsureOptionAttributeIsArrayCompatible(OptionInfo) method for the same reason described above.
+
+	* Parser/CommandLineParser.cs (CommandLineParser)
+		Modified. Try to use TargetWrapper instead of working directly with options instance.
+		
+	* Core/LongOptionParser.cs (LongOptionParser)
+		Modified. Introduced the use of ArgumentParser::BooleanToParserState(...)
+		and ArgumentParser::EnsureOptionAttributeIsArrayCompatible(...) for a cleaner code and
+		improved maintainability.
+		
+	* Core/OptionGroupParser.cs (OptionGroupParser)
+		Modified. Same changes of LongOptionParser.
+				
+	~ Tests/MockUtil.cs (MockUtil) -> Tests/DebugStringUtil.cs (DebugStringUtil)
+		Renamed. A correct name is the first step for refactoring a unit of code.
+		
+	* Core/Tests/ArgumentParserFixture.cs (ArgumentParserFixture)
+		Modified. Test code simplified.
+		
+	* Attributes/Tests/HelpOptionAttributeFixture.cs (HelpOptionAttributeFixture)
+		Modified. Minor refactoring.
+		
+	* Attributes/Tests/ValueListAttributeFixture.cs (ValueListAttributeFixture)
+		Modified. Minor refactoring.
+
 2009-11-22	Giacomo Stelluti Scala	<gsscoder@ymail.com>
 
-	* IArgumentEnumerator.cs
+	* IArgumentEnumerator.cs (IArgumentEnumerator)
 		Modified. The interface now inherits from IEnumerator<string>.
 		Added ::MovePrevious() method to be implemented (for now only) by StringArrayEnumerator.
 		

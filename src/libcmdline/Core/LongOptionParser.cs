@@ -31,6 +31,11 @@ namespace CommandLine
 {
     sealed class LongOptionParser : ArgumentParser
     {
+        //public LongOptionParser(TargetWrapper target)
+        //    : base(target)
+        //{
+        //}
+
         public sealed override ParserState Parse(IArgumentEnumerator argumentEnumerator, OptionMap map, object options)
         {
             var parts = argumentEnumerator.Current.Substring(2).Split(new char[] { '=' }, 2);
@@ -47,45 +52,27 @@ namespace CommandLine
 
                 if (parts.Length == 2)
                 {
-                    if (!option.IsArray) // modified
-                    {   // normal branch
-                        if (option.SetValue(parts[1], options))
-                            return ParserState.Success;
-                        else
-                            return ParserState.Failure;
-                    }
-                    else // -> array target management
+                    if (!option.IsArray)
+                        return ArgumentParser.BooleanToParserState(option.SetValue(parts[1], options));
+                    else
                     {
-                        if (!option.IsAttributeArrayCompatible)
-                            throw new CommandLineParserException();
+                        ArgumentParser.EnsureOptionAttributeIsArrayCompatible(option);
 
-                        var items = base.GetNextInputValues(argumentEnumerator);
+                        var items = ArgumentParser.GetNextInputValues(argumentEnumerator);
                         items.Insert(0, parts[1]);
-                        if (option.SetValue(items, options))
-                            return ParserState.Success; // return ParserState.Success | ParserState.MoveOnNextElement;
-                        else
-                            return ParserState.Failure;
+                        return ArgumentParser.BooleanToParserState(option.SetValue(items, options));
                     }
                 }
                 else
                 {
-                    if (!option.IsArray) // modified
-                    {   // normal branch
-                        if (option.SetValue(argumentEnumerator.Next, options))
-                            return ParserState.Success | ParserState.MoveOnNextElement;
-                        else
-                            return ParserState.Failure;
-                    }
-                    else // -> array target management
+                    if (!option.IsArray)
+                        return ArgumentParser.BooleanToParserState(option.SetValue(argumentEnumerator.Next, options), true);
+                    else
                     {
-                        if (!option.IsAttributeArrayCompatible)
-                            throw new CommandLineParserException();
+                        ArgumentParser.EnsureOptionAttributeIsArrayCompatible(option);
 
-                        var items = base.GetNextInputValues(argumentEnumerator);
-                        if (option.SetValue(items, options))
-                            return ParserState.Success | ParserState.MoveOnNextElement;
-                        else
-                            return ParserState.Failure;
+                        var items = ArgumentParser.GetNextInputValues(argumentEnumerator);
+                        return ArgumentParser.BooleanToParserState(option.SetValue(items, options), true);
                     }
                 }
             }
@@ -94,10 +81,7 @@ namespace CommandLine
                 if (parts.Length == 2)
                     return ParserState.Failure;
 
-                if (option.SetValue(true, options))
-                    return ParserState.Success;
-                else
-                    return ParserState.Failure;
+                return ArgumentParser.BooleanToParserState(option.SetValue(true, options));
             }
         }
     }

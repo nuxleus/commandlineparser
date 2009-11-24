@@ -35,18 +35,26 @@ namespace CommandLine
 {
     internal abstract class ArgumentParser
     {
+        //protected ArgumentParser(TargetWrapper target)
+        //{
+        //    Target = target;
+        //}
+
         public abstract ParserState Parse(IArgumentEnumerator argumentEnumerator, OptionMap map, object options);
 
+        //protected TargetWrapper Target { private set; get; }
+
+        //public static ArgumentParser Create(string argument, TargetWrapper target)
         public static ArgumentParser Create(string argument)
         {
             if (argument.Equals("-", StringComparison.InvariantCulture))
                 return null;
 
             if (argument[0] == '-' && argument[1] == '-')
-                return new LongOptionParser();
+                return new LongOptionParser(); //target);
 
             if (argument[0] == '-')
-                return new OptionGroupParser();
+                return new OptionGroupParser(); //target);
 
             return null;
         }
@@ -59,12 +67,17 @@ namespace CommandLine
             return true;
         }
 
-        // modified -> for OptionArrayAttribute support
-        protected IList<string> GetNextInputValues(IArgumentEnumerator ae)
+#if UNIT_TESTS
+        public static IList<string> PublicWrapperOfGetNextInputValues(IArgumentEnumerator ae)
+        {
+            return GetNextInputValues(ae);
+        }
+#endif
+
+        protected static IList<string> GetNextInputValues(IArgumentEnumerator ae)
         {
             IList<string> list = new List<string>();
-            //var clone = (IArgumentEnumerator)argumentEnumerator.Clone();
-            
+
             while (ae.MoveNext())
             {
                 if (IsInputValue(ae.Current))
@@ -76,7 +89,7 @@ namespace CommandLine
                 throw new CommandLineParserException();
 
             return list;
-        }    
+        }
 
         public static bool CompareShort(string argument, string option, bool caseSensitive)
         {
@@ -86,6 +99,27 @@ namespace CommandLine
         public static bool CompareLong(string argument, string option, bool caseSensitive)
         {
             return string.Compare(argument, "--" + option, !caseSensitive) == 0;
+        }
+
+        protected static ParserState BooleanToParserState(bool value)
+        {
+            return BooleanToParserState(value, false);
+        }
+
+        protected static ParserState BooleanToParserState(bool value, bool addMoveNextIfTrue)
+        {
+            if (value && !addMoveNextIfTrue)
+                return ParserState.Success;
+            else if (value && addMoveNextIfTrue)
+                return ParserState.Success | ParserState.MoveOnNextElement;
+            else
+                return ParserState.Failure;
+        }
+
+        protected static void EnsureOptionAttributeIsArrayCompatible(OptionInfo option)
+        {
+            if (!option.IsAttributeArrayCompatible)
+                throw new CommandLineParserException();
         }
     }
 }

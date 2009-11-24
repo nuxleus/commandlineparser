@@ -137,11 +137,12 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Tests\Mocks\OptionsBase.cs" />
-    <Compile Include="Tests\MockUtil.cs" />
+    <Compile Include="Tests\DebugStringUtil.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attributes\OptionArrayAttribute.cs" />
     <Compile Include="Attributes\Tests\AttributesFixture.cs" />
+    <Compile Include="Core\TargetWrapper.cs" />
     <Compile Include="Core\Tests\ArgumentParserFixture.cs" />
     <Compile Include="Parser\CommandLineParserSettings.cs" />
     <Compile Include="Parser\Tests\CommandLineParserSettingsFixture.cs" />

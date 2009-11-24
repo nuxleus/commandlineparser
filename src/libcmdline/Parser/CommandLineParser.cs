@@ -40,7 +40,7 @@ namespace CommandLine
     /// </summary>
     public class CommandLineParser : ICommandLineParser
     {
-        private object _valueListLock = new object();
+        //private object _valueListLock = new object();
         private CommandLineParserSettings _settings;
 
         /// <summary>
@@ -118,8 +118,7 @@ namespace CommandLine
         {
             bool hadError = false;
             var optionMap = OptionInfo.CreateMap(options, _settings);
-            var valueList = ValueListAttribute.GetReference(options);
-            var vlAttr = ValueListAttribute.GetAttribute(options);
+            var target = new TargetWrapper(options);
 
             IArgumentEnumerator arguments = new StringArrayEnumerator(args);
             while (arguments.MoveNext())
@@ -127,7 +126,7 @@ namespace CommandLine
                 string argument = arguments.Current;
                 if (argument != null && argument.Length > 0)
                 {
-                    ArgumentParser parser = ArgumentParser.Create(argument);
+                    ArgumentParser parser = ArgumentParser.Create(argument); //, target);
                     if (parser != null)
                     {
                         ParserState result = parser.Parse(arguments, optionMap, options);
@@ -140,34 +139,12 @@ namespace CommandLine
                         if ((result & ParserState.MoveOnNextElement) == ParserState.MoveOnNextElement)
                             arguments.MoveNext();
                     }
-                    else if (valueList != null)
+                    else if (target.IsValueListDefined)
                     {
-                        if (vlAttr.MaximumElements < 0)
-                        {
-                            lock (_valueListLock)
-                            {
-                                valueList.Add(argument);
-                            }
-                        }
-                        else if (vlAttr.MaximumElements == 0)
+                        if (!target.AddValueItemIfAllowed(argument))
                         {
                             hadError = true;
                             break;
-                        }
-                        else
-                        {
-                            if (vlAttr.MaximumElements > valueList.Count)
-                            {
-                                lock (_valueListLock)
-                                {
-                                    valueList.Add(argument);
-                                }
-                            }
-                            else
-                            {
-                                hadError = true;
-                                break;
-                            }
                         }
                     }
                 }

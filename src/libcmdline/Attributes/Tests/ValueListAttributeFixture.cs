@@ -36,7 +36,7 @@ using NUnit.Framework;
 namespace CommandLine.Tests
 {
     [TestFixture]
-    public class ValueListAttributeFixture
+    public class ValueListAttributeFixture : BaseFixture
     {
         #region Mock Objects
         private class MockSpecializedList : List<string>
@@ -96,9 +96,10 @@ namespace CommandLine.Tests
             values.Add("value1");
             values.Add("value2");
 
-            Assert.AreEqual("value0", options.Values[0]);
-            Assert.AreEqual("value1", options.Values[1]);
-            Assert.AreEqual("value2", options.Values[2]);
+            //Assert.AreEqual("value0", options.Values[0]);
+            //Assert.AreEqual("value1", options.Values[1]);
+            //Assert.AreEqual("value2", options.Values[2]);
+            base.AssertArrayItemEqual(new string[] { "value0", "value1", "value2" }, options.Values);
         }
     }
 }

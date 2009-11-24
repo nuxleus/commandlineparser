@@ -1,10 +1,10 @@
 Command Line Parser Library
 ---------------------------------------------------------------------------------------
 Project Author/Coordinator: Giacomo Stelluti Scala
-Contributor(s): Steve Evans
+Contributor(s): Steven Evans
 ---------------------------------------------------------------------------------------
-Version 1.7.0.1 alfa (*3)
-Latest Update: 22-nov-2009.
+Version 1.7.5.3 alfa (*3)
+Latest Update: 24-nov-2009.
 
 General Info:
 This library allows command line arguments parsing.
@@ -13,7 +13,10 @@ This work were inspired by the GNU LIBC getopt()/getopt_long() functions
 Need a guide on option naming? Check this one:
 http://catb.org/~esr/writings/taoup/html/ch10s05.html.
 
-More info on: http://gsscoder.blogspot.com/.
+More info on:
+[QUICKSTART] http://commandline.codeplex.com/wikipage?title=Quickstart&referringTitle=Documentation
+[GUIDE] http://commandline.codeplex.com/documentation (*4)
+[BLOG] http://gsscoder.blogspot.com/
   
 Build:
 ---------------------------------------------------------------------------------------
@@ -47,17 +50,7 @@ To run unit tests you should copy (*1)
 in the build output directory
 (created from NUnit build script -> {libroot}/nant/default.build)
 	{libroot}/nant/build.out.
----------------------------------------------------------------------------------------
-[NOTES]
-*1) Under Linux/Mono you can use the nunit.framework.dll stored in the GAC,
-using GAC Extraction Utility (http://sourceforge.net/projects/gac-get/);
-see also: http://gsscoder.blogspot.com/2007/08/gac-extraction-utility-for-mono.html.
 
-*2) I use NAnt 0.85 (Build 0.85.2478.0).
-
-*3) Changes to parser core may affected stability, so this version is marked 'alfa'.
-In a production environment you should use a 'stable' version or an advanced 'beta'.
----------------------------------------------------------------------------------------
 Documentation:
 Stored in subdirectory {libroot}/doc.
 HelpFile (CHM V1) created with Sandcastle
@@ -78,3 +71,18 @@ Comments, bugs and other:
 
 Enjoy,
   Giacomo Stelluti Scala
+  
+---------------------------------------------------------------------------------------
+[NOTES]
+*1) Under Linux/Mono you can use the nunit.framework.dll stored in the GAC,
+using GAC Extraction Utility (http://sourceforge.net/projects/gac-get/);
+see also: http://gsscoder.blogspot.com/2007/08/gac-extraction-utility-for-mono.html.
+
+*2) I use NAnt 0.85 (Build 0.85.2478.0).
+
+*3) Changes to parser core may affected stability, so this version is marked 'alfa'.
+In a production environment you should use a 'stable' version or an advanced 'beta'.
+
+*4) Full documentation is currently under construction. Please refer to Quickstart
+guide and informations published starting from the project's home.
+---------------------------------------------------------------------------------------

@@ -1,6 +1,6 @@
-#region License
+﻿#region License
 //
-// Command Line Library: ArgumentParserFixture.cs
+// Command Line Library: TargetWrapper.cs
 //
 // Author:
 //   Giacomo Stelluti Scala (gsscoder@ymail.com)
@@ -26,30 +26,41 @@
 // THE SOFTWARE.
 //
 #endregion
-#if UNIT_TESTS
 #region Using Directives
 using System;
 using System.Collections.Generic;
-using NUnit.Framework;
+using System.Text;
 #endregion
 
-namespace CommandLine.Tests
+namespace CommandLine
 {
-    [TestFixture]
-    public sealed class ArgumentParserFixture : BaseFixture
+    internal class TargetWrapper
     {
-        [Test]
-        public void GetNextInputValues()
+        private object _target;
+        private IList<string> _valueList;
+        private ValueListAttribute _vla;
+
+        public TargetWrapper(object target)
         {
-            var ae = new StringArrayEnumerator(new string[] { "--optarr", "one", "two", "--plain", "3" });
+            _target = target;
+            _vla = ValueListAttribute.GetAttribute(_target);
+            if (IsValueListDefined)
+                _valueList = ValueListAttribute.GetReference(_target);
+        }
 
-            ae.MoveNext(); // skip first, working like in a real case
+        public bool IsValueListDefined { get { return _vla != null; } }
 
-            var items = ArgumentParser.PublicWrapperOfGetNextInputValues(ae);
+        public bool AddValueItemIfAllowed(string item)
+        {
+            if (_vla.MaximumElements == 0 || _valueList.Count == _vla.MaximumElements)
+                return false;
 
-            base.AssertArrayItemEqual(new string[] { "one", "two" }, items);
-            Assert.AreEqual("two", ae.Current);
+            lock (this)
+            {
+                _valueList.Add(item);
+            }
+
+            return true;
         }
     }
 }
-#endif
