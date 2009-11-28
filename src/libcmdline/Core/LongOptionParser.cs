@@ -31,11 +31,6 @@ namespace CommandLine
 {
     sealed class LongOptionParser : ArgumentParser
     {
-        //public LongOptionParser(TargetWrapper target)
-        //    : base(target)
-        //{
-        //}
-
         public sealed override ParserState Parse(IArgumentEnumerator argumentEnumerator, OptionMap map, object options)
         {
             var parts = argumentEnumerator.Current.Substring(2).Split(new char[] { '=' }, 2);
@@ -45,6 +40,9 @@ namespace CommandLine
                 return ParserState.Failure;
 
             option.IsDefined = true;
+
+            ArgumentParser.EnsureOptionArrayAttributeIsNotBoundToScalar(option);
+
             if (!option.IsBoolean)
             {
                 if (parts.Length == 1 && (argumentEnumerator.IsLast || !ArgumentParser.IsInputValue(argumentEnumerator.Next)))

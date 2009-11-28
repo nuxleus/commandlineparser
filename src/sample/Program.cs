@@ -181,7 +181,10 @@ namespace SampleApp
             //f.ParseStringArrayOptionUsingLongName();
             //f.ParseStringArrayOptionUsingLongNameWithEqualSign();
             //f.ParseStringArrayOptionUsingShortNameAndStringOptionAfter();
-            f.ParseStringArrayOptionUsingLongNameWithValueList();
+            //f.ParseStringArrayOptionUsingLongNameWithValueList();
+            //f.PassingBadValueToAnIntegerArrayOptionFails();
+            //f.WillThrowExceptionIfOptionArrayAttributeBoundToStringWithShortName();
+            f.WillThrowExceptionIfOptionArrayAttributeBoundToIntegerWithShortName();
             //f2.GetNextInputValues();
             Console.Write("press any key");
             Console.ReadKey();

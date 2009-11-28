@@ -35,26 +35,18 @@ namespace CommandLine
 {
     internal abstract class ArgumentParser
     {
-        //protected ArgumentParser(TargetWrapper target)
-        //{
-        //    Target = target;
-        //}
-
         public abstract ParserState Parse(IArgumentEnumerator argumentEnumerator, OptionMap map, object options);
 
-        //protected TargetWrapper Target { private set; get; }
-
-        //public static ArgumentParser Create(string argument, TargetWrapper target)
         public static ArgumentParser Create(string argument)
         {
             if (argument.Equals("-", StringComparison.InvariantCulture))
                 return null;
 
             if (argument[0] == '-' && argument[1] == '-')
-                return new LongOptionParser(); //target);
+                return new LongOptionParser();
 
             if (argument[0] == '-')
-                return new OptionGroupParser(); //target);
+                return new OptionGroupParser();
 
             return null;
         }
@@ -119,6 +111,12 @@ namespace CommandLine
         protected static void EnsureOptionAttributeIsArrayCompatible(OptionInfo option)
         {
             if (!option.IsAttributeArrayCompatible)
+                throw new CommandLineParserException();
+        }
+
+        protected static void EnsureOptionArrayAttributeIsNotBoundToScalar(OptionInfo option)
+        {
+            if (!option.IsArray && option.IsAttributeArrayCompatible)
                 throw new CommandLineParserException();
         }
     }

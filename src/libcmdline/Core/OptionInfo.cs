@@ -99,10 +99,19 @@ namespace CommandLine
             
             for (int i = 0; i < array.Length; i++)
             {
-                array.SetValue(Convert.ChangeType(values[i], elementType, CultureInfo.InvariantCulture), i);
+                try
+                {
+                    lock (_setValueLock)
+                    {
+                        array.SetValue(Convert.ChangeType(values[i], elementType, CultureInfo.InvariantCulture), i);
+                        _field.SetValue(options, array);
+                    }
+                }
+                catch (FormatException)
+                {
+                    return false;
+                }
             }
-
-            _field.SetValue(options, array);
 
             return true;
         }

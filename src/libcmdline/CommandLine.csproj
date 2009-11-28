@@ -153,8 +153,9 @@
     <Compile Include="Tests\CommandLineParserBaseFixture.cs" />
     <Compile Include="Tests\BaseFixture.cs" />
     <Compile Include="Tests\Mocks\BooleanSetOptions.cs" />
-    <Compile Include="Tests\Mocks\SimpleOptionsWithArrayAndValueList.cs" />
     <Compile Include="Tests\Mocks\SimpleOptionsWithArray.cs" />
+    <Compile Include="Tests\Mocks\SimpleOptionsWithArrayAndValueList.cs" />
+    <Compile Include="Tests\Mocks\SimpleOptionsWithBadOptionArray.cs" />
     <Compile Include="Tests\Mocks\NullableTypesOptions.cs" />
     <Compile Include="Tests\Mocks\OptionsWithValueListMaximumZero.cs" />
     <Compile Include="Tests\Mocks\OptionsWithValueListMaximumThree.cs" />

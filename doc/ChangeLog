@@ -1,3 +1,39 @@
+2009-11-28	Giacomo Stelluti Scala	<gsscoder@ymail.com>
+
+	---------------------------------------------------------------------------------------
+	+ file added
+	* file modified
+	- file deleted
+	~ file renamed
+	> file moved
+	---------------------------------------------------------------------------------------
+	
+	+ Tests/Mocks/SimpleOptionsWithBadOptionArray.cs
+		Added. Used in OptionArrayAttributeParsingFixture.
+	
+	* Core/OptionInfo.cs (OptionInfo)
+		Modified. Modified ::SetValue(IList<string>, object) method to handle exceptions correctly.
+
+	* Core/ArgumentParser.cs (ArgumentParser)
+		Modified. Added ::EnsureOptionArrayAttributeIsNotBoundToScalar(OptionInfo) method
+		to prevent misuse of syntax defined by attributes.
+		
+	* Core/OptionGroupParser.cs (OptionGroupParser)
+		Modified. Introduced use of ArgumentParser::EnsureOptionArrayAttributeIsNotBoundToScalar(...).
+	
+	* Core/LongOptionParser.cs (LongOptionParser)
+		Modified. Introduced use of ArgumentParser::EnsureOptionArrayAttributeIsNotBoundToScalar(...).
+	
+	* Parser/Tests/OptionArrayAttributeParsingFixture.cs (OptionArrayAttributeParsingFixture)
+		Modified. Added following test methods.
+			::PassingBadValueToAnIntegerArrayOptionFails()
+			::PassingNoValueToAStringArrayOptionFails()
+			::PassingNoValueToAnIntegerArrayOptionFails()
+			::WillThrowExceptionIfOptionArrayAttributeBoundToStringWithShortName()
+			::WillThrowExceptionIfOptionArrayAttributeBoundToStringWithLongName()
+			::WillThrowExceptionIfOptionArrayAttributeBoundToIntegerWithShortName()
+			::WillThrowExceptionIfOptionArrayAttributeBoundToIntegerWithLongName()
+	
 2009-11-24	Giacomo Stelluti Scala	<gsscoder@ymail.com>
 
 	---------------------------------------------------------------------------------------

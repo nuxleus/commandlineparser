@@ -1,6 +1,6 @@
-#region License
+﻿#region License
 //
-// Command Line Library: ThisAssembly.cs
+// Command Line Library: SimpleOptionsWithBadOptionArray.cs
 //
 // Author:
 //   Giacomo Stelluti Scala (gsscoder@ymail.com)
@@ -24,12 +24,22 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+//
+#endregion
+#if UNIT_TESTS
+#region Using Directives
+using System.Collections.Generic;
 #endregion
 
-static class ThisAssembly
+namespace CommandLine.Tests.Mocks
 {
-    internal const string Title = "CommandLine.dll";
-    internal const string Copyright = "Copyright (C) 2005 - 2009 Giacomo Stelluti Scala";
-    internal const string Version = "1.7.10.5"; //beta
-    internal const string InformationalVersion = "1.7.10.5";
+    class SimpleOptionsWithBadOptionArray : SimpleOptionsWithArray
+    {
+        [OptionArray("v", "bstrarr")]
+        public string BadStringValue = null;
+
+        [OptionArray("w", "bintarr")]
+        public int BadIntegerValue = int.MinValue;
+    }
 }
+#endif

@@ -26,19 +26,11 @@
 // THE SOFTWARE.
 //
 #endregion
-#region Using Directives
-using System.Collections.Generic;
-#endregion
 
 namespace CommandLine
 {
     sealed class OptionGroupParser : ArgumentParser
     {
-        //public OptionGroupParser(TargetWrapper target)
-        //    : base(target)
-        //{
-        //}
-
         public sealed override ParserState Parse(IArgumentEnumerator argumentEnumerator, OptionMap map, object options)
         {
             IArgumentEnumerator group = new OneCharStringEnumerator(argumentEnumerator.Current.Substring(1));
@@ -49,6 +41,8 @@ namespace CommandLine
                     return ParserState.Failure;
 
                 option.IsDefined = true;
+
+                ArgumentParser.EnsureOptionArrayAttributeIsNotBoundToScalar(option);
 
                 if (!option.IsBoolean)
                 {

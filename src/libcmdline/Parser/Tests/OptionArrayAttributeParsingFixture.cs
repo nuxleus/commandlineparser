@@ -130,6 +130,20 @@ namespace CommandLine.Tests
             base.AssertArrayItemEqual(new string[] { "f1.xml", "f2.xml" }, options.Items);
         }
 
+        [Test]
+        public void PassingNoValueToAStringArrayOptionFails()
+        {
+            var options = new SimpleOptionsWithArray();
+            bool result = base.Parser.ParseArguments(new string[] { "-z" }, options);
+
+            base.AssertParserFailure(result);
+
+            options = new SimpleOptionsWithArray();
+            result = base.Parser.ParseArguments(new string[] { "--strarr" }, options);
+
+            base.AssertParserFailure(result);
+        }
+
         /****************************************************************************************************/
 
         [Test]
@@ -140,6 +154,45 @@ namespace CommandLine.Tests
 
             base.AssertParserSuccess(result);
             base.AssertArrayItemEqual(new int[] { 1, 2, 3 }, options.IntegerArrayValue);
+        }
+
+        [Test]
+        public void PassingBadValueToAnIntegerArrayOptionFails()
+        {
+            var options = new SimpleOptionsWithArray();
+            bool result = base.Parser.ParseArguments(new string[] { "-y", "one", "2", "3" }, options);
+
+            base.AssertParserFailure(result);
+
+            options = new SimpleOptionsWithArray();
+            result = base.Parser.ParseArguments(new string[] { "-yone", "2", "3" }, options);
+
+            base.AssertParserFailure(result);
+
+            options = new SimpleOptionsWithArray();
+            result = base.Parser.ParseArguments(new string[] { "--intarr", "1", "two", "3" }, options);
+
+            base.AssertParserFailure(result);
+
+            options = new SimpleOptionsWithArray();
+            result = base.Parser.ParseArguments(new string[] { "--intarr=1", "2", "three" }, options);
+
+            base.AssertParserFailure(result);
+        }
+
+
+        [Test]
+        public void PassingNoValueToAnIntegerArrayOptionFails()
+        {
+            var options = new SimpleOptionsWithArray();
+            bool result = base.Parser.ParseArguments(new string[] { "-y" }, options);
+
+            base.AssertParserFailure(result);
+
+            options = new SimpleOptionsWithArray();
+            result = base.Parser.ParseArguments(new string[] { "--intarr" }, options);
+
+            base.AssertParserFailure(result);
         }
 
         /****************************************************************************************************/
@@ -258,6 +311,36 @@ namespace CommandLine.Tests
             Assert.AreEqual(1234, options.IntegerValue);
             base.AssertArrayItemEqual(new double[] { .1, .2, .3, .4 }, options.DoubleArrayValue);
             Assert.AreEqual("I'm really playing with the parser!", options.StringValue);
+        }
+
+        /****************************************************************************************************/
+
+        [Test]
+        [ExpectedException(typeof(CommandLineParserException))]
+        public void WillThrowExceptionIfOptionArrayAttributeBoundToStringWithShortName()
+        {
+            base.Parser.ParseArguments(new string[] { "-v", "a", "b", "c" }, new SimpleOptionsWithBadOptionArray());
+        }
+
+        [Test]
+        [ExpectedException(typeof(CommandLineParserException))]
+        public void WillThrowExceptionIfOptionArrayAttributeBoundToStringWithLongName()
+        {
+            base.Parser.ParseArguments(new string[] { "--bstrarr", "a", "b", "c" }, new SimpleOptionsWithBadOptionArray());
+        }
+
+        [Test]
+        [ExpectedException(typeof(CommandLineParserException))]
+        public void WillThrowExceptionIfOptionArrayAttributeBoundToIntegerWithShortName()
+        {
+            base.Parser.ParseArguments(new string[] { "-w", "1", "2", "3" }, new SimpleOptionsWithBadOptionArray());
+        }
+
+        [Test]
+        [ExpectedException(typeof(CommandLineParserException))]
+        public void WillThrowExceptionIfOptionArrayAttributeBoundToIntegerWithLongName()
+        {
+            base.Parser.ParseArguments(new string[] { "--bintarr", "1", "2", "3" }, new SimpleOptionsWithBadOptionArray());
         }
     }
 }
