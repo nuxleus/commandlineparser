@@ -1,3 +1,34 @@
+2010-03-08	Giacomo Stelluti Scala	<gsscoder@ymail.com>
+
+	-----------------------------------------------------------------------------------
+		+ file added; * file modified; - file deleted; ~ file renamed; > file moved
+		{ group start; } group end
+	-----------------------------------------------------------------------------------
+	
+   {*  Parser/TESTS/CommandLineParserFixture.cs (CommandLineParserFixture)
+    *  Parser/TESTS/MutuallyExclusiveParsingFixture.cs (MutuallyExclusiveParsingFixture)
+    *  Parser/TESTS/NullableTypesParsingFixture.cs (NullableTypesParsingFixture)
+    *} Parser/TESTS/Parser/TESTS/.cs (Parser/TESTS/)
+        All Modified. Refactoring toward code readability and maintainability.
+        Introduced use of CommandLineParserBaseFixture::AssertParserSuccess(bool).
+        Introduced use of CommandLineParserBaseFixture::AssertParserFailure(bool).
+        
+   {*  Text/HelpText.cs (HelpText)
+    *} Text/TESTS/HelpTextFixture.cs (HelpTextFixture)
+		Patch 'fix_helptext_infinite_loop.patch' officially applied
+		(thanks to user/dev philr;
+		see http://commandline.codeplex.com/WorkItem/View.aspx?WorkItemId=10361).
+
+    *  {all}.cs
+		Modified header. Updated the range of years in copyright notice.
+	
+    *  Core/IArgumentEnumerator.cs (IArgumentEnumerator)
+		Modified. Redefined for mono compatibility.
+
+   {*  Core/StringArrayEnumerator.cs (StringArrayEnumerator)
+    *} Core/OneCharStringEnumerator.cs (OneCharStringEnumerator)
+		All Modified. See IArgumentEnumerator (Core/IArgumentEnumerator.cs).
+	
 2009-11-28	Giacomo Stelluti Scala	<gsscoder@ymail.com>
 
 	---------------------------------------------------------------------------------------
@@ -8,7 +39,7 @@
 	> file moved
 	---------------------------------------------------------------------------------------
 	
-	+ Tests/Mocks/SimpleOptionsWithBadOptionArray.cs
+	+ Tests/Mocks/SimpleOptionsWithBadOptionArray.cs (SimpleOptionsWithBadOptionArray)
 		Added. Used in OptionArrayAttributeParsingFixture.
 	
 	* Core/OptionInfo.cs (OptionInfo)
@@ -44,7 +75,7 @@
 	> file moved
 	---------------------------------------------------------------------------------------
 		
-	+ Core/TargetWrapper.cs
+	+ Core/TargetWrapper.cs (TargetWrapper)
 		Added. Decouples the instance that will contain parsed values by the code that consumes it.
 
 	* Core/ArgumentParser.cs (ArgumentParser)

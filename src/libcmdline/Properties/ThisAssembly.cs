@@ -5,7 +5,7 @@
 // Author:
 //   Giacomo Stelluti Scala (gsscoder@ymail.com)
 //
-// Copyright (C) 2005 - 2009 Giacomo Stelluti Scala
+// Copyright (C) 2005 - 2010 Giacomo Stelluti Scala
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -29,7 +29,7 @@
 static class ThisAssembly
 {
     internal const string Title = "CommandLine.dll";
-    internal const string Copyright = "Copyright (C) 2005 - 2009 Giacomo Stelluti Scala";
-    internal const string Version = "1.7.10.5"; //beta
-    internal const string InformationalVersion = "1.7.10.5";
+    internal const string Copyright = "Copyright (C) 2005 - 2010 Giacomo Stelluti Scala";
+    internal const string Version = "1.8"; //stable
+    internal const string InformationalVersion = "1.8";
 }

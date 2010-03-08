@@ -5,7 +5,7 @@
 // Author:
 //   Giacomo Stelluti Scala (gsscoder@ymail.com)
 //
-// Copyright (C) 2005 - 2009 Giacomo Stelluti Scala
+// Copyright (C) 2005 - 2010 Giacomo Stelluti Scala
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -61,7 +61,7 @@ namespace CommandLine
             }
         }
 
-        object IEnumerator.Current { get { return Current; } }
+        //object IEnumerator.Current { get { return Current; } }
 
         public string Next
         {

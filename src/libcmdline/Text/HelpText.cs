@@ -7,7 +7,7 @@
 // Contributor(s):
 //   Steven Evans
 //
-// Copyright (C) 2005 - 2009 Giacomo Stelluti Scala
+// Copyright (C) 2005 - 2010 Giacomo Stelluti Scala
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -243,6 +243,12 @@ namespace CommandLine.Text
                                 wordBuffer++;
                             }
                         }
+                        else if (words[i].Length >= widthOfHelpText && wordBuffer == 0)
+                        {
+                            _optionsHelp.Append(words[i].Substring(0, widthOfHelpText));
+                            wordBuffer = widthOfHelpText;
+                            break;
+                        }
                         else
                         {
                             break;
@@ -338,6 +344,12 @@ namespace CommandLine.Text
                             builder.Append(" ");
                             wordBuffer++;
                         }
+                    }
+                    else if (words[i].Length >= maximumLength && wordBuffer == 0)
+                    {
+                        builder.Append(words[i].Substring(0, maximumLength));
+                        wordBuffer = maximumLength;
+                        break;
                     }
                     else
                     {

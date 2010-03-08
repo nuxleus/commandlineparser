@@ -42,7 +42,7 @@ namespace SampleApp
 {
     sealed class Program
     {
-        private static readonly HeadingInfo _headingInfo = new HeadingInfo("sampleapp", "1.7");
+        private static readonly HeadingInfo _headingInfo = new HeadingInfo("sampleapp", "1.8");
 
         private enum OptimizeFor
         {

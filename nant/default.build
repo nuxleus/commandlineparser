@@ -10,7 +10,7 @@
   <property name="lib.src" value="${path::combine(src.root, 'libcmdline')}"/>
   
   <target name="help">
-    <echo message="Command Line Library 1.6 NAnt Build File"/>
+    <echo message="Command Line Library 1.8 NAnt Build File"/>
     <echo message="-----------------------------------------"/>
     <echo message="allowed targets"/>
     <echo message=" help - displays this help"/>

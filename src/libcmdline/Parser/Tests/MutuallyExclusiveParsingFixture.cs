@@ -5,7 +5,7 @@
 // Author:
 //   Giacomo Stelluti Scala (gsscoder@ymail.com)
 //
-// Copyright (C) 2005 - 2009 Giacomo Stelluti Scala
+// Copyright (C) 2005 - 2010 Giacomo Stelluti Scala
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -46,9 +46,9 @@ namespace CommandLine.Tests
         public void ParsingOneMutuallyExclusiveOptionSucceeds()
         {
             var options = new OptionsWithDefaultSet();
-            bool success = base.Parser.ParseArguments(new string[] { "--file=mystuff.xml" }, options);
+            bool result = base.Parser.ParseArguments(new string[] { "--file=mystuff.xml" }, options);
 
-            Assert.IsTrue(success);
+            base.AssertParserSuccess(result);
             Assert.AreEqual("mystuff.xml", options.FileName);
         }
 
@@ -56,18 +56,18 @@ namespace CommandLine.Tests
         public void ParsingTwoMutuallyExclusiveOptionsFails()
         {
             var options = new OptionsWithDefaultSet();
-            bool success = base.Parser.ParseArguments(new string[] { "-i", "1", "--file=mystuff.xml" }, options);
+            bool result = base.Parser.ParseArguments(new string[] { "-i", "1", "--file=mystuff.xml" }, options);
             
-            Assert.IsFalse(success);
+            base.AssertParserFailure(result);
         }
 
         [Test]
         public void ParsingOneMutuallyExclusiveOptionWithAnotherOptionSucceeds()
         {
             var options = new OptionsWithDefaultSet();
-            bool success = base.Parser.ParseArguments(new string[] { "--file=mystuff.xml", "-v" }, options);
+            bool result = base.Parser.ParseArguments(new string[] { "--file=mystuff.xml", "-v" }, options);
             
-            Assert.IsTrue(success);
+            base.AssertParserSuccess(result);
             Assert.AreEqual("mystuff.xml", options.FileName);
             Assert.AreEqual(true, options.Verbose);
         }
@@ -76,9 +76,9 @@ namespace CommandLine.Tests
         public void ParsingTwoMutuallyExclusiveOptionsInTwoSetSucceeds()
         {
             var options = new OptionsWithMultipleSet();
-            bool success = base.Parser.ParseArguments(new string[] { "-g167", "--hue", "205" }, options);
+            bool result = base.Parser.ParseArguments(new string[] { "-g167", "--hue", "205" }, options);
             
-            Assert.IsTrue(success);
+            base.AssertParserSuccess(result);
             Assert.AreEqual(167, options.Green);
             Assert.AreEqual(205, options.Hue);
         }
@@ -87,27 +87,27 @@ namespace CommandLine.Tests
         public void ParsingThreeMutuallyExclusiveOptionsInTwoSetFails()
         {
             var options = new OptionsWithMultipleSet();
-            bool success = base.Parser.ParseArguments(new string[] { "-g167", "--hue", "205", "--saturation=37" }, options);
+            bool result = base.Parser.ParseArguments(new string[] { "-g167", "--hue", "205", "--saturation=37" }, options);
             
-            Assert.IsFalse(success);
+            base.AssertParserFailure(result);
         }
 
         [Test]
         public void ParsingMutuallyExclusiveOptionsAndRequiredOptionFails()
         {
             var options = new OptionsWithMultipleSetAndOneOption();
-            bool success = base.Parser.ParseArguments(new string[] { "-g167", "--hue", "205" }, options);
+            bool result = base.Parser.ParseArguments(new string[] { "-g167", "--hue", "205" }, options);
             
-            Assert.IsFalse(success);
+            base.AssertParserFailure(result);
         }
 
         [Test]
         public void ParsingMutuallyExclusiveOptionsAndRequiredOptionSucceeds()
         {
             var options = new OptionsWithMultipleSetAndOneOption();
-            bool success = base.Parser.ParseArguments(new string[] { "-g100", "-h200", "-cRgbColorSet" }, options);
+            bool result = base.Parser.ParseArguments(new string[] { "-g100", "-h200", "-cRgbColorSet" }, options);
             
-            Assert.IsTrue(success);
+            base.AssertParserSuccess(result);
             Assert.AreEqual(100, options.Green);
             Assert.AreEqual(200, options.Hue);
             Assert.AreEqual(ColorSet.RgbColorSet, options.DefaultColorSet);

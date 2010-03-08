@@ -5,7 +5,7 @@
 // Author:
 //   Giacomo Stelluti Scala (gsscoder@ymail.com)
 //
-// Copyright (C) 2005 - 2009 Giacomo Stelluti Scala
+// Copyright (C) 2005 - 2010 Giacomo Stelluti Scala
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -43,10 +43,10 @@ namespace CommandLine.Tests
         public void ValueListAttributeIsolatesNonOptionValues()
         {
             var options = new SimpleOptionsWithValueList();
-            bool success = base.Parser.ParseArguments(
+            bool result = base.Parser.ParseArguments(
                 new string[] { "--switch", "file1.ext", "file2.ext", "file3.ext", "-s", "out.ext" }, options);
 
-            Assert.IsTrue(success);
+            base.AssertParserSuccess(result);
             Assert.AreEqual("file1.ext", options.Items[0]);
             Assert.AreEqual("file2.ext", options.Items[1]);
             Assert.AreEqual("file3.ext", options.Items[2]);
@@ -59,9 +59,9 @@ namespace CommandLine.Tests
         public void ValueListWithMaxElemInsideBounds()
         {
             var options = new OptionsWithValueListMaximumThree();
-            bool success = base.Parser.ParseArguments(new string[] { "file.a", "file.b", "file.c" }, options);
+            bool result = base.Parser.ParseArguments(new string[] { "file.a", "file.b", "file.c" }, options);
 
-            Assert.IsTrue(success);
+            base.AssertParserSuccess(result);
             Assert.AreEqual("file.a", options.InputFilenames[0]);
             Assert.AreEqual("file.b", options.InputFilenames[1]);
             Assert.AreEqual("file.c", options.InputFilenames[2]);
@@ -74,19 +74,19 @@ namespace CommandLine.Tests
         public void ValueListWithMaxElemOutsideBounds()
         {
             var options = new OptionsWithValueListMaximumThree();
-            bool success = base.Parser.ParseArguments(
+            bool result = base.Parser.ParseArguments(
                     new string[] { "file.a", "file.b", "file.c", "file.d" }, options);
 
-            Assert.IsFalse(success);
+            base.AssertParserFailure(result);
         }
 
         [Test]
         public void ValueListWithMaxElemSetToZeroSucceeds()
         {
             var options = new OptionsWithValueListMaximumZero();
-            bool success = base.Parser.ParseArguments(new string[] { }, options);
+            bool result = base.Parser.ParseArguments(new string[] { }, options);
 
-            Assert.IsTrue(success);
+            base.AssertParserSuccess(result);
             Assert.AreEqual(0, options.Junk.Count);
             Console.WriteLine(options);
         }

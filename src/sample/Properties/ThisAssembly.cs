@@ -30,6 +30,6 @@ static class ThisAssembly
 {
     internal const string Title = "SampleApp.exe";
     internal const string Copyright = "Copyright (C) 2005 - 2009 Giacomo Stelluti Scala";
-    internal const string Version = "1.7.10.5"; //beta
-    internal const string InformationalVersion = "1.7.10.5";
+    internal const string Version = "1.8"; //stable
+    internal const string InformationalVersion = "1.8";
 }

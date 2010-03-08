@@ -7,7 +7,7 @@
 // Contributor(s):
 //   Steven Evans
 // 
-// Copyright (C) 2005 - 2009 Giacomo Stelluti Scala
+// Copyright (C) 2005 - 2010 Giacomo Stelluti Scala
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -55,6 +55,15 @@ namespace CommandLine.Text.Tests
             public bool Verbose = false;
 
             [Option(null, "input-file", HelpText = "This is a very long description of the Input File argument that gets passed in.  It should  be passed in as a string.")]
+            public string FileName = string.Empty;
+        }
+
+        private class MockOptionsWithLongDescriptionAndNoSpaces
+        {
+            [Option("v", "verbose", HelpText = "Before 012345678901234567890123 After")]
+            public bool Verbose = false;
+
+            [Option(null, "input-file", HelpText = "Before 012345678901234567890123456789 After")]
             public string FileName = string.Empty;
         }
 
@@ -106,6 +115,42 @@ namespace CommandLine.Text.Tests
             Assert.AreEqual(lines[4], "                test out the wrapping ", formattingMessage);
             Assert.AreEqual(lines[5], "                capabilities of the ", formattingMessage);
             Assert.AreEqual(lines[6], "                Help Text.", formattingMessage);
+        }
+
+        [Test]
+        public void LongHelpTextWithoutSpaces()
+        {
+            _helpText.MaximumDisplayWidth = 40;
+            _helpText.AddOptions(new MockOptionsWithLongDescriptionAndNoSpaces());
+            string help = _helpText.ToString();
+
+            string[] lines = help.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+            Assert.AreEqual("  v, verbose    Before ", lines[2]);
+            Assert.AreEqual("                012345678901234567890123", lines[3]);
+            Assert.AreEqual("                After", lines[4]);
+            Assert.AreEqual("  input-file    Before ", lines[5]);
+            Assert.AreEqual("                012345678901234567890123", lines[6]);
+            Assert.AreEqual("                456789 After", lines[7]);
+        }
+
+        [Test]
+        public void LongPreAndPostLinesWithoutSpaces()
+        {
+            var local = new HelpText("Heading Info.");
+            local.MaximumDisplayWidth = 40;
+            local.AddPreOptionsLine("Before 0123456789012345678901234567890123456789012 After");
+            local.AddOptions(new MockOptions());
+            local.AddPostOptionsLine("Before 0123456789012345678901234567890123456789 After");
+
+            string help = local.ToString();
+
+            string[] lines = help.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+            Assert.AreEqual("Before ", lines[1]);
+            Assert.AreEqual("0123456789012345678901234567890123456789", lines[2]);
+            Assert.AreEqual("012 After", lines[3]);
+            Assert.AreEqual("Before ", lines[lines.Length - 3]);
+            Assert.AreEqual("0123456789012345678901234567890123456789", lines[lines.Length - 2]);
+            Assert.AreEqual(" After", lines[lines.Length - 1]);
         }
     }
 }

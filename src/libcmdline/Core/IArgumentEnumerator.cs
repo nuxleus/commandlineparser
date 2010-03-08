@@ -5,7 +5,7 @@
 // Author:
 //   Giacomo Stelluti Scala (gsscoder@ymail.com)
 //
-// Copyright (C) 2005 - 2009 Giacomo Stelluti Scala
+// Copyright (C) 2005 - 2010 Giacomo Stelluti Scala
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -33,13 +33,17 @@ using System.Collections.Generic;
 
 namespace CommandLine
 {
-    interface IArgumentEnumerator : IEnumerator<string> //, ICloneable
+    interface IArgumentEnumerator : IDisposable //: IEnumerator<string>
     {
         string GetRemainingFromNext();
 
         string Next { get; }
         bool IsLast { get; }
 
+        bool MoveNext();
+
         bool MovePrevious();
+
+        string Current { get; }
     }
 }
