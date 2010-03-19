@@ -49,6 +49,15 @@ namespace CommandLine.Text.Tests
             public string FileName = string.Empty;
         }
 
+        class MockOptionsWithDescription
+        {
+            [Option("v", "verbose", HelpText = "Comment extensively every operation.")]
+            public bool Verbose = false;
+
+            [Option("i", "input-file", Required = true, HelpText = "Specify input file to be processed.")]
+            public string FileName = string.Empty;
+        }
+
         private class MockOptionsWithLongDescription
         {
             [Option("v", "verbose", HelpText = "This is the description of the verbosity to test out the wrapping capabilities of the Help Text.")]
@@ -151,6 +160,49 @@ namespace CommandLine.Text.Tests
             Assert.AreEqual("Before ", lines[lines.Length - 3]);
             Assert.AreEqual("0123456789012345678901234567890123456789", lines[lines.Length - 2]);
             Assert.AreEqual(" After", lines[lines.Length - 1]);
+        }
+
+        [Test]
+        public void CustomizeOptionsFormat()
+        {
+            var local = new HelpText("Customizing Test.");
+            local.FormatOptionHelpText += new EventHandler<FormatOptionHelpTextEventArgs>(CustomizeOptionsFormat_FormatOptionHelpText);
+            local.AddPreOptionsLine("Pre-Options.");
+            local.AddOptions(new MockOptionsWithDescription());
+            local.AddPostOptionsLine("Post-Options.");
+
+            string help = local.ToString();
+
+            Console.WriteLine(help);
+
+            string[] lines = help.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+            Assert.AreEqual("Customizing Test.", lines[0]);
+            Assert.AreEqual("Pre-Options.", lines[1]);
+            Assert.AreEqual("  v, verbose       Kommentar umfassend Operationen.", lines[3]);
+            Assert.AreEqual("  i, input-file    Erforderlich. Gibt den Eingang an zu bearbeitenden Datei.", lines[4]);
+            Assert.AreEqual("Post-Options.", lines[6]);
+        }
+
+        private void CustomizeOptionsFormat_FormatOptionHelpText(object sender, FormatOptionHelpTextEventArgs e)
+        {
+            // Simulating a localization process.
+            string optionHelp = null;
+
+            switch (e.Option.ShortName)
+            {
+                case "v":
+                    optionHelp = "Kommentar umfassend Operationen.";
+                    break;
+
+                case "i":
+                    optionHelp = "Gibt den Eingang an zu bearbeitenden Datei.";
+                    break;
+            }
+            
+            if (e.Option.Required)
+                optionHelp = "Erforderlich. " + optionHelp;
+
+            e.Option.HelpText = optionHelp;
         }
     }
 }

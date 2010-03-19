@@ -1,3 +1,21 @@
+2010-03-18	Giacomo Stelluti Scala	<gsscoder@ymail.com>
+
+	-----------------------------------------------------------------------------------
+		+ file added; * file modified; - file deleted; ~ file renamed; > file moved
+		{ group start; } group end
+	-----------------------------------------------------------------------------------
+
+    * HelpText.cs (HelpText)
+        Modified. Now you can customize options help text using the FormatOptionHelpText event as
+        requested in #REQ0005 ([1]
+        http://commandline.codeplex.com/WorkItem/View.aspx?WorkItemId=10426&ProjectName=commandline by fhaag).
+   
+    + FormatOptionHelpTextEventArgs.cs (FormatOptionHelpTextEventArgs)
+		Added. See [1].
+ 
+    * HelpTextFixture.cs (HelpTextFixture)
+        Modified. See [1].   
+
 2010-03-08	Giacomo Stelluti Scala	<gsscoder@ymail.com>
 
 	-----------------------------------------------------------------------------------

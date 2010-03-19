@@ -169,6 +169,7 @@
     <Compile Include="Tests\Mocks\NumberSetOptions.cs" />
     <Compile Include="Tests\Mocks\SimpleOptionsWithValueList.cs" />
     <Compile Include="Tests\Mocks\SimpleOptions.cs" />
+    <Compile Include="Text\FormatOptionHelpTextEventArgs.cs" />
     <Compile Include="Text\HelpText.cs" />
     <Compile Include="Text\Tests\HelpTextFixture.cs" />
   </ItemGroup>

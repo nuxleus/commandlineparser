@@ -5,7 +5,7 @@
 // Author:
 //   Giacomo Stelluti Scala (gsscoder@ymail.com)
 //
-// Copyright (C) 2005 - 2009 Giacomo Stelluti Scala
+// Copyright (C) 2005 - 2010 Giacomo Stelluti Scala
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -26,7 +26,7 @@
 // THE SOFTWARE.
 //
 #endregion
-//#define EXEC_TESTS
+#define EXEC_TESTS
 #region Using Directives
 using System;
 using System.Collections.Generic;
@@ -35,6 +35,7 @@ using CommandLine;
 using CommandLine.Text;
 #if UNIT_TESTS && EXEC_TESTS
 using CommandLine.Tests;
+using CommandLine.Text.Tests;
 #endif
 #endregion
 
@@ -174,8 +175,9 @@ namespace SampleApp
 #if UNIT_TESTS && EXEC_TESTS
         private static void RunATestForDebugging()
         {
-            OptionArrayAttributeParsingFixture f = new OptionArrayAttributeParsingFixture();
+            //OptionArrayAttributeParsingFixture f = new OptionArrayAttributeParsingFixture();
             //ArgumentParserFixture f2 = new ArgumentParserFixture();
+            HelpTextFixture f3 = new HelpTextFixture();
             //f.ParseStringArrayOptionUsingShortName();
             //f.ParseStringArrayOptionUsingShortNameWithValueAdjacent();
             //f.ParseStringArrayOptionUsingLongName();
@@ -184,8 +186,9 @@ namespace SampleApp
             //f.ParseStringArrayOptionUsingLongNameWithValueList();
             //f.PassingBadValueToAnIntegerArrayOptionFails();
             //f.WillThrowExceptionIfOptionArrayAttributeBoundToStringWithShortName();
-            f.WillThrowExceptionIfOptionArrayAttributeBoundToIntegerWithShortName();
+            //f.WillThrowExceptionIfOptionArrayAttributeBoundToIntegerWithShortName();
             //f2.GetNextInputValues();
+            f3.CustomizeOptionsFormat();
             Console.Write("press any key");
             Console.ReadKey();
             Environment.Exit(1);

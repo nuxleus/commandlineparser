@@ -53,6 +53,11 @@ namespace CommandLine.Text
         private StringBuilder _postOptionsHelp;
         private static readonly string _defaultRequiredWord = "Required.";
 
+        /// <summary>
+        /// Occurs when an option help text is formatted.
+        /// </summary>
+        public event EventHandler<FormatOptionHelpTextEventArgs> FormatOptionHelpText;
+
         private HelpText()
         {
             _preOptionsHelp = new StringBuilder(_builderCapacity);
@@ -224,6 +229,10 @@ namespace CommandLine.Text
             {
                 option.HelpText = String.Format("{0} ", requiredWord) + option.HelpText;
             }
+
+            FormatOptionHelpTextEventArgs e = new FormatOptionHelpTextEventArgs(option);
+            OnFormatOptionHelpText(e);
+            option.HelpText = e.Option.HelpText;
 
             if (!string.IsNullOrEmpty(option.HelpText))
             {
@@ -406,6 +415,14 @@ namespace CommandLine.Text
                 length = Math.Max(length, optionLenght);
             }
             return length;
+        }
+
+        protected virtual void OnFormatOptionHelpText(FormatOptionHelpTextEventArgs e)
+        {
+            EventHandler<FormatOptionHelpTextEventArgs> handler = FormatOptionHelpText;
+
+            if (handler != null)
+                handler(this, e);
         }
     }
 }

@@ -1,6 +1,6 @@
-#region License
+﻿#region License
 //
-// Command Line Library: ThisAssembly.cs
+// Command Line Library: FormatOptionHelpTextEventArgs.cs
 //
 // Author:
 //   Giacomo Stelluti Scala (gsscoder@ymail.com)
@@ -24,12 +24,39 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+//
+#endregion
+#region Using Directives
+using System;
 #endregion
 
-static class ThisAssembly
+namespace CommandLine.Text
 {
-    internal const string Title = "SampleApp.exe";
-    internal const string Copyright = "Copyright (C) 2005 - 2010 Giacomo Stelluti Scala";
-    internal const string Version = "1.8";
-    internal const string InformationalVersion = "1.8";
+    /// <summary>
+    /// Provides data for the FormatOptionHelpText event.
+    /// </summary>
+    public class FormatOptionHelpTextEventArgs : EventArgs
+    {
+        private readonly BaseOptionAttribute _option;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CommandLine.Text.FormatOptionHelpTextEventArgs"/> class.
+        /// </summary>
+        /// <param name="option">Option to format.</param>
+        public FormatOptionHelpTextEventArgs(BaseOptionAttribute option)
+        {
+            _option = option;
+        }
+
+        /// <summary>
+        /// Gets the option to format.
+        /// </summary>
+        public BaseOptionAttribute Option
+        {
+            get
+            {
+                return _option;
+            }
+        }
+    }
 }
