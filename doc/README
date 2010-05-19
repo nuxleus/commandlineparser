@@ -3,8 +3,8 @@ Command Line Parser Library
 Project Author/Coordinator: Giacomo Stelluti Scala
 Contributor(s): Steven Evans
 ---------------------------------------------------------------------------------------
-Version 1.8.0.3 Beta (*3)
-Latest Update: 18-mar-2010.
+Version 1.8.0.5 Beta (*3)
+Latest Update: 19-may-2010.
 
 General Info:
 This library allows command line arguments parsing.
@@ -81,7 +81,7 @@ see also: http://gsscoder.blogspot.com/2007/08/gac-extraction-utility-for-mono.h
 *2) I use NAnt 0.85 (Build 0.85.2478.0).
 
 *3) In a production environment you should use a 'stable' version, an 'rc' (release
-candidate) or an advanced 'beta' (a 'beta' next to an 'rc' or a 'stable').
+candidate) or an advanced 'beta' (a 'beta' published for a long time and stated quite stable).
 
 *4) Full documentation is currently under construction. Please refer to Quickstart
 guide and informations published starting from the project's home.

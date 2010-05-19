@@ -1,3 +1,21 @@
+2010-05-19	Giacomo Stelluti Scala	<gsscoder@ymail.com>
+
+	-----------------------------------------------------------------------------------
+		+ file added; * file modified; - file deleted; ~ file renamed; > file moved
+		{ group start; } group end
+	-----------------------------------------------------------------------------------
+
+    * Text/HelpText.cs (HelpText)
+		Modified. Changed incorrect spelling of a variable of GetMaxLength(IList<BaseOptionAttribute>) method
+		(see issue #R20100506.00 - http://commandline.codeplex.com/WorkItem/View.aspx?WorkItemId=10554).
+		Parameterless constructor made public.
+		Added more public constructors.
+		(see issue #R20100507.00 - http://commandline.codeplex.com/WorkItem/View.aspx?WorkItemId=10573)
+
+    * Text/TESTS/HelpTextFixture.cs (HelpTextFixture)
+        Modified. Added test
+			::InstancingWithParameterlessConstructor
+		
 2010-03-18	Giacomo Stelluti Scala	<gsscoder@ymail.com>
 
 	-----------------------------------------------------------------------------------

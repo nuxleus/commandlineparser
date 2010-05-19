@@ -28,7 +28,7 @@
     <WorkingPath>
     </WorkingPath>
     <FrameworkVersion>2.0.50727</FrameworkVersion>
-    <HelpTitle>Command Line Parser Library 1.8.0.3 Beta</HelpTitle>
+    <HelpTitle>Command Line Parser Library 1.8.0.5 Beta</HelpTitle>
     <CopyrightText>Copyright %28c%29 2005 - 2010 Giacomo Stelluti Scala</CopyrightText>
     <FeedbackEMailAddress>gsscoder%40ymail.com</FeedbackEMailAddress>
     <FooterText>This software is open source, published under MIT license and hosted at CodePlex %28http://commandline.codeplex.com/%29.</FooterText>

@@ -45,7 +45,7 @@ namespace CommandLine.Text
         private const int _builderCapacity = 128;
         private const int _defaultMaximumLength = 80; // default console width
         private int? _maximumDisplayWidth;
-        private readonly string _heading;
+        private string _heading;
         private string _copyright;
         private bool _additionalNewLineAfterOption;
         private StringBuilder _preOptionsHelp;
@@ -58,7 +58,7 @@ namespace CommandLine.Text
         /// </summary>
         public event EventHandler<FormatOptionHelpTextEventArgs> FormatOptionHelpText;
 
-        private HelpText()
+        public HelpText()
         {
             _preOptionsHelp = new StringBuilder(_builderCapacity);
             _postOptionsHelp = new StringBuilder(_builderCapacity);
@@ -77,6 +77,60 @@ namespace CommandLine.Text
             Assumes.NotNullOrEmpty(heading, "heading");
 
             _heading = heading;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CommandLine.Text.HelpText"/> class
+        /// specifying heading and copyright informations.
+        /// </summary>
+        /// <param name="heading">A string with heading information or
+        /// an instance of <see cref="CommandLine.Text.HeadingInfo"/>.</param>
+        /// <param name="copyright">A string with copyright information or
+        /// an instance of <see cref="CommandLine.Text.CopyrightInfo"/>.</param>
+        /// <exception cref="System.ArgumentException">Thrown when one or more parameters <paramref name="heading"/> are null or empty strings.</exception>
+        public HelpText(string heading, string copyright)
+            : this()
+        {
+            Assumes.NotNullOrEmpty(heading, "heading");
+            Assumes.NotNullOrEmpty(copyright, "copyright");
+
+            _heading = heading;
+            _copyright = copyright;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CommandLine.Text.HelpText"/> class
+        /// specifying heading and copyright informations.
+        /// </summary>
+        /// <param name="heading">A string with heading information or
+        /// an instance of <see cref="CommandLine.Text.HeadingInfo"/>.</param>
+        /// <param name="copyright">A string with copyright information or
+        /// an instance of <see cref="CommandLine.Text.CopyrightInfo"/>.</param>
+        /// <param name="options">The instance that collected command line arguments parsed with <see cref="CommandLine.CommandLineParser"/> class.</param>
+        /// <exception cref="System.ArgumentException">Thrown when one or more parameters <paramref name="heading"/> are null or empty strings.</exception>
+        public HelpText(string heading, string copyright, object options)
+            : this()
+        {
+            Assumes.NotNullOrEmpty(heading, "heading");
+            Assumes.NotNullOrEmpty(copyright, "copyright");
+            Assumes.NotNull(options, "options");
+
+            _heading = heading;
+            _copyright = copyright;
+            AddOptions(options);
+        }
+
+        /// <summary>
+        /// Sets the heading information string.
+        /// You can directly assign a <see cref="CommandLine.Text.HeadingInfo"/> instance.
+        /// </summary>
+        public string Heading
+        {
+            set
+            {
+                Assumes.NotNullOrEmpty(value, "value");
+                _heading = value;
+            }
         }
 
         /// <summary>
@@ -139,7 +193,7 @@ namespace CommandLine.Text
         /// <summary>
         /// Adds a text block with options usage informations.
         /// </summary>
-        /// <param name="options">The instance that collected command line arguments parsed with <see cref="CommandLine.Parser"/> class.</param>
+        /// <param name="options">The instance that collected command line arguments parsed with <see cref="CommandLine.CommandLineParser"/> class.</param>
         /// <exception cref="System.ArgumentNullException">Thrown when parameter <paramref name="options"/> is null.</exception>
         public void AddOptions(object options)
         {
@@ -149,7 +203,7 @@ namespace CommandLine.Text
         /// <summary>
         /// Adds a text block with options usage informations.
         /// </summary>
-        /// <param name="options">The instance that collected command line arguments parsed with the <see cref="CommandLine.Parser"/> class.</param>
+        /// <param name="options">The instance that collected command line arguments parsed with the <see cref="CommandLine.CommandLineParser"/> class.</param>
         /// <param name="requiredWord">The word to use when the option is required.</param>
         /// <exception cref="System.ArgumentNullException">Thrown when parameter <paramref name="options"/> is null.</exception>
         /// <exception cref="System.ArgumentNullException">Thrown when parameter <paramref name="requiredWord"/> is null or empty string.</exception>
@@ -164,7 +218,7 @@ namespace CommandLine.Text
         /// <summary>
         /// Adds a text block with options usage informations.
         /// </summary>
-        /// <param name="options">The instance that collected command line arguments parsed with the <see cref="CommandLine.Parser"/> class.</param>
+        /// <param name="options">The instance that collected command line arguments parsed with the <see cref="CommandLine.CommandLineParser"/> class.</param>
         /// <param name="requiredWord">The word to use when the option is required.</param>
         /// <param name="maximumLength">The maximum length of the help documentation.</param>
         /// <exception cref="System.ArgumentNullException">Thrown when parameter <paramref name="options"/> is null.</exception>
@@ -397,22 +451,22 @@ namespace CommandLine.Text
             int length = 0;
             foreach (BaseOptionAttribute option in optionList)
             {
-                int optionLenght = 0;
+                int optionLength = 0;
                 bool hasShort = option.HasShortName;
                 bool hasLong = option.HasLongName;
                 if (hasShort)
                 {
-                    optionLenght += option.ShortName.Length;
+                    optionLength += option.ShortName.Length;
                 }
                 if (hasLong)
                 {
-                    optionLenght += option.LongName.Length;
+                    optionLength += option.LongName.Length;
                 }
                 if (hasShort && hasLong)
                 {
-                    optionLenght += 2; // ", "
+                    optionLength += 2; // ", "
                 }
-                length = Math.Max(length, optionLenght);
+                length = Math.Max(length, optionLength);
             }
             return length;
         }

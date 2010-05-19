@@ -32,6 +32,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Globalization;
 using NUnit.Framework;
 #endregion
 
@@ -40,6 +41,7 @@ namespace CommandLine.Text.Tests
     [TestFixture]
     public sealed class HelpTextFixture
     {
+        #region Mock Objects
         class MockOptions
         {
             [Option("v", "verbose")]
@@ -75,6 +77,13 @@ namespace CommandLine.Text.Tests
             [Option(null, "input-file", HelpText = "Before 012345678901234567890123456789 After")]
             public string FileName = string.Empty;
         }
+
+        public class MockOptionsSimple
+        {
+            [Option("s", "something", HelpText = "Input something here.")]
+            public string Something;
+        }
+        #endregion
 
         private HelpText _helpText;
 
@@ -180,6 +189,29 @@ namespace CommandLine.Text.Tests
             Assert.AreEqual("Pre-Options.", lines[1]);
             Assert.AreEqual("  v, verbose       Kommentar umfassend Operationen.", lines[3]);
             Assert.AreEqual("  i, input-file    Erforderlich. Gibt den Eingang an zu bearbeitenden Datei.", lines[4]);
+            Assert.AreEqual("Post-Options.", lines[6]);
+        }
+
+        [Test]
+        public void InstancingWithParameterlessConstructor()
+        {
+            var year = DateTime.Now.Year;
+            var local = new HelpText();
+            local.Heading = new HeadingInfo("Parameterless Constructor Test.");
+            local.Copyright = new CopyrightInfo("Author", year);
+            local.AddPreOptionsLine("Pre-Options.");
+            local.AddOptions(new MockOptionsSimple());
+            local.AddPostOptionsLine("Post-Options.");
+
+            string help = local.ToString();
+
+            Console.WriteLine(help);
+
+            string[] lines = help.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+            Assert.AreEqual("Parameterless Constructor Test.", lines[0]);
+            Assert.AreEqual(string.Format(CultureInfo.InvariantCulture, "Copyright (C) {0} Author", year), lines[1]);
+            Assert.AreEqual("Pre-Options.", lines[2]);
+            Assert.AreEqual("  s, something    Input something here.", lines[4]);
             Assert.AreEqual("Post-Options.", lines[6]);
         }
 
